@@ -1,0 +1,151 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 3.2 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated by
+% biber as required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+
+\refsection{0}
+  \datalist[entry]{nyt/global//global/global}
+    \entry{Berman}{misc}{}
+      \name{author}{4}{}{%
+        {{un=0,uniquepart=base,hash=c3bb35b25a28b007f0a62e8984eb3f4f}{%
+           family={Berman},
+           familyi={B\bibinitperiod},
+           given={Gordon\bibnamedelima J.},
+           giveni={G\bibinitperiod\bibinitdelim J\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=5d7ab9a0775890de25f8e2db2b4674b6}{%
+           family={Choi},
+           familyi={C\bibinitperiod},
+           given={Daniel\bibnamedelima M.},
+           giveni={D\bibinitperiod\bibinitdelim M\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=10a2fcf9b4d2afe92cf7da76b25fc462}{%
+           family={Bialek},
+           familyi={B\bibinitperiod},
+           given={William},
+           giveni={W\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=afc6a03003f17700734a7d68f7cec64f}{%
+           family={Shaevitz},
+           familyi={S\bibinitperiod},
+           given={Joshua\bibnamedelima W.},
+           giveni={J\bibinitperiod\bibinitdelim W\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{publisher}{1}{%
+        {arXiv}%
+      }
+      \strng{namehash}{a3bf0a25b64c4759761c403558ae21c1}
+      \strng{fullhash}{9e98af9dd1b3edcdd15331a542ddf350}
+      \strng{bibnamehash}{a3bf0a25b64c4759761c403558ae21c1}
+      \strng{authorbibnamehash}{a3bf0a25b64c4759761c403558ae21c1}
+      \strng{authornamehash}{a3bf0a25b64c4759761c403558ae21c1}
+      \strng{authorfullhash}{9e98af9dd1b3edcdd15331a542ddf350}
+      \field{sortinit}{B}
+      \field{sortinithash}{d7095fff47cda75ca2589920aae98399}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Mapping the stereotyped behaviour of freely-moving fruit flies}
+      \field{year}{2014}
+      \verb{doi}
+      \verb 10.48550/ARXIV.1310.4249
+      \endverb
+      \verb{urlraw}
+      \verb https://arxiv.org/abs/1310.4249
+      \endverb
+      \verb{url}
+      \verb https://arxiv.org/abs/1310.4249
+      \endverb
+      \keyw{Quantitative Methods (q-bio.QM),Computer Vision and Pattern Recognition (cs.CV),Biological Physics (physics.bio-ph),Machine Learning (stat.ML),FOS: Biological sciences,FOS: Biological sciences,FOS: Computer and information sciences,FOS: Computer and information sciences,FOS: Physical sciences,FOS: Physical sciences}
+    \endentry
+    \entry{Mimica}{article}{}
+      \name{author}{6}{}{%
+        {{un=0,uniquepart=base,hash=709e8ddc8f4b92f45b0d4286893f6e63}{%
+           family={Mimica},
+           familyi={M\bibinitperiod},
+           given={Bartul},
+           giveni={B\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=9754f36ee35c0fa1e0e2ceb9dcaea894}{%
+           family={Tombaz},
+           familyi={T\bibinitperiod},
+           given={Tuçe},
+           giveni={T\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=bdd3d1bd92c273866f0dacd406caa013}{%
+           family={Battistin},
+           familyi={B\bibinitperiod},
+           given={Claudia},
+           giveni={C\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=4daaaa799da18e91743a40485741bed2}{%
+           family={Fuglstad},
+           familyi={F\bibinitperiod},
+           given={Jingyi\bibnamedelima Guo},
+           giveni={J\bibinitperiod\bibinitdelim G\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=f733586a90c267f97133be097f1e93a0}{%
+           family={Dunn},
+           familyi={D\bibinitperiod},
+           given={Benjamin\bibnamedelima A.},
+           giveni={B\bibinitperiod\bibinitdelim A\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=bedc0af0a07f9fd62522df232b437f5c}{%
+           family={Whitlock},
+           familyi={W\bibinitperiod},
+           given={Jonathan\bibnamedelima R.},
+           giveni={J\bibinitperiod\bibinitdelim R\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{publisher}{1}{%
+        {Cold Spring Harbor Laboratory}%
+      }
+      \strng{namehash}{142f1ab9e3b15149045d57c1a7825a68}
+      \strng{fullhash}{59dc607f60d2c2ab63ef924961d68959}
+      \strng{bibnamehash}{142f1ab9e3b15149045d57c1a7825a68}
+      \strng{authorbibnamehash}{142f1ab9e3b15149045d57c1a7825a68}
+      \strng{authornamehash}{142f1ab9e3b15149045d57c1a7825a68}
+      \strng{authorfullhash}{59dc607f60d2c2ab63ef924961d68959}
+      \field{sortinit}{M}
+      \field{sortinithash}{4625c616857f13d17ce56f7d4f97d451}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{The cortical population code is pervaded by activity patterns evoked by movement, but how such signals relate to the natural actions of unrestrained animals remains largely unknown, particularly in sensory areas. To address this we compared high-density neural recordings across four cortical regions (visual, auditory, somatosensory, motor) in relation to sensory modulation, posture, movement, and ethograms of freely foraging rats. Momentary actions, such as rearing or turning, were represented ubiquitously and could be decoded from all sampled structures. However, more elementary and continuous features, such as pose and movement, followed region-specific organization, with neurons in visual and auditory cortices preferentially encoding mutually distinct head-orienting features in world-referenced coordinates, and somatosensory and motor cortices principally encoding the trunk and head in egocentric coordinates. The tuning properties of synaptically coupled cells also exhibited connection patterns suggestive of different uses of behavioral information within and between regions. Together, our results speak for detailed, multi-level encoding of animal behavior subserving its dynamic employment in local cortical computations.Competing Interest StatementThe authors have declared no competing interest.}
+      \field{journaltitle}{bioRxiv}
+      \field{title}{Behavioral decomposition reveals rich encoding structure employed across neocortex}
+      \field{year}{2022}
+      \verb{doi}
+      \verb 10.1101/2022.02.08.479515
+      \endverb
+      \verb{eprint}
+      \verb https://www.biorxiv.org/content/early/2022/02/10/2022.02.08.479515.full.pdf
+      \endverb
+      \verb{urlraw}
+      \verb https://www.biorxiv.org/content/early/2022/02/10/2022.02.08.479515
+      \endverb
+      \verb{url}
+      \verb https://www.biorxiv.org/content/early/2022/02/10/2022.02.08.479515
+      \endverb
+    \endentry
+  \enddatalist
+\endrefsection
+\endinput
+

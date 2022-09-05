@@ -1,0 +1,6 @@
+ - What role does Bartul Mimica have?
+ - LaTeX template? Citations?
+ - The word detrended is not used in Berman as far as I can see. 
+ Is this "included" in the Morlet wavelet decomposition/transform?
+ - Why are all points assigned to a behaviour? 
+ At times the rats are just running around (I thought this is part of the assumptions).

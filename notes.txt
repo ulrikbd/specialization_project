@@ -1,0 +1,5 @@
+First meeting:
+ - Send mail to Chris about the specialization course
+ - Create latex-document starting on the project
+ - Read parts of the article to get a feel for the methods used
+ - Take a look at bearman 2014
