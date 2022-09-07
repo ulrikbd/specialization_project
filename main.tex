@@ -1,7 +1,7 @@
 \documentclass{article}
 
 \usepackage[utf8]{inputenc}
-\usepackage[margin=2.5cm]{geometry}
+\usepackage[a4paper]{geometry}
 \usepackage{amsmath, amsfonts, amssymb, amsthm, mathtools}
 \usepackage{graphicx}
 \usepackage{parskip}
@@ -71,7 +71,7 @@ What are cortices, and what is decoding accuracy?}
 
 \begin{figure}[h]
         \centering
-        \includegraphics[width=\linewidth]{./figures/methodology_mimica.png}
+        \includegraphics[width=0.6\linewidth]{./figures/methodology_mimica.png}
         \caption{Figure 1 in \cite{Mimica}.}
         \label{fig:methodology_mimica}
 \end{figure}
@@ -107,6 +107,70 @@ For this t-SNE is chosen.
 Why?—because it does care much about preserving the "long" distances between the original features.
 Many popular dimensionality reduction methods are tweaked for the opposite purpose, to keep the overall structure in mind.
 \textcolor{red}{This argument should definitely be looked more into.}
+
+
+\section{Steps:}
+\begin{enumerate}
+        \item z-scoring (standardization \textcolor{red}{although dividing by standard deviation is commented out})
+        \item Smoothing by 3d splines
+        \item Detrending around the smoothed curve \textcolor{red}{(Why do we need to do this? Do we expect trends?)}
+        \item Morlet continuous wavelet transformation
+                \begin{enumerate}
+                        \item Hypothesis testing against 1st order autoregressive process
+                        \item Smoothing of power across scales
+                        \item Scale-averaged wavelet power
+                        \item Rescaling features
+                        \item Concatenating trend data and power spectrum
+                \end{enumerate}
+        \item PCA, reducing to feature dimension explaining at least 95\% of the variance
+        \item t-SNE
+        \item Watershed segmentation
+\end{enumerate}
+\newpage
+
+
+
+\section{Introduction}
+\subsection{Motivation}
+The human brain is an incredibly complex structures that researchers have been trying to understand for a long time.
+One way to gain information about how the brain operates is to study its neurons.
+Neurons are cells which can communicate with each other through synapses.
+This communication are electric signals and can be recorded.
+\textcolor{red}{Source?}
+At Kavli Institute for Systems Neuroscience at NTNU they are interested in relating these neural spike recordings to the behavior in rats.
+This in turn begs the question of how rats behave.
+Manually labelling video recordings of rats running around seems a tedious and unfruitful endeavor.
+Additionally it introduces bias in our prior assumptions of how the rats behave, and which activities they engage in.
+Thus, a methodology for automatically detecting distinct behaviours is needed.
+
+\subsection{Previous work}
+\textcolor{red}{Is this necessary?}
+
+
+\section{Theory}
+Concise description of the mathematical concepts used in the methodology.
+\subsection{Time series}
+\subsubsection{Detrending}
+\subsubsection{Spectral analysis}
+\subsubsection{Spline interpolation}
+\subsubsection{Wavelet transformation}
+
+
+\subsection{Dimensionality reduction}
+\subsubsection{Principal Component Analysis}
+\subsubsection{t-Stochastic Neighbor Embedding}
+
+\subsection{Watershed segmentation}
+
+\section{Methodology}
+What is done in practice.
+Discussion  of choices made.
+\subsection{Input data}
+\subsection{Feature extraction}
+\subsection{Manifold embedding}
+
+
+
 
 
 

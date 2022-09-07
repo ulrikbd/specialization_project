@@ -1,6 +1,8 @@
  - What role does Bartul Mimica have?
  - LaTeX template? Citations?
- - The word detrended is not used in Berman as far as I can see. 
- Is this "included" in the Morlet wavelet decomposition/transform?
  - Why are all points assigned to a behaviour? 
  At times the rats are just running around (I thought this is part of the assumptions).
+ - Detrending—why do we do it here, are there trends in the different movements?
+ - What is z-scoring? Standardization? Dividing by the covariance is commented ouyt in the code
+ Also the z-scoring is done before the detrending in the code, but in the text it is mentioned after.
+ - How in depth do I go on the subjects? I.e., to describe detrending and wavelet decomposition do I need to treat time series in general?

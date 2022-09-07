@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022/Arch Linux) (preloaded format=pdflatex 2022.5.2)  1 SEP 2022 13:02
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022/Arch Linux) (preloaded format=pdflatex 2022.5.2)  7 SEP 2022 14:29
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -752,19 +752,19 @@ LaTeX Font Info:    ... okay on input line 44.
 *geometry* detected driver: pdftex
 *geometry* verbose mode - [ preamble ] result:
 * driver: pdftex
-* paper: <default>
+* paper: a4paper
 * layout: <same size as paper>
 * layoutoffset:(h,v)=(0.0pt,0.0pt)
 * modes: 
-* h-part:(L,W,R)=(71.13188pt, 472.03123pt, 71.13188pt)
-* v-part:(T,H,B)=(71.13188pt, 652.70622pt, 71.13188pt)
-* \paperwidth=614.295pt
-* \paperheight=794.96999pt
-* \textwidth=472.03123pt
-* \textheight=652.70622pt
-* \oddsidemargin=-1.1381pt
-* \evensidemargin=-1.1381pt
-* \topmargin=-38.1381pt
+* h-part:(L,W,R)=(89.62709pt, 418.25368pt, 89.6271pt)
+* v-part:(T,H,B)=(101.40665pt, 591.5302pt, 152.11pt)
+* \paperwidth=597.50787pt
+* \paperheight=845.04684pt
+* \textwidth=418.25368pt
+* \textheight=591.5302pt
+* \oddsidemargin=17.3571pt
+* \evensidemargin=17.3571pt
+* \topmargin=-7.86334pt
 * \headheight=12.0pt
 * \headsep=25.0pt
 * \topskip=10.0pt
@@ -844,39 +844,44 @@ LaTeX Font Info:    Trying to load font information for U+msb on input line 47.
  (/usr/share/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-<./figures/methodology_mimica.png, id=37, 574.39594pt x 636.12656pt>
+<./figures/methodology_mimica.png, id=109, 574.39594pt x 636.12656pt>
 File: ./figures/methodology_mimica.png Graphic file (type png)
 <use ./figures/methodology_mimica.png>
 Package pdftex.def Info: ./figures/methodology_mimica.png  used on input line 74.
-(pdftex.def)             Requested size: 472.03123pt x 522.77252pt.
+(pdftex.def)             Requested size: 250.95476pt x 277.92613pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 [1
 
-{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] [2] 
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
+Overfull \hbox (3.30257pt too wide) in paragraph at lines 105--110
+\OT1/cmr/m/n/10 The fi-nal step is to map the still very large fea-ture vec-tors into a low di-men-sional (two-dimensional)
+ []
+
+[2 <./figures/methodology_mimica.png (PNG copy)>] [3] [4] 
 AED: lastpage setting LastPage
-[3] [4 <./figures/methodology_mimica.png (PNG copy)>] (./main.aux)
+[5] (./main.aux)
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: 77090FE6C23D9E78D025C85A9B7282F2;1012.
+(rerunfilecheck)             Checksum: 2814803F4C9F8C1454C34B127AEB5988;3545.
 Package logreq Info: Writing requests to 'main.run.xml'.
 \openout1 = `main.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 29205 strings out of 478238
- 549957 string characters out of 5850457
- 1241190 words of memory out of 5000000
- 46983 multiletter control sequences out of 15000+600000
+ 29254 strings out of 478238
+ 550598 string characters out of 5850457
+ 1239249 words of memory out of 5000000
+ 47001 multiletter control sequences out of 15000+600000
  478556 words of font info for 64 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  84i,11n,89p,1415b,1277s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmcsc10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
-Output written on main.pdf (4 pages, 439786 bytes).
+Output written on main.pdf (5 pages, 451000 bytes).
 PDF statistics:
- 137 PDF objects out of 1000 (max. 8388607)
- 106 compressed objects within 2 object streams
- 16 named destinations out of 1000 (max. 500000)
- 74 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 232 PDF objects out of 1000 (max. 8388607)
+ 200 compressed objects within 2 object streams
+ 47 named destinations out of 1000 (max. 500000)
+ 218 words of extra memory for PDF output out of 10000 (max. 10000000)
 
