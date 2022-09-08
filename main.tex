@@ -53,7 +53,7 @@ My task is to understand this methodology and for my thesis extend it to data in
 
 
 \section{First look at the methodology}
-\cite{Mimica} presents the decoding of distinct actions in figure \ref{fig:methodology_mimica}.
+\cite{mimica} presents the decoding of distinct actions in figure \ref{fig:methodology_mimica}.
 Section A shows how separate rats were fitted with the probes in two different positions.
 \textcolor{red}{Why these positions?} The leftmost figure in section B shows which movements were recorded as time series data.
 It records six different movements of the head, neck and back, along with the speed of the rats.
@@ -72,12 +72,12 @@ What are cortices, and what is decoding accuracy?}
 \begin{figure}[h]
         \centering
         \includegraphics[width=0.6\linewidth]{./figures/methodology_mimica.png}
-        \caption{Figure 1 in \cite{Mimica}.}
+        \caption{Figure 1 in \cite{mimica}.}
         \label{fig:methodology_mimica}
 \end{figure}
 
 \section{Berman paper}
-The part which I will focus on is the methodology developed first in \cite{Berman}.
+The part which I will focus on is the methodology developed first in \cite{berman}.
 It develops a method for mapping distinct activities in fruit flies.
 As stated there: \textit{The basis of our approach is to view behaviour as a trajectory through a high-dimensional space of postural dynamics.}
 
@@ -96,7 +96,7 @@ I.e., no need to look up Radon transform?}
 
 \subsection{Spectrogram generation}
 First they state that looking for repeating sub-sequences in the time series are problematic, as \textit{certain behaviours involve multiple appendages moving at different time scales, this complicating the choice of motif length}.
-Thus \cite{Berman} chooses another path—a \textit{spectrogram representation for the postural dynamics}.
+Thus \cite{berman} chooses another path—a \textit{spectrogram representation for the postural dynamics}.
 The Morlet wavelet transform is supposed to be specially suited for dynamics over multiple time scales.
 \textcolor{red}{They back this up by citing \textit{Daubechies I. 1992} Ten lectures on wavelets.
 Might be a nice resource.}
@@ -122,6 +122,8 @@ Many popular dimensionality reduction methods are tweaked for the opposite purpo
                         \item Rescaling features
                         \item Concatenating trend data and power spectrum
                 \end{enumerate}
+        \item \underline{Feature vectors were downsampled in time at 1 Hz and pooled acreoss animals and conditions}. \textcolor{red}{Where is this done in the code?}
+        it
         \item PCA, reducing to feature dimension explaining at least 95\% of the variance
         \item t-SNE
         \item Watershed segmentation
@@ -150,10 +152,43 @@ Thus, a methodology for automatically detecting distinct behaviours is needed.
 \section{Theory}
 Concise description of the mathematical concepts used in the methodology.
 \subsection{Time series}
+We define time series as a realization $y = \{ y_{t_1}, y_{t_2}, \hdots, y_{t_n} \}$ of a stochastic process $Y(w, t)$, where $w \in \Omega$ and $t \in \mathbb{Z}$ \cite{wei}.
+$\Omega$ being the sample space and $\mathbb{Z}$ the index set.
+It is an indexed series of random variables which can be described completely by its joint probability function
+\begin{equation*}
+        F_{t_1,\hdots, t_n}(x_1, \hdots, x_n) = \text{Pr}( y_{t_1} \leq x_{1}, \hdots, y_{t_n} \leq x_n).
+\end{equation*}
+The mean and variance function of a time series $y$ are defined as
+\begin{equation*}
+        \mu_t = E(y_t)  
+\end{equation*}
+and
+\begin{equation*}
+        \sigma_t^2 = E(y_t - \mu_t)^2.
+\end{equation*}
+
+Given two random variables in the series $y_{t_1}$ and $y_{t_2}$, we define the covariance function and correlation function as
+\begin{equation*}
+        \gamma (t_{1}, t_2) = E[(y_{t_1} - \mu_{t_1})(y_{t_2} - \mu_{t_2})]
+\end{equation*}
+and 
+\begin{equation*}
+        \rho(t_1, t_2) = \frac{\gamma ( t_1, t_2)}{\sqrt{\sigma_{t_1}^2}\sqrt{\sigma_{t_2}^{2}}}.
+\end{equation*}
+
+
+
+
+
+
+
+
 \subsubsection{Detrending}
-\subsubsection{Spectral analysis}
 \subsubsection{Spline interpolation}
+\subsubsection{Fourier analysis}
+\subsubsection{Spectral analysis}
 \subsubsection{Wavelet transformation}
+Morlet wavelet—a sine wave that is "windowed" (i.e., multiplied point by point) by a Gaussian
 
 
 \subsection{Dimensionality reduction}

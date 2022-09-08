@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022/Arch Linux) (preloaded format=pdflatex 2022.5.2)  7 SEP 2022 14:29
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022/Arch Linux) (preloaded format=pdflatex 2022.5.2)  8 SEP 2022 15:47
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -844,7 +844,7 @@ LaTeX Font Info:    Trying to load font information for U+msb on input line 47.
  (/usr/share/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-<./figures/methodology_mimica.png, id=109, 574.39594pt x 636.12656pt>
+<./figures/methodology_mimica.png, id=113, 574.39594pt x 636.12656pt>
 File: ./figures/methodology_mimica.png Graphic file (type png)
 <use ./figures/methodology_mimica.png>
 Package pdftex.def Info: ./figures/methodology_mimica.png  used on input line 74.
@@ -860,28 +860,33 @@ Overfull \hbox (3.30257pt too wide) in paragraph at lines 105--110
 \OT1/cmr/m/n/10 The fi-nal step is to map the still very large fea-ture vec-tors into a low di-men-sional (two-dimensional)
  []
 
-[2 <./figures/methodology_mimica.png (PNG copy)>] [3] [4] 
+[2 <./figures/methodology_mimica.png (PNG copy)>]
+Overfull \hbox (21.49706pt too wide) in paragraph at lines 125--127
+[]$[]$\OT1/cmr/m/n/10 .
+ []
+
+[3] [4] [5] 
 AED: lastpage setting LastPage
-[5] (./main.aux)
+[6] (./main.aux)
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: 2814803F4C9F8C1454C34B127AEB5988;3545.
+(rerunfilecheck)             Checksum: AA421D7A71BB853A4C14BE58363ED343;3696.
 Package logreq Info: Writing requests to 'main.run.xml'.
 \openout1 = `main.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 29254 strings out of 478238
- 550598 string characters out of 5850457
- 1239249 words of memory out of 5000000
+ 29258 strings out of 478238
+ 550502 string characters out of 5850457
+ 1239292 words of memory out of 5000000
  47001 multiletter control sequences out of 15000+600000
  478556 words of font info for 64 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  84i,11n,89p,1415b,1277s stack positions out of 5000i,500n,10000p,200000b,80000s
-</usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmcsc10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
-Output written on main.pdf (5 pages, 451000 bytes).
+</usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmcsc10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr5.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
+Output written on main.pdf (6 pages, 492012 bytes).
 PDF statistics:
- 232 PDF objects out of 1000 (max. 8388607)
- 200 compressed objects within 2 object streams
- 47 named destinations out of 1000 (max. 500000)
- 218 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 270 PDF objects out of 1000 (max. 8388607)
+ 226 compressed objects within 3 object streams
+ 51 named destinations out of 1000 (max. 500000)
+ 226 words of extra memory for PDF output out of 10000 (max. 10000000)
 

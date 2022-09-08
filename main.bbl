@@ -19,7 +19,7 @@
 
 \refsection{0}
   \datalist[entry]{nyt/global//global/global}
-    \entry{Berman}{misc}{}
+    \entry{berman}{article}{}
       \name{author}{4}{}{%
         {{un=0,uniquepart=base,hash=c3bb35b25a28b007f0a62e8984eb3f4f}{%
            family={Berman},
@@ -46,9 +46,6 @@
            giveni={J\bibinitperiod\bibinitdelim W\bibinitperiod},
            givenun=0}}%
       }
-      \list{publisher}{1}{%
-        {arXiv}%
-      }
       \strng{namehash}{a3bf0a25b64c4759761c403558ae21c1}
       \strng{fullhash}{9e98af9dd1b3edcdd15331a542ddf350}
       \strng{bibnamehash}{a3bf0a25b64c4759761c403558ae21c1}
@@ -61,20 +58,18 @@
       \field{labeldatesource}{year}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
-      \field{title}{Mapping the stereotyped behaviour of freely-moving fruit flies}
+      \field{journaltitle}{Journal of The Royal Society Interface}
+      \field{number}{99}
+      \field{title}{Mapping the stereotyped behaviour of freely moving fruit flies}
+      \field{volume}{11}
       \field{year}{2014}
+      \field{pages}{20140672}
+      \range{pages}{1}
       \verb{doi}
-      \verb 10.48550/ARXIV.1310.4249
+      \verb 10.1098/rsif.2014.0672
       \endverb
-      \verb{urlraw}
-      \verb https://arxiv.org/abs/1310.4249
-      \endverb
-      \verb{url}
-      \verb https://arxiv.org/abs/1310.4249
-      \endverb
-      \keyw{Quantitative Methods (q-bio.QM),Computer Vision and Pattern Recognition (cs.CV),Biological Physics (physics.bio-ph),Machine Learning (stat.ML),FOS: Biological sciences,FOS: Biological sciences,FOS: Computer and information sciences,FOS: Computer and information sciences,FOS: Physical sciences,FOS: Physical sciences}
     \endentry
-    \entry{Mimica}{article}{}
+    \entry{mimica}{article}{}
       \name{author}{6}{}{%
         {{un=0,uniquepart=base,hash=709e8ddc8f4b92f45b0d4286893f6e63}{%
            family={Mimica},
@@ -144,6 +139,34 @@
       \verb{url}
       \verb https://www.biorxiv.org/content/early/2022/02/10/2022.02.08.479515
       \endverb
+    \endentry
+    \entry{wei}{book}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=ff98a09744524a079ad0d4bf8160f3c9}{%
+           family={Wei},
+           familyi={W\bibinitperiod},
+           given={William\bibnamedelima W.S.},
+           giveni={W\bibinitperiod\bibinitdelim W\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{publisher}{1}{%
+        {Pearson}%
+      }
+      \strng{namehash}{ff98a09744524a079ad0d4bf8160f3c9}
+      \strng{fullhash}{ff98a09744524a079ad0d4bf8160f3c9}
+      \strng{bibnamehash}{ff98a09744524a079ad0d4bf8160f3c9}
+      \strng{authorbibnamehash}{ff98a09744524a079ad0d4bf8160f3c9}
+      \strng{authornamehash}{ff98a09744524a079ad0d4bf8160f3c9}
+      \strng{authorfullhash}{ff98a09744524a079ad0d4bf8160f3c9}
+      \field{sortinit}{W}
+      \field{sortinithash}{4315d78024d0cea9b57a0c6f0e35ed0d}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{edition}{2}
+      \field{title}{Time series analysis univariate and multivariate methods}
+      \field{year}{2006}
     \endentry
   \enddatalist
 \endrefsection
