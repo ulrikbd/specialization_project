@@ -152,29 +152,39 @@ Thus, a methodology for automatically detecting distinct behaviours is needed.
 \section{Theory}
 Concise description of the mathematical concepts used in the methodology.
 \subsection{Time series}
-We define time series as a realization $y = \{ y_{t_1}, y_{t_2}, \hdots, y_{t_n} \}$ of a stochastic process $Y(w, t)$, where $w \in \Omega$ and $t \in \mathbb{Z}$ \cite{wei}.
-$\Omega$ being the sample space and $\mathbb{Z}$ the index set.
-It is an indexed series of random variables which can be described completely by its joint probability function
+We define time series as a realization $y = \{ y_{t_1}, y_{t_2}, \hdots, y_{t_n} \}$ of a stochastic process $Y(w, t)$, where $w \in \Omega$, $\Omega$ being the sample space,  and $t \in \mathbb{Z}$, $\mathbb{Z}$ being the chosen index set  \cite{wei}.
+It is an ordered series of random variables which can be described completely by its joint probability function
 \begin{equation*}
-        F_{t_1,\hdots, t_n}(x_1, \hdots, x_n) = \text{Pr}( y_{t_1} \leq x_{1}, \hdots, y_{t_n} \leq x_n).
+        F_{t_1,\hdots, t_n}(x_1, \hdots, x_n) = \text{Pr}\{ y_{t_1} \leq x_{1}, \hdots, y_{t_n} \leq x_n) \}.
 \end{equation*}
 The mean and variance function of a time series $y$ are defined as
-\begin{equation*}
+\begin{equation}\label{eq:mean_func}
         \mu_t = E(y_t)  
-\end{equation*}
+\end{equation}
 and
 \begin{equation*}
         \sigma_t^2 = E(y_t - \mu_t)^2.
 \end{equation*}
 
 Given two random variables in the series $y_{t_1}$ and $y_{t_2}$, we define the covariance function and correlation function as
-\begin{equation*}
+\begin{equation}\label{eq:acv}
         \gamma (t_{1}, t_2) = E[(y_{t_1} - \mu_{t_1})(y_{t_2} - \mu_{t_2})]
-\end{equation*}
+\end{equation}
 and 
-\begin{equation*}
+\begin{equation}\label{eq:acf}
         \rho(t_1, t_2) = \frac{\gamma ( t_1, t_2)}{\sqrt{\sigma_{t_1}^2}\sqrt{\sigma_{t_2}^{2}}}.
-\end{equation*}
+\end{equation}
+
+\subsubsection{Stationarity}
+A time series $y_t$ is $n$th-order stationary if for any shift $h$ and indexes $t_1, t_2, \hdots, t_n$ if 
+\begin{equation}\label{eq:nth_stationary}
+        F_{y_{t_1}, \hdots, y_{t_n}}(x_1, \hdots, x_n) = F_{y_{t_{1}+h}, \hdots, y_{t_{n} +h}} (x_1, \hdots, x_n).
+\end{equation}
+If \eqref{eq:nth_stationary} holds for all $n$, the time series is called \textit{strictly} stationary.
+We also define a $n$th-order \textit{weakly} stationary time series $y_t$ if the first $n$ joint moments are finite and time invariant.
+Specifically we define the second-order weakly stationary, i.e. with constant and time invariant mean function \eqref{eq:mean_func}, and where the covariance function \eqref{eq:acv} is solely a function of the time difference, as \textit{covariance} stationary.
+When the covariance function between $t_1, t_2$ can be written as a function of the time difference $h = |t_1 - t_2|$, i.e. $\gamma (t_1, t_2) = \gamma (h) = \gamma_h$, we call it an \textit{autocovariance} function. 
+The same is true for the correlation function \eqref{eq:acf}, which when is a function of the time difference is called an \textit{autocorrelation} function (ACF).
 
 
 
@@ -201,6 +211,8 @@ Morlet wavelet—a sine wave that is "windowed" (i.e., multiplied point by point
 What is done in practice.
 Discussion  of choices made.
 \subsection{Input data}
+The starting point of the analysis is a collection of $n$ separate time series of equal length $m$ \textcolor{red}{right?}.
+We denote these $\textbf{Y} = \{ y_1(t), \hdots, y_n(t) \}$, where $t \in \{ t_1, t_2, \hdots, t_m \}$.
 \subsection{Feature extraction}
 \subsection{Manifold embedding}
 
