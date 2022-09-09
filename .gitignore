@@ -1,0 +1,11 @@
+# Auxillary files for vimtex
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.xml
+*.gz
