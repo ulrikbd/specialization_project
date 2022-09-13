@@ -152,7 +152,7 @@ Thus, a methodology for automatically detecting distinct behaviours is needed.
 \section{Theory}
 Concise description of the mathematical concepts used in the methodology.
 \subsection{Time series}
-We define time series as a realization $y = \{ y_{t_1}, y_{t_2}, \hdots, y_{t_n} \}$ of a stochastic process $Y(w, t)$, where $w \in \Omega$, $\Omega$ being the sample space,  and $t \in \mathbb{Z}$, $\mathbb{Z}$ being the chosen index set  \cite{wei}.
+We define time series as a realization $y_t = \{ y_{t_1}, y_{t_2}, \hdots, y_{t_n} \}$ of a stochastic process $Y(w, t)$, where $w \in \Omega$, $\Omega$ being the sample space,  and $t \in \mathbb{Z}$, $\mathbb{Z}$ being the chosen index set  \cite{wei}.
 It is an ordered series of random variables which can be described completely by its joint probability function
 \begin{equation*}
         F_{t_1,\hdots, t_n}(x_1, \hdots, x_n) = \text{Pr}\{ y_{t_1} \leq x_{1}, \hdots, y_{t_n} \leq x_n) \}.
@@ -194,11 +194,72 @@ The same is true for the correlation function \eqref{eq:acf}, which when is a fu
 
 
 \subsubsection{Detrending}
-\subsubsection{Spline interpolation}
+Many methods for analysing and processing time series requires stationarity \cite{shumway}.
+If the series is non-stationary, we can split the it into one stationary and one non-stationary part called the \textit{trend}.
+Mathematically we write it as 
+\begin{equation*}
+        y_t = \mu_t + x_t,
+\end{equation*}
+where $x_t$ denotes the stationary part and $\mu_t$ the trend.
+The process of finding $\mu_t$ and then computing $x_t = y_t - \mu_t$ is called \textit{detrending}.
+Detecting the trend can be done in many ways, for instance using regression techniques or smoothing.
+The simplest way is to assume a linear trend, $\mu_t = \beta_0 + \beta_1 t$ and estimate the parameters using least squares.
+
+
+
+
+
+
 \subsubsection{Fourier analysis}
 \subsubsection{Spectral analysis}
 \subsubsection{Wavelet transformation}
 Morlet wavelet—a sine wave that is "windowed" (i.e., multiplied point by point) by a Gaussian
+
+\subsection{Piecewise polynomials}
+Suppose we have an interval $[a,b]$ divided into $M$ contiguous subintervals.
+The connecting edges of the subintervals $a = \xi_0, \xi_1, \hdots, \xi_{M - 1}, \xi_{M} = b$ are called knots.
+On each of the intervals $[\xi_i, \xi_{i+1}], i = 0, \hdots, M-1$ we define a polynomial $p_i (t)$.
+The function
+\begin{equation*}
+        f(t) = 
+                \begin{cases}
+                        p_0(t), &  t \in [\xi_0, \xi_{1}) \\
+                        p_1(t), & t \in [\xi_1, \xi_2)  \\
+                        & \vdots \\
+                        p_{M-1}(t), & t \in [\xi_{M-1}, \xi_{M}]  \\
+                \end{cases}
+\end{equation*}
+is called a \textit{piecewise polynomial}.
+
+
+\subsubsection{Splines}
+In the definition of piecewise polynomials no restrictions are made on the polynomials, they are allowed to take any form.
+As in \cite{quarteroni} we define a \textit{spline} $s_k(t)$ of order $k$ on the interval $[a,b]$ as a piecewise polynomial where
+\begin{align*}
+        &s_k(t) \in \mathcal{P}^k , \quad t \in [\xi_i, \xi_{i+1}],\quad i = 0, 1, \hdots, M-1 \\
+        &s_k(t) \in \mathcal{C}^{k - 1}[a, b].
+\end{align*}
+I.e., the spline consists of piecewise polynomials of order $k$ and has continuous derivatives up to order $k - 1$.
+A common choice is letting $k = 3$, providing continuous second derivatives over the interval.
+This is called \textit{cubic} splines, and are often considered sufficiently smooth for function approximations.
+It is also common to add curvature constraints at the endpoints, $s_3''(a) = s_3''(b)$, arriving at the \textit{natural} cubic splines.
+
+\subsubsection{Regression splines}
+Suppose now we have data points $y_{t_1}, y_{t_2}, \hdots, y_{t_n}$ on $[a = t_1, b = t_n]$. 
+A spline of order $k$ with chosen knots at $a = t_1 = \xi_0, \xi_1, \hdots, \xi_{M} = t_n = b$ can be parameterized as 
+\begin{equation*}
+        s_k(t) = \sum_{i = 1}^{M + K} \beta_i h_i(t),
+\end{equation*}
+where the functions $h_i$ are the truncated-power basis set
+\begin{align*}
+        h_j(t) &= t^{j - 1}, \ j = 1, \hdots, k+1, \\
+        h_{k+1+l}(t) &= (t - \xi_l)_+^k, \ l = 1, \hdots, M-1,
+\end{align*}
+with $(t)_+ = \max_{} \{ t, 0 \}$ \cite{hastie}.
+The parameters $\beta_i$ can be found using least squares.
+
+
+
 
 
 \subsection{Dimensionality reduction}
