@@ -9,3 +9,7 @@
 *.out
 *.xml
 *.gz
+
+
+# Hide the data
+/code/dataset/
