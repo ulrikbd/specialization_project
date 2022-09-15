@@ -23,8 +23,8 @@ style=authoryear]
 
 \pagestyle{fancy}
 \fancyhf{}
-\lhead{\rightmark}
-\rhead{\leftmark}
+\lhead{Ulrik Bernhardt Danielsen}
+\rhead{\chapter*}
 \rfoot{Page \thepage \hspace{1pt} of \pageref{LastPage}}
 
 \renewcommand{\headrulewidth}{1pt}
