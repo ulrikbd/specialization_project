@@ -94,9 +94,9 @@ Thus, a methodology for automatically detecting distinct behaviours is needed.
 \textcolor{red}{Is this necessary?}
 
 
+
 \chapter{Theory}
-Concise description of the mathematical concepts used in the methodology.
-\section{Time series}
+\section{Time series analysis}
 We define time series as a realization $y_t = \{ y_{t_1}, y_{t_2}, \hdots, y_{t_n} \}$ of a stochastic process $Y(w, t)$, where $w \in \Omega$, $\Omega$ being the sample space,  and $t \in \mathbb{Z}$, $\mathbb{Z}$ being the chosen index set  \cite{wei}.
 It is an ordered series of random variables which can be described completely by its joint probability function
 \begin{equation*}
@@ -120,7 +120,7 @@ and
         \rho(t_1, t_2) = \frac{\gamma ( t_1, t_2)}{\sqrt{\sigma_{t_1}^2}\sqrt{\sigma_{t_2}^{2}}}.
 \end{equation}
 
-\section{Stationarity}
+\subsection{Stationarity}
 A time series $y_t$ is $n$th-order stationary if for any shift $h$ and indexes $t_1, t_2, \hdots, t_n$ if 
 \begin{equation}\label{eq:nth_stationary}
         F_{y_{t_1}, \hdots, y_{t_n}}(x_1, \hdots, x_n) = F_{y_{t_{1}+h}, \hdots, y_{t_{n} +h}} (x_1, \hdots, x_n).
@@ -130,12 +130,15 @@ We also define a $n$th-order \textit{weakly} stationary time series $y_t$ if the
 Specifically we define the second-order weakly stationary, i.e. with constant and time invariant mean function \eqref{eq:mean_func}, and where the covariance function \eqref{eq:acv} is solely a function of the time difference, as \textit{covariance} stationary.
 When the covariance function between $t_1, t_2$ can be written as a function of the time difference $h = |t_1 - t_2|$, i.e. $\gamma (t_1, t_2) = \gamma (h) = \gamma_h$, we call it an \textit{autocovariance} function. 
 The same is true for the correlation function \eqref{eq:acf}, which when is a function of the time difference is called an \textit{autocorrelation} function (ACF).
+Figure \ref{fig:time_series_example} shows an example of a time series.
+As the mean seem to increase with $t$ it is non-stationary.
 
-
-
-
-
-
+\begin{figure}[tb]
+        \centering
+        \includegraphics[width=\linewidth]{./code/figures/time_series_example.pdf}
+        \caption{Example of a non-stationary time series.}
+        \label{fig:time_series_example}
+\end{figure}
 
 
 \subsection{Detrending}
@@ -149,8 +152,15 @@ where $x_t$ denotes the stationary part and $\mu_t$ the trend.
 The process of finding $\mu_t$ and then computing $x_t = y_t - \mu_t$ is called \textit{detrending}.
 Detecting the trend can be done in many ways, for instance using regression techniques or smoothing.
 The simplest way is to assume a linear trend, $\mu_t = \beta_0 + \beta_1 t$ and estimate the parameters using least squares.
+In figure \ref{fig:time_series_example_with_trend} the linear regression fit is shown, showing an upwards in the time series.
 
 
+\begin{figure}[tb]
+        \centering
+        \includegraphics[width=\linewidth]{./code/figures/time_series_example_with_trend.pdf}
+        \caption{}
+        \label{fig:time_series_example_with_trend}
+\end{figure}
 
 
 
@@ -202,7 +212,15 @@ where the functions $h_i$ are the truncated-power basis set
 \end{align*}
 with $(t)_+ = \max_{} \{ t, 0 \}$ \cite{hastie}.
 The parameters $\beta_i$ can be found using least squares.
+An example of cubic spline regression are shown in figure \ref{fig:cubic_splines}.
 
+\begin{figure}[tb ]
+        \centering
+        \includegraphics[width=\linewidth]{./code/figures/cubic_splines.pdf}
+        \caption{Two cubic splines fitted using least square regression.
+        Observe that the red spline with 50 knots (including endpoints) fits the data closer than the green spline with 10 knots.}
+        \label{fig:cubic_splines}
+\end{figure}
 
 
 
