@@ -54,7 +54,7 @@ style=authoryear]
 \clearpage
 
 
-\section{Steps:}
+\section*{Steps:}
 \begin{enumerate}
         \item z-scoring (standardization \textcolor{red}{although dividing by standard deviation is commented out})
         \item Smoothing by 3d splines
@@ -165,8 +165,49 @@ In figure \ref{fig:time_series_example_with_trend} the linear regression fit is 
 
 
 
-\subsection{Fourier analysis}
-\subsection{Spectral analysis}
+\section{Fourier analysis}
+Let $Z_1, Z_2, \hdots, Z_n$ be a sequence of numbers.
+For simplicity in notation we assume $n$ to be an odd number.
+It can be shown that the sequence can be represented as a linear combination of complex exponentials
+\begin{equation}\label{eq:fourier_series}
+        Z_t = \sum_{k = -\frac{n-1}{2}}^{\frac{n- 1}{2}}c_k e^{\frac{i2 \pi k t}{n}}.
+\end{equation}
+This comes from the fact that the set 
+\begin{equation*}
+        \left\{ e^{\frac{i 2 \pi kt}{n}}| k \in \left[ -\frac{n -1}{2}, \frac{n - 1}{2} \right] \right\}
+\end{equation*}
+consists of $n$ orthogonal functions \cite{wei}.
+I.e., that
+\begin{equation*}
+        \sum_{i = 1}^{n} e^{\frac{i2 \pi kt}{n}} e^{-\frac{i 2 \pi j t}{n}}= 
+                \begin{cases}
+                        n, & k = j \\
+                        0, & k \neq j \\
+                \end{cases}
+       .
+\end{equation*}
+The coefficients $c_k$ are given by
+\begin{equation*}
+       c_k =  \frac{1}{n}\sum_{ t = 1}^{n}Z_t e^{-\frac{i 2\pi kt}{n}}.
+\end{equation*}
+It is clear that \eqref{eq:fourier_series} is periodic with period $n$, meaning $Z_{t + jn} = Z_t, j = 0, \pm 1, \pm 2, \hdots$.
+Thus the Fourier series is able to capture periodic sequences.
+The smallest positive integer $n$ for which $Z_{t + n} = Z_t$ is called the fundamental period, with corresponding fundamental frequency $2 \pi /n$.
+For the components $k = \pm j, j = 1, 2, \hdots, (n-1)/2$ the frequencies are multiples of the fundamental frequency, $k(2\pi/n)$.
+As a consequence the coefficients $c_k$ can be viewed as weighting the importance of the contributions for the different frequencies making up the full sequence.
+This is formalized by the definitions of energy and power.
+
+
+
+
+
+
+
+
+\section{Spectral analysis}
+
+
+
 \subsection{Wavelet transformation}
 Morlet wavelet—a sine wave that is "windowed" (i.e., multiplied point by point) by a Gaussian
 
