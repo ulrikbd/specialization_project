@@ -136,7 +136,8 @@ As the mean seem to increase with $t$ it is non-stationary.
 \begin{figure}[tb]
         \centering
         \includegraphics[width=\linewidth]{./code/figures/time_series_example.pdf}
-        \caption{Example of a non-stationary time series.}
+        \caption{Example of a non-stationary time series with $t_0 = 0, t_n = 4$.
+        The discrete data points are connected to better visualize the movement through time.}
         \label{fig:time_series_example}
 \end{figure}
 
@@ -158,7 +159,8 @@ In figure \ref{fig:time_series_example_with_trend} the linear regression fit is 
 \begin{figure}[tb]
         \centering
         \includegraphics[width=\linewidth]{./code/figures/time_series_example_with_trend.pdf}
-        \caption{}
+        \caption{Time series from figure \ref{fig:time_series_example} with an estimated linear trend shown in blue.}
+        It is clear that there exists an upward trend in the data.
         \label{fig:time_series_example_with_trend}
 \end{figure}
 
@@ -174,7 +176,7 @@ It can be shown that the sequence can be represented as a linear combination of 
 \end{equation}
 This comes from the fact that the set 
 \begin{equation*}
-        \left\{ e^{\frac{i 2 \pi kt}{n}}| k \in \left[ -\frac{n -1}{2}, \frac{n - 1}{2} \right] \right\}
+        \left\{ e^{\frac{i 2 \pi kt}{n}} \Big| k \in \left[ -\frac{n -1}{2}, \frac{n - 1}{2} \right] \right\}
 \end{equation*}
 consists of $n$ orthogonal functions \cite{wei}.
 I.e., that
@@ -193,9 +195,62 @@ The coefficients $c_k$ are given by
 It is clear that \eqref{eq:fourier_series} is periodic with period $n$, meaning $Z_{t + jn} = Z_t, j = 0, \pm 1, \pm 2, \hdots$.
 Thus the Fourier series is able to capture periodic sequences.
 The smallest positive integer $n$ for which $Z_{t + n} = Z_t$ is called the fundamental period, with corresponding fundamental frequency $2 \pi /n$.
-For the components $k = \pm j, j = 1, 2, \hdots, (n-1)/2$ the frequencies are multiples of the fundamental frequency, $k(2\pi/n)$.
+For the components $k = \pm j, j = 1, 2, \hdots, (n-1)/2$ the frequencies are multiples of the fundamental frequency, $w_k = k(2\pi/n)$.
+The set of frequencies making up the series is called the \textit{spectrum}.
 As a consequence the coefficients $c_k$ can be viewed as weighting the importance of the contributions for the different frequencies making up the full sequence.
-This is formalized by the definitions of energy and power.
+This is formalized by the definitions of energy and power,
+\begin{align}\label{eq:energy}
+        \text{energy} &= \sum_{t = 2}^{n} Z_t^2 = n \sum_{k = -\frac{n -1}{2}}^{\frac{n - 1}{2}} |c_k|^2 ,\\ 
+        \label{eq:power}
+        \text{power} = \frac{\text{energy}}{n} &= \sum_{k = -\frac{n -1}{2}}^{\frac{n - 1}{2}} |c_k|^2. 
+\end{align}
+Let $p_k$ be the contribution to the power from frequency $k = 0, 1, \hdots, (n-1)/2$.
+As $w_k$ and $w_{-k}$ corresponds to the same frequency the contribution is given as $p_0 = c_0^2, p_k = 2|c_k|^2, k = 1, \hdots, (n-1)/2$.
+The values $p_k$ are called the power spectrum of the series.
+
+
+\subsection{Discrete-Time Fourier Transform}
+We have seen that all sequences of length $n$ can be viewed and parameterized as Fourier series with period $n$.
+Moving to non-periodic sequences essentially amounts to taking the limit of the series as $n$ approaches infinity.
+Formally we now let $Z_t$ be a finite discrete function of $t$, where $Z_t = 0$ when $|t| > M$ for some integer $M$.
+Choosing $n = 2M + 1$ the function
+\begin{equation*}
+        Y_{t + jn} = Z_t, \ t \in \left[ -\frac{n-1}{2}, \frac{n-1}{2} \right], \ j \in \mathbb{Z}
+\end{equation*}
+is periodic with period $n$.
+It's Fourier series is 
+\begin{equation*}
+        Y_t = \sum_{k = -\frac{n - 1}{2}}^{\frac{n -1 }{2}} c_k e^{\frac{i2 \pi kt}{n}}.
+\end{equation*}
+As $Y_t = Z_t$ when $t \in [-(n-1)/2, (n-1)/2]$, and $Z_t = 0$ when $|t| > (n-1)/2$, the coefficients $c_k$ can be written as the infinite sum
+\begin{align*}
+        c_k &= \frac{1}{n}\sum_{t = - \infty}^{\infty} Z_t e^{\frac{-i2\pi kt}{n}} \\
+        & = \frac{2 \pi}{n}f\left(\frac{2\pi k}{n}\right),
+\end{align*}
+where 
+\begin{equation*}
+        f(w) = \frac{1}{2\pi} \sum_{t = -\infty}^{\infty} Z_t e^{-iwt}.
+\end{equation*}
+If we now take the limit $Z_t = \lim_{n \rightarrow \infty} Y_t$ the summation becomes an integral over the length $2\pi$ \cite{wei}.
+This gives the relation
+\begin{align}\label{eq:dtft_inv}
+        Z_t &= \int_{-\pi}^{\pi} f(w) e^{iwt}, \quad t \in \mathbb{Z} \\
+        \label{eq:dtft}
+        f(w) &= \frac{1}{2 \pi} \sum_{t = -\infty}^{\infty} Z_t e^{-i w t}, \quad -\pi \leq w \leq \pi,
+\end{align}
+where $f(w)$ is called the discrete-time Fourier transform of $Z_t$.
+
+
+
+
+
+
+
+We call this function $f(w)$ the discrete-time Fourier transform of the sequence $Z_t$.
+
+
+
+
 
 
 
@@ -258,7 +313,7 @@ An example of cubic spline regression are shown in figure \ref{fig:cubic_splines
 \begin{figure}[tb ]
         \centering
         \includegraphics[width=\linewidth]{./code/figures/cubic_splines.pdf}
-        \caption{Two cubic splines fitted using least square regression.
+        \caption{Two cubic splines fitted using least square regression on the time series from figure \ref{fig:time_series_example}.
         Observe that the red spline with 50 knots (including endpoints) fits the data closer than the green spline with 10 knots.}
         \label{fig:cubic_splines}
 \end{figure}
