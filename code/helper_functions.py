@@ -4,6 +4,7 @@ import math
 import vg
 import pickle
 
+
 def pickle_relevant_features(filepath):
     """
     Pickle the relevant features contained in the data
