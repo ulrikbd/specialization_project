@@ -120,6 +120,8 @@ and
         \rho(t_1, t_2) = \frac{\gamma ( t_1, t_2)}{\sqrt{\sigma_{t_1}^2}\sqrt{\sigma_{t_2}^{2}}}.
 \end{equation}
 
+
+
 \subsection{Stationarity}
 A time series $y_t$ is $n$th-order stationary if for any shift $h$ and indexes $t_1, t_2, \hdots, t_n$ if 
 \begin{equation}\label{eq:nth_stationary}
@@ -140,6 +142,15 @@ As the mean seem to increase with $t$ it is non-stationary.
         The discrete data points are connected to better visualize the movement through time.}
         \label{fig:time_series_example}
 \end{figure}
+
+We also define the common estimates for the mean and covariance functions.
+They are called the sample mean and sample covariance, and are written as
+\begin{align}\label{eq:sample_mean}
+        \bar{y_t} &= \frac{1}{n}\sum_{i = 1}^{n} y_{t_i}, \\
+        \label{eq:sample_covariance}
+        \hat{\gamma}_h &= \frac{1}{n} \sum_{i = 1}^{n - h}(y_{t_i} - \bar{y_t})(y_{t_i  + h} - \bar{y_t}),
+\end{align}
+respectively.
 
 
 \subsection{Detrending}
@@ -234,32 +245,86 @@ where
 If we now take the limit $Z_t = \lim_{n \rightarrow \infty} Y_t$ the summation becomes an integral over the length $2\pi$ \cite{wei}.
 This gives the relation
 \begin{align}\label{eq:dtft_inv}
-        Z_t &= \int_{-\pi}^{\pi} f(w) e^{iwt}, \quad t \in \mathbb{Z} \\
+        Z_t &= \int_{-\pi}^{\pi} f(w) e^{iwt} dw, \quad t \in \mathbb{Z} \\
         \label{eq:dtft}
         f(w) &= \frac{1}{2 \pi} \sum_{t = -\infty}^{\infty} Z_t e^{-i w t}, \quad -\pi \leq w \leq \pi,
 \end{align}
-where $f(w)$ is called the discrete-time Fourier transform of $Z_t$.
-
-
-
-
-
-
-
-We call this function $f(w)$ the discrete-time Fourier transform of the sequence $Z_t$.
-
-
-
-
-
-
-
-
-
-
-
+where $f(w)$ in \eqref{eq:dtft} is called the discrete-time Fourier transform of $Z_t$.
+As opposed to the periodic case \eqref{eq:fourier_series} where the periodic sequence was made up by a finite number of frequencies, the non-periodic sequence is an integral over a continuum of frequencies $w$.
+We call $|f(w)|$ the spectrum of the sequence, and the function $g(w) = 2 \pi |f(w)|^2$ the energy spectrum.
+The energy spectrum definition comes from Parseval's relation 
+\begin{equation}\label{eq:parseval}
+        \sum_{t = -\infty}^{\infty} |Z_t|^2 = 2 \pi \int_{- \pi}^{\pi}|f(w)|^2 dw.
+\end{equation}
+It is worth noting that the relation in \eqref{eq:parseval} only holds when the sequence $Z_t$ is absolutely summable, i.e., that
+\begin{equation}\label{eq:absuletly_summable}
+        \sum_{ t = -\infty}^{\infty}|Z_t| < \infty.
+\end{equation}
 
 \section{Spectral analysis}
+Let $y_t$ be a stationary time series where the autocovariance function $\gamma_h$ from \eqref{eq:acv} is absolutely summable.
+Then we can write $\gamma_h$ as a Fourier transform pair
+\begin{align}\label{eq:spectrum}
+        f(w) &= \frac{1}{2 \pi} \sum_{h = -\infty}^{\infty} \gamma_h e^{-wh}, \\
+        \label{eq:spectral_dens_inv}
+        \gamma_h &= \int_{-\pi}^{\pi} f(w)e^{iwh}dw.
+\end{align}
+It can be shown \cite{shumway} that the spectrum $f(w)$ in \eqref{eq:spectrum} is real-valued and non-negative.
+Furthermore, as $\text{Var}(y_t) = \gamma_0$, we get the interpretation
+\begin{equation*}
+        \text{Var}(y_t) = \int_{-\pi}^{\pi}f(w)dw,
+\end{equation*}
+i.e., that $f(w)$ is the contribution to the variance for frequency $w$.
+To locate these important frequencies is what we often seek, and thus an important task is to estimate this spectrum.
+
+\subsection{Periodogram}
+Again we consider a time series sample $y_1, y_2, \hdots$ where $n$ is chosen to be odd for readability.
+It can be written as a real Fourier representation 
+\begin{equation*}
+        y_t = a_0 + \sum_{k = 1}^{\frac{n-1}{2}} (a_k \cos(w_k t) + b_k \sin (w_kt)),
+\end{equation*}
+where $w_k = 2\pi k / n, k =0, 1, \hdots, (n -1)/2$ and the coefficients are given as 
+\begin{equation*}
+        a_0 = \bar{y_t}, \quad a_k = \frac{2}{n}\sum_{t = 1}^{n}y_t \cos(w_kt), \quad b_k = \frac{2}{n} \sum_{ t = 1}^{n} y_t \sin (w_kt).
+\end{equation*}
+We then define the periodogram as 
+\begin{equation}\label{eq:periodogram}
+        I(w_k) = 
+                \begin{cases}
+                        na_0^2, & k=0  \\
+                        \frac{n}{2}(a_k^2 + b_k^2), & k = 1, \hdots, (n-1)/2. \\
+                \end{cases}
+\end{equation}
+The periodogram is of interest as it has has a large value if the frequency $w_k$ is of importance in the series.
+A scaled periodogram $\frac{2}{n}I(w_k)$ estimates the sample variance of the sinusoid component at frequency $w_k$ \cite{shumway}.
+
+
+
+
+\subsection{Sample spectrum}
+One intuitive way of estimating the spectrum is to replace the autocovariance with the sample autocovariance from equation \eqref{eq:sample_covariance}.
+I.e., we define the sample spectrum for a realization $y_1, y_2,  \hdots, y_n$
+\begin{equation}\label{eq:sample_spectrum}
+        \hat{f}(w) = \frac{1}{2\pi}\sum_{h = -(n - 1)}^{n-1}\hat{\gamma}_h e^{-iwh}.
+\end{equation}
+At the Fourier frequencies $w_k$ it is related to the periodogram through \cite{wei}
+\begin{equation*}
+        \hat{f}(w_k) = \frac{I(w_k)}{4 \pi}.
+\end{equation*}
+Although $f(w_k)$ is asymptotically unbiased, meaning $\lim_{n \rightarrow \infty} E(\hat{f}(w)) = f(w)$, is lacks consistency in the variance as $n$ tends to infinity, i.e.,
+\begin{equation*}
+        \lim_{n \rightarrow \infty} \text{Var}(\hat{f}(w_k)) \neq 0.
+\end{equation*}
+Thus  we consider the sample spectrum 
+
+
+
+
+
+
+
+
+
 
 
 
