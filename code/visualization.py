@@ -25,13 +25,28 @@ def show_feature_information(relevant_features):
         print()
 
     
+def get_extracted_filename(original_name):
+    """
+    Returns filename which specifies the relevant features
+    are extracted.
+    """
+    return original_name.split(".")[0] + "_extracted.pkl"
+
 
 
 def main():
-    original_filepath = "./dataset/data_files/26148_020520_bank0_s1_light.pkl"
-    extracted_filepath = "./extracted_data/26148_020520_bank0_s1_light_extracted.pkl"
+    filepaths = [
+        "26148_020520_bank0_s1_light.pkl",
+        "26148_030520_bank0_s2_light.pkl",
+    ]
+    original_location = "./dataset/data_files/"
+    new_location = "./extracted_data/"
+
+    file_index = 0
+    original_filepath = original_location + filepaths[file_index]
+    extracted_filepath = new_location + get_extracted_filename(filepaths[file_index])
     
-    # pickle_relevant_features(original_filepath)
+    # pickle_relevant_features(original_filepath, extracted_filepath)
 
     with open(extracted_filepath, "rb") as file:
         relevant_features = pickle.load(file)

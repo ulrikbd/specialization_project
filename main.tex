@@ -318,10 +318,13 @@ Although $f(w_k)$ is asymptotically unbiased, meaning $\lim_{n \rightarrow \inft
 Thus  we consider the sample spectrum 
 
 
+\subsection{Spectral Window}
 
 
 
 
+
+\subsection{Short-Time Fourier Transform}
 
 
 
@@ -389,16 +392,22 @@ An example of cubic spline regression are shown in figure \ref{fig:cubic_splines
 \section{Dimensionality reduction}
 \subsection{Principal Component Analysis}
 \subsection{t-Stochastic Neighbor Embedding}
-
 \section{Watershed segmentation}
 
+
+
+
 \chapter{Methodology}
-What is done in practice.
-Discussion  of choices made.
-\section{Input data}
-The starting point of the analysis is a collection of $n$ separate time series of equal length $m$ \textcolor{red}{right?}.
-We denote these $\textbf{Y} = \{ y_1(t), \hdots, y_n(t) \}$, where $t \in \{ t_1, t_2, \hdots, t_m \}$.
+The starting point of the analysis is a set $\textbf{Y} =  \{ Y_d : d = 1, 2, \hdots, D \}$, where each set $Y_d$ is again a set of independent time series, $Y_d = \{ y_1^d(t), y_2^d(t), \hdots, y_n^d(t): t \in \{t_1, t_2, \hdots, t_{m_d} \} \}$.
+Each $Y_d$ represents an animal for which $n$ time series are collected tracking parts of its movements.
+Recording frequency is the same across animals.
+The goal of the analysis is to cluster these time points into distinct distinguishable actions.
+
+\textcolor{red}{Some summarization: "This is achieved by..."}
+
 \section{Feature extraction}
+The first step is to analyse each time series separately, modifying them and thus creating $D$
+
 \section{Manifold embedding}
 
 

@@ -5,7 +5,7 @@ import vg
 import pickle
 
 
-def pickle_relevant_features(filepath):
+def pickle_relevant_features(original_filepath, new_filepath):
     """
     Pickle the relevant features contained in the data
     found in the given filepath
@@ -15,12 +15,12 @@ def pickle_relevant_features(filepath):
     """
 
     # Get the pickled data for one rat
-    with open(filepath, "rb") as file:
+    with open(original_filepath, "rb") as file:
         data = pickle.load(file)
     
     raw_features = extract_relevant_features(data)
 
-    with open("./extracted_data/26148_020520_bank0_s1_light_extracted.pkl", "wb") as file:
+    with open(new_filepath, "wb") as file:
         pickle.dump(raw_features, file)
 
 
