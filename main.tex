@@ -297,6 +297,18 @@ We then define the periodogram as
 \end{equation}
 The periodogram is of interest as it has has a large value if the frequency $w_k$ is of importance in the series.
 A scaled periodogram $\frac{2}{n}I(w_k)$ estimates the sample variance of the sinusoid component at frequency $w_k$ \cite{shumway}.
+A periodogram for the time series example in figure \ref{fig:time_series_example} are shown in figure \ref{fig:periodogram_basic}.
+Note that the time series is linearly detrended for the periodogram is computed.
+The two highest peaks match the underlying generating function which can be revealed to be $\sin(2\pi t) + \frac{1}{4} \cos(6 \pi t) + t / 3$.
+
+\begin{figure}[tb]
+        \centering
+        \includegraphics[width=\linewidth]{./code/figures/periodogram_basic.pdf}
+        \caption{Periodogram for the time series plotted in figure \ref{fig:time_series_example}.
+        The time series is detrended assuming a linear trend.
+        Observe that the two highest peaks in the periodogram are at the underlying frequencies $1$Hz and $3$Hz shown with dashed red lines.}
+        \label{fig:periodogram_basic}
+\end{figure}
 
 
 
@@ -316,6 +328,7 @@ Although $f(w_k)$ is asymptotically unbiased, meaning $\lim_{n \rightarrow \inft
         \lim_{n \rightarrow \infty} \text{Var}(\hat{f}(w_k)) \neq 0.
 \end{equation*}
 Thus  we consider the sample spectrum 
+
 
 
 \subsection{Spectral Window}
@@ -366,9 +379,9 @@ It is also common to add curvature constraints at the endpoints, $s_3''(a) = s_3
 \subsection{Regression splines}
 Suppose now we have data points $y_{t_1}, y_{t_2}, \hdots, y_{t_n}$ on $[a = t_1, b = t_n]$. 
 A spline of order $k$ with chosen knots at $a = t_1 = \xi_0, \xi_1, \hdots, \xi_{M} = t_n = b$ can be parameterized as 
-\begin{equation*}
-        s_k(t) = \sum_{i = 1}^{M + K} \beta_i h_i(t),
-\end{equation*}
+\begin{equation}\label{eq:lsq_spline}
+        s_k(t) = \sum_{i = 1}^{M + k} \beta_i h_i(t),
+\end{equation}
 where the functions $h_i$ are the truncated-power basis set
 \begin{align*}
         h_j(t) &= t^{j - 1}, \ j = 1, \hdots, k+1, \\
@@ -406,7 +419,16 @@ The goal of the analysis is to cluster these time points into distinct distingui
 \textcolor{red}{Some summarization: "This is achieved by..."}
 
 \section{Feature extraction}
-The first step is to analyse each time series separately, modifying them and thus creating $D$
+The first step is to analyse each time series separately, modifying them and thus creating $D \times n$ features which we will extract the behavioral information from.
+Let $y_t = \{ y_1, y_2, \hdots, y_m \} = y_i^d(t)$ for some $d \in \{ 1, 2, \hdots, D \}$ and $i \in \{ 1, 2, \hdots, n \}$ be one such series.
+
+\textcolor{red}{I don't see the point in centering the data around the mean before the detrending.}
+
+We detrend the data as $y_t = s_3(t) + x_t$, $s_3(t)$ being the non-linear trend and $x_t$ the detrended time series.
+The cubic spline $s_3(t)$ is found using least square regression as in equation \eqref{eq:lsq_spline} with equally spaced internal knots $\xi_1, \xi_2, \hdots, \xi_M$.
+We choose the knots to have a fixed frequency, i.e., we choose $\Delta \xi= \xi_{i+1} - \xi_i, i = 2, \hdots, M$.
+
+
 
 \section{Manifold embedding}
 

@@ -10,11 +10,11 @@
 \contentsline {section}{\numberline {2.3}Spectral analysis}{11}{section.2.3}%
 \contentsline {subsection}{\numberline {2.3.1}Periodogram}{11}{subsection.2.3.1}%
 \contentsline {subsection}{\numberline {2.3.2}Sample spectrum}{12}{subsection.2.3.2}%
-\contentsline {subsection}{\numberline {2.3.3}Spectral Window}{12}{subsection.2.3.3}%
-\contentsline {subsection}{\numberline {2.3.4}Short-Time Fourier Transform}{12}{subsection.2.3.4}%
-\contentsline {subsection}{\numberline {2.3.5}Wavelet transformation}{12}{subsection.2.3.5}%
-\contentsline {section}{\numberline {2.4}Piecewise polynomials}{12}{section.2.4}%
-\contentsline {subsection}{\numberline {2.4.1}Splines}{12}{subsection.2.4.1}%
+\contentsline {subsection}{\numberline {2.3.3}Spectral Window}{13}{subsection.2.3.3}%
+\contentsline {subsection}{\numberline {2.3.4}Short-Time Fourier Transform}{13}{subsection.2.3.4}%
+\contentsline {subsection}{\numberline {2.3.5}Wavelet transformation}{13}{subsection.2.3.5}%
+\contentsline {section}{\numberline {2.4}Piecewise polynomials}{13}{section.2.4}%
+\contentsline {subsection}{\numberline {2.4.1}Splines}{13}{subsection.2.4.1}%
 \contentsline {subsection}{\numberline {2.4.2}Regression splines}{13}{subsection.2.4.2}%
 \contentsline {section}{\numberline {2.5}Dimensionality reduction}{14}{section.2.5}%
 \contentsline {subsection}{\numberline {2.5.1}Principal Component Analysis}{14}{subsection.2.5.1}%

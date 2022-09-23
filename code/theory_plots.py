@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import seaborn
 from sklearn.linear_model import LinearRegression
 from scipy.interpolate import LSQUnivariateSpline
+from scipy.signal import periodogram
 
 
 
@@ -35,7 +36,7 @@ def plot_linear_trend(t, y):
     plt.plot(t, reg.predict(t), c = "b", label = "Linear trend")
     plt.xlabel(r'$t$')
     plt.savefig("./figures/time_series_example_with_trend.pdf", bbox_inches = "tight")
-    plt.show()
+    # plt.show()
 
 
 def plot_cubic_splines(t, y):
@@ -54,12 +55,35 @@ def plot_cubic_splines(t, y):
     spl10 = LSQUnivariateSpline(t, y, knots10, k = deg)
     spl50 = LSQUnivariateSpline(t, y, knots50, k = deg)
     plt.figure(figsize = (12, 5))
-    plt.plot(t, y, c = "k", alpha = 0.8, label = "Observed series")
-    plt.plot(t, spl10(t), c = "r", lw = 3, label = "Cubic spline: " + r'$n =$' + str(n) + r'$, m =$' + str(n // m1))
-    plt.plot(t, spl50(t), c = "g", lw = 3, label = "Cubic spline: " + r'$n =$' + str(n) + r'$, m =$' + str(n // m2))
+    plt.plot(t, y, c = "k", alpha = 0.8,
+             label = "Observed series")
+    plt.plot(t, spl10(t), c = "r", lw = 3,
+             label = "Cubic spline: " + r'$n =$' + str(n) + r'$, m =$' + str(n // m1))
+    plt.plot(t, spl50(t), c = "g", lw = 3,
+             label = "Cubic spline: " + r'$n =$' + str(n) + r'$, m =$' + str(n // m2))
     plt.xlabel(r'$t$')
     plt.legend()
     plt.savefig("./figures/cubic_splines.pdf", bbox_inches="tight")
+    # plt.show()
+
+
+def plot_periodogram(t, y):
+    """
+    Plot the periodogram, i.e., the estimated power spectral density 
+    """
+    fs = 1/(t[1] - t[0])
+    f, Pxx_den = periodogram(y ,fs, window = "boxcar",
+                             detrend = "linear", scaling = "density")
+
+    plt.figure(figsize = (12, 5))
+    plt.semilogy(f, Pxx_den)
+    plt.vlines(x = [1, 3], ymin = 1e-5, ymax = 1e1, 
+               colors = "red", linestyles = "dashed", alpha = 0.5)
+    plt.xlim([0, 20])
+    plt.ylim([1e-5, 1e1])
+    plt.xlabel("Frequency [Hz]")
+    plt.ylabel("Power spectrum")
+    plt.savefig("./figures/periodogram_basic.pdf", bbox_inches="tight")
     # plt.show()
 
 
@@ -73,7 +97,8 @@ def main():
 
     # plot_non_stationary_time_series(t, y)
     # plot_linear_trend(t, y)
-    plot_cubic_splines(t, y)
+    # plot_cubic_splines(t, y)
+    plot_periodogram(t, y)
 
 if __name__ == "__main__":
     main()

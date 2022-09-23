@@ -35,7 +35,7 @@ def get_extracted_filename(original_name):
 
 
 def main():
-    filepaths = [
+    filenames = [
         "26148_020520_bank0_s1_light.pkl",
         "26148_030520_bank0_s2_light.pkl",
     ]
@@ -43,8 +43,8 @@ def main():
     new_location = "./extracted_data/"
 
     file_index = 0
-    original_filepath = original_location + filepaths[file_index]
-    extracted_filepath = new_location + get_extracted_filename(filepaths[file_index])
+    original_filepath = original_location + filenames[file_index]
+    extracted_filepath = new_location + get_extracted_filename(filenames[file_index])
     
     # pickle_relevant_features(original_filepath, extracted_filepath)
 
