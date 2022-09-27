@@ -427,8 +427,17 @@ Let $y_t = \{ y_1, y_2, \hdots, y_m \} = y_i^d(t)$ for some $d \in \{ 1, 2, \hdo
 We detrend the data as $y_t = s_3(t) + x_t$, $s_3(t)$ being the non-linear trend and $x_t$ the detrended time series.
 The cubic spline $s_3(t)$ is found using least square regression as in equation \eqref{eq:lsq_spline} with equally spaced internal knots $\xi_1, \xi_2, \hdots, \xi_M$.
 We choose the knots to have a fixed frequency, i.e., we choose $\Delta \xi= \xi_{i+1} - \xi_i, i = 2, \hdots, M$.
+Figure \ref{fig:detrending_bc} shows an example of a detrended time series using cubic splines with interior knots every 240th time point.
 
 
+\begin{figure}[tb ]
+        \centering
+        \includegraphics[width=\linewidth]{./code/figures/detrending_bc.pdf}
+        \caption{Detrended time series using cubic spline regression.
+        The top figure shows the original time series in black with the fitted trend in red.
+The bottom figure shows the detrended time series.}
+        \label{fig:detrending_bc}
+\end{figure}
 
 \section{Manifold embedding}
 

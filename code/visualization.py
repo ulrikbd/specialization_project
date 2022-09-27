@@ -1,9 +1,13 @@
 import numpy as np
 import pickle
 import matplotlib.pyplot as plt
+import seaborn
 
 from helper_functions import *
 
+from behavioral_clustering import BehavioralClustering
+
+from example import get_example_pipeline
 
 def describe(array):
     """
@@ -34,24 +38,42 @@ def get_extracted_filename(original_name):
 
 
 
+def plot_detrending():
+    """
+    Visualizes the detrending performed on the 
+    actual data.
+    """
+    
+    bc = get_example_pipeline()
+
+    animal_ind = 1
+    feat_ind = 1
+    y = bc.data[animal_ind][:, feat_ind]
+    x = bc.data_detrended[animal_ind][:, feat_ind]
+    s = bc.trend[animal_ind][:, feat_ind]
+    t = np.arange(len(y)) / bc.capture_framerate
+
+    plt.figure(figsize = (12, 10))
+    ax1 = plt.subplot(2, 1, 1)
+    plt.xticks(np.arange(0, t[-1], 60))
+    plt.plot(t, y, c = "k", lw = 0.7,  label = r'$y(t)$')
+    plt.plot(t, s, c = "r", label = r'$s_3(t)$')
+    plt.tick_params('x', labelbottom = False)
+    plt.legend()
+
+    ax2 = plt.subplot(2, 1, 2, sharex = ax1)
+    plt.plot(t, x, c = "b", lw = 0.6, label = r'$x(t)$')
+    plt.xlabel(r'$t$' + " [s]")
+    plt.subplots_adjust(hspace = 0.03)
+    plt.legend()
+    plt.savefig("./figures/detrending_bc.pdf", bbox_inches = "tight")
+    # plt.show()
+
+
+
 def main():
-    filenames = [
-        "26148_020520_bank0_s1_light.pkl",
-        "26148_030520_bank0_s2_light.pkl",
-    ]
-    original_location = "./dataset/data_files/"
-    new_location = "./extracted_data/"
-
-    file_index = 0
-    original_filepath = original_location + filenames[file_index]
-    extracted_filepath = new_location + get_extracted_filename(filenames[file_index])
-    
-    # pickle_relevant_features(original_filepath, extracted_filepath)
-
-    with open(extracted_filepath, "rb") as file:
-        relevant_features = pickle.load(file)
-    
-    show_feature_information(relevant_features)
+    seaborn.set_theme()
+    plot_detrending()
 
 
 

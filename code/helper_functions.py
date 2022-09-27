@@ -4,6 +4,40 @@ import math
 import vg
 import pickle
 
+from scipy.interpolate import LSQUnivariateSpline
+
+
+def spline_regression(y, dim, freq, knot_freq):
+    """
+    Performs spline regression on a time series y(t).
+    The internal knots are centered to get close to 
+    equal distance to the endpoints.
+
+    Parameters:
+        y (np.ndarray): The time series values
+        dim (int): Order of the spline
+        freq (float): Frequency of the time points.
+        knot_freq (float): Chosen frequency of the
+            internal knots.
+
+    Returns:
+        (np.ndarray): The regression curve at time 
+            points t
+    """
+
+    t = np.arange(len(y))
+    
+    # Calculate the interior knots
+    space = int(freq / knot_freq)
+    rem = len(t) & space
+    knots = np.arange(freq + rem // 2, len(t), space)
+    
+    spl = LSQUnivariateSpline(t, y, knots, k = dim)
+    
+    return spl(t)
+
+
+
 
 def pickle_relevant_features(original_filepath, new_filepath):
     """
