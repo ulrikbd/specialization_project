@@ -1,7 +1,6 @@
 \documentclass[a4paper]{memoir}
 
-\usepackage[utf8]{inputenc}
-\usepackage{geometry}
+\usepackage[utf8]{inputenc} \usepackage{geometry}
 \usepackage{amsmath, amsfonts, amssymb, amsthm, mathtools}
 \usepackage{graphicx}
 \usepackage{parskip}
@@ -261,11 +260,11 @@ It is worth noting that the relation in \eqref{eq:parseval} only holds when the 
         \sum_{ t = -\infty}^{\infty}|Z_t| < \infty.
 \end{equation}
 
-\section{Spectral analysis}
+\section{Spectral density estimation}
 Let $y_t$ be a stationary time series where the autocovariance function $\gamma_h$ from \eqref{eq:acv} is absolutely summable.
 Then we can write $\gamma_h$ as a Fourier transform pair
 \begin{align}\label{eq:spectrum}
-        f(w) &= \frac{1}{2 \pi} \sum_{h = -\infty}^{\infty} \gamma_h e^{-wh}, \\
+        f(w) &= \frac{1}{2 \pi} \sum_{h = -\infty}^{\infty} \gamma_h e^{-iwh}, \\
         \label{eq:spectral_dens_inv}
         \gamma_h &= \int_{-\pi}^{\pi} f(w)e^{iwh}dw.
 \end{align}
@@ -275,10 +274,10 @@ Furthermore, as $\text{Var}(y_t) = \gamma_0$, we get the interpretation
         \text{Var}(y_t) = \int_{-\pi}^{\pi}f(w)dw,
 \end{equation*}
 i.e., that $f(w)$ is the contribution to the variance for frequency $w$.
-To locate these important frequencies is what we often seek, and thus an important task is to estimate this spectrum.
+We often want to locate these important frequencies,  and thus an important task is to estimate this spectrum.
 
 \subsection{Periodogram}
-Again we consider a time series sample $y_1, y_2, \hdots$ where $n$ is chosen to be odd for readability.
+Again we consider a time series sample $y_1, y_2, \hdots, y_n$ where $n$ is chosen to be odd for simplicity.
 It can be written as a real Fourier representation 
 \begin{equation*}
         y_t = a_0 + \sum_{k = 1}^{\frac{n-1}{2}} (a_k \cos(w_k t) + b_k \sin (w_kt)),
@@ -317,21 +316,78 @@ The two highest peaks match the underlying generating function which can be reve
 One intuitive way of estimating the spectrum is to replace the autocovariance with the sample autocovariance from equation \eqref{eq:sample_covariance}.
 I.e., we define the sample spectrum for a realization $y_1, y_2,  \hdots, y_n$
 \begin{equation}\label{eq:sample_spectrum}
-        \hat{f}(w) = \frac{1}{2\pi}\sum_{h = -(n - 1)}^{n-1}\hat{\gamma}_h e^{-iwh}.
+        \hat{f}(w) = \frac{1}{2\pi}\sum_{k = -(n - 1)}^{n-1}\hat{\gamma}_k e^{-iwk}.
 \end{equation}
 At the Fourier frequencies $w_k$ it is related to the periodogram through \cite{wei}
 \begin{equation*}
         \hat{f}(w_k) = \frac{I(w_k)}{4 \pi}.
 \end{equation*}
-Although $f(w_k)$ is asymptotically unbiased, meaning $\lim_{n \rightarrow \infty} E(\hat{f}(w)) = f(w)$, is lacks consistency in the variance as $n$ tends to infinity, i.e.,
+Although $\hat{f}(w_k)$ is asymptotically unbiased, meaning $\lim_{n \rightarrow \infty} E(\hat{f}(w)) = f(w)$, is lacks consistency in the variance as $n$ tends to infinity, i.e.,
 \begin{equation*}
         \lim_{n \rightarrow \infty} \text{Var}(\hat{f}(w_k)) \neq 0.
 \end{equation*}
-Thus  we consider the sample spectrum 
-
 
 
 \subsection{Spectral Window}
+The fact that the variance does not decrease with the sample size produces quite jagged and noisy spectrum estimations \cite{shumway}.
+To account for this we introduce the spectral window which smooths the spectrum.
+Mathematically the smoothed spectrum is written as
+\begin{equation}\label{eq:smo_spec}
+        \hat{f}_{\mathcal{W}}(w_k) = \sum_{j = -m}^{m} \mathcal{W}_n(w_j) \hat{f}(w_k - w_j),
+\end{equation}
+where $w_k = 2\pi k/n,\ k = 0,1, \hdots, (n-1)/2$ and $m$ is a function of $n$, typically $m \ll n$.
+The value of $m$ decides how many points in the neighborhood of $w_k$ should be included in the smoothing.
+Furthermore, the function $\mathcal{W}_n(w_j)$ is chosen to have the following properties,
+\begin{align}
+        &\sum_{j = -m}^{m}\mathcal{W}_n(w_j) = 1, \nonumber \\
+        &\mathcal{W}_n(w_j) = \mathcal{W}_n(-w_j), \nonumber \\
+        \label{eq:w_var}
+        &\lim_{n \rightarrow \infty} \sum_{j = -m}^{m}\mathcal{W}_n^2(w_j) = 0.
+\end{align}
+We view the smoothed spectrum as a weighted average of the sample spectrum \eqref{eq:sample_spectrum} in a window around the target frequency $w_k$.
+How the weights are distributed in the window is governed by $\mathcal{W}_n(w_j)$, giving it the name spectral window.
+Because of the property in \eqref{eq:w_var} we have
+\begin{align*}
+        \text{Var}(\hat{f}_\mathcal{W}(w_k)) &\approx \sum_{j = -m}^{m}\mathcal{W}_n^2(w_j)(f(w_k))^2 \\
+                                             &=(f(w_k))^2 \sum_{j = -m}^{m} \mathcal{W}_n^2(w_j) \overset{n \rightarrow \infty}{=} 0,
+\end{align*}
+assuming $f(w)$ is approximately constant in the window.
+We can thus reduce the variance by increasing the points included in the window.
+However, when doing so we introduce bias.
+
+
+\subsection{Lag window}
+It can be shown \cite{wei} that the spectral window forms a Fourier transform pair with a lag window $W_n(k)$, i.e,
+\begin{equation*}
+        W_n(k) = \int_{-\pi}^{\pi}\mathcal{W}_n(w) e^{iwk}dw, \quad k = 0, \pm 1, \hdots, \pm M.
+\end{equation*}
+The lag window is a weighting function applied to the sample autocovariance 
+\begin{equation*}
+        \hat{f}_\mathcal{W} = \frac{1}{2\pi} \sum_{k = -M}^{M}W_n(k) \hat{\gamma}_k e^{-iwk},
+\end{equation*}
+with $W_n = W(k/M)$, $W$ being a bounded even continuous function 
+\begin{align*}
+        &|W(t)| \leq 1, \\
+        &W(0) =, \\
+        &W(t) = W(-t),
+        &W(t) = , \  t > 1.
+\end{align*}
+Figure \textcolor{red}{insert figure} shows the popular \textit{hanning} window given by 
+\begin{equation}\label{eq:hann}
+        W_n^H=
+                \begin{cases}
+                      \frac{1}{2}(1 + \cos(\frac{\pi k}{M})),   & |k| \leq M \\
+                       0,  & |k| > M. \\
+                \end{cases}
+\end{equation}
+
+
+
+
+
+
+
+
 
 
 

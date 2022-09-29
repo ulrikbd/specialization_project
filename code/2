@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import seaborn
 from sklearn.linear_model import LinearRegression
 from scipy.interpolate import LSQUnivariateSpline
-from scipy.signal import periodogram, welch
+from scipy.signal import periodogram
 
 
 
@@ -93,8 +93,8 @@ def plot_smoothed_periodogram(t, y):
     power spectral density using a spectral window.
     """
     fs = 1/(t[1] - t[0])
-    f, Pxx_den = welch(y ,fs, window = "bartlett", noverlap = 0,
-                             nperseg = 256, detrend = "linear",  
+    f, Pxx_den = periodogram(y ,fs, window = "bartlett", 
+                             detrend = "linear", nfft = 0.1, 
                              scaling = "density")
 
     plt.figure(figsize = (12, 5))
