@@ -109,6 +109,40 @@ def plot_smoothed_periodogram(t, y):
     plt.show()
 
 
+def plot_windows():
+    """
+    Plot the hann window, both the lag window
+    and the spectral window.
+    """
+    M = 5 
+    k = np.linspace(-6, 6, 500)
+    w = np.linspace(-np.pi - 0.5, np.pi + 0.5, 500)
+    def w_r(w):
+        """ Rectangular spectral window """
+        return 1/(2*np.pi)*np.sin(w*(M+0.5))/np.sin(w/2)
+    def w_t(w):
+        """ Hann spectral window """
+        return (0.25*w_r(w - np.pi/M) + (1 - 0.5)*w_r(w) +
+                0.25*w_r(w + np.pi/M))
+    def w_h(k):
+        """ Hann lag window """
+        return np.where(np.abs(k) <= M, 0.5*(1 + np.cos(np.pi*k/M)), 0)
+        
+
+    plt.figure(figsize = (12, 5))
+    ax1 = plt.subplot(1, 2, 1)
+    plt.plot(k, w_h(k), c = "k", label = r'$W_n^H(k)$')
+    plt.xlabel(r'$k$')
+    plt.legend()
+
+    ax2 = plt.subplot(1, 2, 2)
+    plt.plot(w, w_t(w), c = "k", label = r'$\mathcal{W}_n^H(\omega)$')
+    plt.xlabel(r'$\omega$')
+    plt.legend()
+    plt.savefig("./figures/windows.pdf", bbox_inches = "tight")
+    # plt.show()
+
+plt.xlabel(r'$\omega$')
 def main():
     seaborn.set_theme()
     np.random.seed(28)
@@ -121,7 +155,8 @@ def main():
     # plot_linear_trend(t, y)
     # plot_cubic_splines(t, y)
     # plot_periodogram(t, y)
-    plot_smoothed_periodogram(t, y)
+    # plot_smoothed_periodogram(t, y)
+    plot_windows()
 
 if __name__ == "__main__":
     main()
