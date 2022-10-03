@@ -59,13 +59,15 @@ def plot_detrending():
     plt.plot(t, y, c = "k", lw = 0.7,  label = r'$y(t)$')
     plt.plot(t, s, c = "r", label = r'$s_3(t)$')
     plt.tick_params('x', labelbottom = False)
-    plt.legend()
+    plt.legend(loc = "lower right", prop = {"size": 15},
+               frameon = False, framealpha = 0)
 
     ax2 = plt.subplot(2, 1, 2, sharex = ax1)
     plt.plot(t, x, c = "b", lw = 0.6, label = r'$x(t)$')
     plt.xlabel(r'$t$' + " [s]")
     plt.subplots_adjust(hspace = 0.03)
-    plt.legend()
+    plt.legend(loc = "upper right", prop = {"size": 15},
+               frameon = False, framealpha = 0)
     plt.savefig("./figures/detrending_bc.pdf", bbox_inches = "tight")
     # plt.show()
 

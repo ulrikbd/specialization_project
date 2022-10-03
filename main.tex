@@ -96,7 +96,7 @@ Thus, a methodology for automatically detecting distinct behaviours is needed.
 
 \chapter{Theory}
 \section{Time series analysis}
-We define time series as a realization $y_t = \{ y_{t_1}, y_{t_2}, \hdots, y_{t_n} \}$ of a stochastic process $Y(w, t)$, where $w \in \Omega$, $\Omega$ being the sample space,  and $t \in \mathbb{Z}$, $\mathbb{Z}$ being the chosen index set  \cite{wei}.
+We define time series as a realization $y_t = \{ y_{t_1}, y_{t_2}, \hdots, y_{t_n} \}$ of a stochastic process $Y(\omega, t)$, where $\omega \in \Omega$, $\Omega$ being the sample space,  and $t \in \mathbb{Z}$, $\mathbb{Z}$ being the chosen index set  \cite{wei}.
 It is an ordered series of random variables which can be described completely by its joint probability function
 \begin{equation*}
         F_{t_1,\hdots, t_n}(x_1, \hdots, x_n) = \text{Pr}\{ y_{t_1} \leq x_{1}, \hdots, y_{t_n} \leq x_n) \}.
@@ -205,7 +205,7 @@ The coefficients $c_k$ are given by
 It is clear that \eqref{eq:fourier_series} is periodic with period $n$, meaning $Z_{t + jn} = Z_t, j = 0, \pm 1, \pm 2, \hdots$.
 Thus the Fourier series is able to capture periodic sequences.
 The smallest positive integer $n$ for which $Z_{t + n} = Z_t$ is called the fundamental period, with corresponding fundamental frequency $2 \pi /n$.
-For the components $k = \pm j, j = 1, 2, \hdots, (n-1)/2$ the frequencies are multiples of the fundamental frequency, $w_k = k(2\pi/n)$.
+For the components $k = \pm j, j = 1, 2, \hdots, (n-1)/2$ the frequencies are multiples of the fundamental frequency, $\omega_k = k(2\pi/n)$.
 The set of frequencies making up the series is called the \textit{spectrum}.
 As a consequence the coefficients $c_k$ can be viewed as weighting the importance of the contributions for the different frequencies making up the full sequence.
 This is formalized by the definitions of energy and power,
@@ -215,7 +215,7 @@ This is formalized by the definitions of energy and power,
         \text{power} = \frac{\text{energy}}{n} &= \sum_{k = -\frac{n -1}{2}}^{\frac{n - 1}{2}} |c_k|^2. 
 \end{align}
 Let $p_k$ be the contribution to the power from frequency $k = 0, 1, \hdots, (n-1)/2$.
-As $w_k$ and $w_{-k}$ corresponds to the same frequency the contribution is given as $p_0 = c_0^2, p_k = 2|c_k|^2, k = 1, \hdots, (n-1)/2$.
+As $\omega_k$ and $\omega_{-k}$ corresponds to the same frequency the contribution is given as $p_0 = c_0^2, p_k = 2|c_k|^2, k = 1, \hdots, (n-1)/2$.
 The values $p_k$ are called the power spectrum of the series.
 
 
@@ -239,21 +239,21 @@ As $Y_t = Z_t$ when $t \in [-(n-1)/2, (n-1)/2]$, and $Z_t = 0$ when $|t| > (n-1)
 \end{align*}
 where 
 \begin{equation*}
-        f(w) = \frac{1}{2\pi} \sum_{t = -\infty}^{\infty} Z_t e^{-iwt}.
+        f(\omega) = \frac{1}{2\pi} \sum_{t = -\infty}^{\infty} Z_t e^{-i\omega t}.
 \end{equation*}
 If we now take the limit $Z_t = \lim_{n \rightarrow \infty} Y_t$ the summation becomes an integral over the length $2\pi$ \cite{wei}.
 This gives the relation
 \begin{align}\label{eq:dtft_inv}
-        Z_t &= \int_{-\pi}^{\pi} f(w) e^{iwt} dw, \quad t \in \mathbb{Z} \\
+        Z_t &= \int_{-\pi}^{\pi} f(\omega) e^{i\omega t} d\omega, \quad t \in \mathbb{Z} \\
         \label{eq:dtft}
-        f(w) &= \frac{1}{2 \pi} \sum_{t = -\infty}^{\infty} Z_t e^{-i w t}, \quad -\pi \leq w \leq \pi,
+        f(\omega) &= \frac{1}{2 \pi} \sum_{t = -\infty}^{\infty} Z_t e^{-i \omega t}, \quad -\pi \leq \omega \leq \pi,
 \end{align}
-where $f(w)$ in \eqref{eq:dtft} is called the discrete-time Fourier transform of $Z_t$.
-As opposed to the periodic case \eqref{eq:fourier_series} where the periodic sequence was made up by a finite number of frequencies, the non-periodic sequence is an integral over a continuum of frequencies $w$.
-We call $|f(w)|$ the spectrum of the sequence, and the function $g(w) = 2 \pi |f(w)|^2$ the energy spectrum.
+where $f(\omega)$ in \eqref{eq:dtft} is called the discrete-time Fourier transform of $Z_t$.
+As opposed to the periodic case \eqref{eq:fourier_series} where the periodic sequence was made up by a finite number of frequencies, the non-periodic sequence is an integral over a continuum of frequencies $\omega$.
+We call $|f(\omega)|$ the spectrum of the sequence, and the function $g(\omega) = 2 \pi |f(\omega)|^2$ the energy spectrum.
 The energy spectrum definition comes from Parseval's relation 
 \begin{equation}\label{eq:parseval}
-        \sum_{t = -\infty}^{\infty} |Z_t|^2 = 2 \pi \int_{- \pi}^{\pi}|f(w)|^2 dw.
+        \sum_{t = -\infty}^{\infty} |Z_t|^2 = 2 \pi \int_{- \pi}^{\pi}|f(\omega)|^2 d\omega.
 \end{equation}
 It is worth noting that the relation in \eqref{eq:parseval} only holds when the sequence $Z_t$ is absolutely summable, i.e., that
 \begin{equation}\label{eq:absuletly_summable}
@@ -264,38 +264,38 @@ It is worth noting that the relation in \eqref{eq:parseval} only holds when the 
 Let $y_t$ be a stationary time series where the autocovariance function $\gamma_h$ from \eqref{eq:acv} is absolutely summable.
 Then we can write $\gamma_h$ as a Fourier transform pair
 \begin{align}\label{eq:spectrum}
-        f(w) &= \frac{1}{2 \pi} \sum_{h = -\infty}^{\infty} \gamma_h e^{-iwh}, \\
+        f(\omega) &= \frac{1}{2 \pi} \sum_{h = -\infty}^{\infty} \gamma_h e^{-i\omega h}, \\
         \label{eq:spectral_dens_inv}
-        \gamma_h &= \int_{-\pi}^{\pi} f(w)e^{iwh}dw.
+        \gamma_h &= \int_{-\pi}^{\pi} f(\omega)e^{i\omega h}d\omega.
 \end{align}
-It can be shown \cite{shumway} that the spectrum $f(w)$ in \eqref{eq:spectrum} is real-valued and non-negative.
+It can be shown \cite{shumway} that the spectrum $f(\omega)$ in \eqref{eq:spectrum} is real-valued and non-negative.
 Furthermore, as $\text{Var}(y_t) = \gamma_0$, we get the interpretation
 \begin{equation*}
-        \text{Var}(y_t) = \int_{-\pi}^{\pi}f(w)dw,
+        \text{Var}(y_t) = \int_{-\pi}^{\pi}f(\omega)d\omega,
 \end{equation*}
-i.e., that $f(w)$ is the contribution to the variance for frequency $w$.
+i.e., that $f(\omega)$ is the contribution to the variance for frequency $\omega$.
 We often want to locate these important frequencies,  and thus an important task is to estimate this spectrum.
 
 \subsection{Periodogram}
 Again we consider a time series sample $y_1, y_2, \hdots, y_n$ where $n$ is chosen to be odd for simplicity.
 It can be written as a real Fourier representation 
 \begin{equation*}
-        y_t = a_0 + \sum_{k = 1}^{\frac{n-1}{2}} (a_k \cos(w_k t) + b_k \sin (w_kt)),
+        y_t = a_0 + \sum_{k = 1}^{\frac{n-1}{2}} (a_k \cos(\omega_k t) + b_k \sin (\omega_kt)),
 \end{equation*}
-where $w_k = 2\pi k / n, k =0, 1, \hdots, (n -1)/2$ and the coefficients are given as 
+where $\omega_k = 2\pi k / n, k =0, 1, \hdots, (n -1)/2$ and the coefficients are given as 
 \begin{equation*}
-        a_0 = \bar{y_t}, \quad a_k = \frac{2}{n}\sum_{t = 1}^{n}y_t \cos(w_kt), \quad b_k = \frac{2}{n} \sum_{ t = 1}^{n} y_t \sin (w_kt).
+        a_0 = \bar{y_t}, \quad a_k = \frac{2}{n}\sum_{t = 1}^{n}y_t \cos(\omega_kt), \quad b_k = \frac{2}{n} \sum_{ t = 1}^{n} y_t \sin (\omega_kt).
 \end{equation*}
 We then define the periodogram as 
 \begin{equation}\label{eq:periodogram}
-        I(w_k) = 
+        I(\omega_k) = 
                 \begin{cases}
                         na_0^2, & k=0  \\
                         \frac{n}{2}(a_k^2 + b_k^2), & k = 1, \hdots, (n-1)/2. \\
                 \end{cases}
 \end{equation}
-The periodogram is of interest as it has has a large value if the frequency $w_k$ is of importance in the series.
-A scaled periodogram $\frac{2}{n}I(w_k)$ estimates the sample variance of the sinusoid component at frequency $w_k$ \cite{shumway}.
+The periodogram is of interest as it has has a large value if the frequency $\omega_k$ is of importance in the series.
+A scaled periodogram $\frac{2}{n}I(\omega_k)$ estimates the sample variance of the sinusoid component at frequency $\omega_k$ \cite{shumway}.
 A periodogram for the time series example in figure \ref{fig:time_series_example} are shown in figure \ref{fig:periodogram_basic}.
 Note that the time series is linearly detrended for the periodogram is computed.
 The two highest peaks match the underlying generating function which can be revealed to be $\sin(2\pi t) + \frac{1}{4} \cos(6 \pi t) + t / 3$.
@@ -316,15 +316,15 @@ The two highest peaks match the underlying generating function which can be reve
 One intuitive way of estimating the spectrum is to replace the autocovariance with the sample autocovariance from equation \eqref{eq:sample_covariance}.
 I.e., we define the sample spectrum for a realization $y_1, y_2,  \hdots, y_n$
 \begin{equation}\label{eq:sample_spectrum}
-        \hat{f}(w) = \frac{1}{2\pi}\sum_{k = -(n - 1)}^{n-1}\hat{\gamma}_k e^{-iwk}.
+        \hat{f}(\omega) = \frac{1}{2\pi}\sum_{k = -(n - 1)}^{n-1}\hat{\gamma}_k e^{-i\omega k}.
 \end{equation}
-At the Fourier frequencies $w_k$ it is related to the periodogram through \cite{wei}
+At the Fourier frequencies $\omega_k$ it is related to the periodogram through \cite{wei}
 \begin{equation*}
-        \hat{f}(w_k) = \frac{I(w_k)}{4 \pi}.
+        \hat{f}(\omega_k) = \frac{I(\omega_k)}{4 \pi}.
 \end{equation*}
-Although $\hat{f}(w_k)$ is asymptotically unbiased, meaning $\lim_{n \rightarrow \infty} E(\hat{f}(w)) = f(w)$, is lacks consistency in the variance as $n$ tends to infinity, i.e.,
+Although $\hat{f}(\omega_k)$ is asymptotically unbiased, meaning $\lim_{n \rightarrow \infty} E(\hat{f}(\omega)) = f(\omega)$, is lacks consistency in the variance as $n$ tends to infinity, i.e.,
 \begin{equation*}
-        \lim_{n \rightarrow \infty} \text{Var}(\hat{f}(w_k)) \neq 0.
+        \lim_{n \rightarrow \infty} \text{Var}(\hat{f}(\omega_k)) \neq 0.
 \end{equation*}
 
 
@@ -333,25 +333,25 @@ The fact that the variance does not decrease with the sample size produces quite
 To account for this we introduce the spectral window which smooths the spectrum.
 Mathematically the smoothed spectrum is written as
 \begin{equation}\label{eq:smo_spec}
-        \hat{f}_{\mathcal{W}}(w_k) = \sum_{j = -m}^{m} \mathcal{W}_n(w_j) \hat{f}(w_k - w_j),
+        \hat{f}_{\mathcal{W}}(\omega_k) = \sum_{j = -m}^{m} \mathcal{W}_n(\omega_j) \hat{f}(\omega_k - \omega_j),
 \end{equation}
-where $w_k = 2\pi k/n,\ k = 0,1, \hdots, (n-1)/2$ and $m$ is a function of $n$, typically $m \ll n$.
-The value of $m$ decides how many points in the neighborhood of $w_k$ should be included in the smoothing.
-Furthermore, the function $\mathcal{W}_n(w_j)$ is chosen to have the following properties,
+where $\omega_k = 2\pi k/n,\ k = 0,1, \hdots, (n-1)/2$ and $m$ is a function of $n$, typically $m \ll n$.
+The value of $m$ decides how many points in the neighborhood of $\omega_k$ should be included in the smoothing.
+Furthermore, the function $\mathcal{W}_n(\omega_j)$ is chosen to have the following properties,
 \begin{align}
-        &\sum_{j = -m}^{m}\mathcal{W}_n(w_j) = 1, \nonumber \\
-        &\mathcal{W}_n(w_j) = \mathcal{W}_n(-w_j), \nonumber \\
+        &\sum_{j = -m}^{m}\mathcal{W}_n(\omega_j) = 1, \nonumber \\
+        &\mathcal{W}_n(\omega_j) = \mathcal{W}_n(-\omega_j), \nonumber \\
         \label{eq:w_var}
-        &\lim_{n \rightarrow \infty} \sum_{j = -m}^{m}\mathcal{W}_n^2(w_j) = 0.
+        &\lim_{n \rightarrow \infty} \sum_{j = -m}^{m}\mathcal{W}_n^2(\omega_j) = 0.
 \end{align}
-We view the smoothed spectrum as a weighted average of the sample spectrum \eqref{eq:sample_spectrum} in a window around the target frequency $w_k$.
-How the weights are distributed in the window is governed by $\mathcal{W}_n(w_j)$, giving it the name spectral window.
+We view the smoothed spectrum as a weighted average of the sample spectrum \eqref{eq:sample_spectrum} in a window around the target frequency $\omega_k$.
+How the weights are distributed in the window is governed by $\mathcal{W}_n(\omega_j)$, giving it the name spectral window.
 Because of the property in \eqref{eq:w_var} we have
 \begin{align*}
-        \text{Var}(\hat{f}_\mathcal{W}(w_k)) &\approx \sum_{j = -m}^{m}\mathcal{W}_n^2(w_j)(f(w_k))^2 \\
-                                             &=(f(w_k))^2 \sum_{j = -m}^{m} \mathcal{W}_n^2(w_j) \overset{n \rightarrow \infty}{=} 0,
+        \text{Var}(\hat{f}_\mathcal{W}(\omega_k)) &\approx \sum_{j = -m}^{m}\mathcal{W}_n^2(\omega_j)(f(\omega_k))^2 \\
+                                             &=(f(\omega_k))^2 \sum_{j = -m}^{m} \mathcal{W}_n^2(\omega_j) \overset{n \rightarrow \infty}{=} 0,
 \end{align*}
-assuming $f(w)$ is approximately constant in the window.
+assuming $f(\omega)$ is approximately constant in the window.
 We can thus reduce the variance by increasing the points included in the window.
 However, when doing so we introduce bias.
 
@@ -359,48 +359,69 @@ However, when doing so we introduce bias.
 \subsection{Lag window}
 It can be shown \cite{wei} that the spectral window forms a Fourier transform pair with a lag window $W_n(k)$, i.e,
 \begin{equation*}
-        W_n(k) = \int_{-\pi}^{\pi}\mathcal{W}_n(w) e^{iwk}dw, \quad k = 0, \pm 1, \hdots, \pm M.
+        W_n(k) = \int_{-\pi}^{\pi}\mathcal{W}_n(\omega) e^{i\omega k}d\omega, \quad k = 0, \pm 1, \hdots, \pm M.
 \end{equation*}
 The lag window is a weighting function applied to the sample autocovariance 
 \begin{equation*}
-        \hat{f}_\mathcal{W} = \frac{1}{2\pi} \sum_{k = -M}^{M}W_n(k) \hat{\gamma}_k e^{-iwk},
+        \hat{f}_\mathcal{W} = \frac{1}{2\pi} \sum_{k = -M}^{M}W_n(k) \hat{\gamma}_k e^{-i\omega k},
 \end{equation*}
 with $W_n = W(k/M)$, $W$ being a bounded even continuous function 
 \begin{align*}
         &|W(t)| \leq 1, \\
         &W(0) =, \\
-        &W(t) = W(-t),
+        &W(t) = W(-t), \\
         &W(t) = , \  t > 1.
 \end{align*}
-Figure \textcolor{red}{insert figure} shows the popular \textit{hanning} window given by 
+Figure \ref{fig:windows} shows the popular \textit{hanning} window given by 
 \begin{equation}\label{eq:hann}
         W_n^H=
                 \begin{cases}
                       \frac{1}{2}(1 + \cos(\frac{\pi k}{M})),   & |k| \leq M \\
-                       0,  & |k| > M. \\
+                       0,  & |k| > M, \\
                 \end{cases}
 \end{equation}
+with $M = 5$.
+
+
+\begin{figure}[tb ]
+        \centering
+        \includegraphics[width=\linewidth]{./code/figures/windows.pdf}
+        \caption{On the left the hanning window given by equation \eqref{eq:hann}.
+        On the left the corresponding spectral window, i.e., its Fourier transform.}
+        \label{fig:windows}
+\end{figure}
 
 
 
-
-
-
-
-
-
-
-
-
+\section{Time-Frequency Analysis}
+The methods mentioned so far are only suitable for extracting information about the frequencies of a signal.
+If the process is stationary this is often all we need.
+However, if the process is non-stationary and the frequencies change over time, the periodogram is unable to capture this.
+The original time series contains all the information in the time-scale, and the Fourier transform contains all the information in the frequency scale.
+We need something in between.
 
 \subsection{Short-Time Fourier Transform}
+A simple and intuitive way to gain information about the changes in frequency is to divide the time interval into sections, and compute the Fourier transform on each section.
+Then we can plot how the periodogram changes over time.
+If we divide the time interval using a window function this method is called the short-time Fourier Transform (STFT).
+Mathematically we define it for a discrete sequence $y = y_1, y_2, \hdots, y_n$, which is windowed by $W_n(t)$ around time $\tau$, as
+\begin{equation}\label{eq:stft}
+        S_y(\omega, \tau) = \frac{1}{2 \pi} \sum_{t = -\infty}^{\infty}y_t W_n(t - \tau)e^{-i\omega t}.
+\end{equation}
+The estimated spectrum $|S_y(\omega, \tau)|^2$ is now a function of both time and frequency, and is commonly called the spectrogram \cite{cohen}, which can be plotted to show the changes in frequencies over time.
 
 
 
 
 
 
-\subsection{Wavelet transformation}
+
+
+
+
+
+
+\subsection{Wavelet Transform}
 Morlet wavelet—a sine wave that is "windowed" (i.e., multiplied point by point) by a Gaussian
 
 \section{Piecewise polynomials}

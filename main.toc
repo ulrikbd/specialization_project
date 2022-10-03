@@ -12,15 +12,16 @@
 \contentsline {subsection}{\numberline {2.3.2}Sample spectrum}{12}{subsection.2.3.2}%
 \contentsline {subsection}{\numberline {2.3.3}Spectral Window}{12}{subsection.2.3.3}%
 \contentsline {subsection}{\numberline {2.3.4}Lag window}{13}{subsection.2.3.4}%
-\contentsline {subsection}{\numberline {2.3.5}Short-Time Fourier Transform}{14}{subsection.2.3.5}%
-\contentsline {subsection}{\numberline {2.3.6}Wavelet transformation}{14}{subsection.2.3.6}%
-\contentsline {section}{\numberline {2.4}Piecewise polynomials}{14}{section.2.4}%
-\contentsline {subsection}{\numberline {2.4.1}Splines}{14}{subsection.2.4.1}%
-\contentsline {subsection}{\numberline {2.4.2}Regression splines}{14}{subsection.2.4.2}%
-\contentsline {section}{\numberline {2.5}Dimensionality reduction}{15}{section.2.5}%
-\contentsline {subsection}{\numberline {2.5.1}Principal Component Analysis}{15}{subsection.2.5.1}%
-\contentsline {subsection}{\numberline {2.5.2}t-Stochastic Neighbor Embedding}{15}{subsection.2.5.2}%
-\contentsline {section}{\numberline {2.6}Watershed segmentation}{15}{section.2.6}%
+\contentsline {section}{\numberline {2.4}Time-Frequency Analysis}{14}{section.2.4}%
+\contentsline {subsection}{\numberline {2.4.1}Short-Time Fourier Transform}{14}{subsection.2.4.1}%
+\contentsline {subsection}{\numberline {2.4.2}Wavelet Transform}{15}{subsection.2.4.2}%
+\contentsline {section}{\numberline {2.5}Piecewise polynomials}{15}{section.2.5}%
+\contentsline {subsection}{\numberline {2.5.1}Splines}{15}{subsection.2.5.1}%
+\contentsline {subsection}{\numberline {2.5.2}Regression splines}{15}{subsection.2.5.2}%
+\contentsline {section}{\numberline {2.6}Dimensionality reduction}{16}{section.2.6}%
+\contentsline {subsection}{\numberline {2.6.1}Principal Component Analysis}{16}{subsection.2.6.1}%
+\contentsline {subsection}{\numberline {2.6.2}t-Stochastic Neighbor Embedding}{16}{subsection.2.6.2}%
+\contentsline {section}{\numberline {2.7}Watershed segmentation}{16}{section.2.7}%
 \contentsline {chapter}{\chapternumberline {3}Methodology}{17}{chapter.3}%
 \contentsline {section}{\numberline {3.1}Feature extraction}{17}{section.3.1}%
 \contentsline {section}{\numberline {3.2}Manifold embedding}{17}{section.3.2}%
