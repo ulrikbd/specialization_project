@@ -410,19 +410,57 @@ Mathematically we define it for a discrete sequence $y = y_1, y_2, \hdots, y_n$,
 \end{equation}
 The estimated spectrum $|S_y(\omega, \tau)|^2$ is now a function of both time and frequency, and is commonly called the spectrogram \cite{cohen}, which can be plotted to show the changes in frequencies over time.
 
-
-
-
-
-
-
-
-
+Unfortunately the STFT has some severe drawbacks; it can be shown that there exists a limit for the possible precision achieved when measuring both frequency and time simultaneously \cite{kaiser}.
+There exists a tradeoff in time and frequency resolution, as shown in figure \ref{fig:grid}.
+\begin{figure}[tb]
+        \centering
+        \includegraphics[width=\linewidth]{./figures/stft_cwt_grid/stft_cwt_grid.pdf}
+        \caption{
+        \textit{Left/middle:} The figures illustrates the tradeoff in resolution for time and frequency for the short-time Fourier transform from equation \eqref{eq:stft}, increasing the resolution in time decreases the resolution in frequency and vice versa.
+\textit{Right:} Illustrate the corresponding resolution for the continuous wavelet transform from equation \eqref{eq:cwt}.
+}
+        \label{fig:grid}
+\end{figure}
+This is very intuitive as frequency has to be measured over a certain time period.
+Decreasing the width of the window function makes detecting smaller frequencies harder, and vice versa.
+Thus we need to know the approximate frequency scales in the data before performing the STFT, or we can try several window widths.
+In the case where frequencies exists in the data on several different scales, the STFT in equation \eqref{eq:stft} becomes unsuitable.
 
 
 
 \subsection{Wavelet Transform}
-Morlet wavelet—a sine wave that is "windowed" (i.e., multiplied point by point) by a Gaussian
+The wavelet transform works in a very similar way as the STFT, but circumvents the problem of choosing a fixed width of the window by introducing scaling.
+Let $\psi(t)$ be a window function (possibly complex valued) which we will call the mother wavelet.
+One way of scaling the mother wavelet by a factor $s$ is
+\begin{equation*}
+        \psi_s(t) = \frac{1}{s^{1/2}} \psi \left(\frac{t}{s}\right).
+\end{equation*}
+If we also allow a time shift around $\tau$ we arrive at the wavelets
+\begin{equation*}
+        \psi_{s,\tau}(t) = \frac{1}{s^{1/2}} \left( \frac{t - \tau}{s} \right).
+\end{equation*}
+This culminates in the definition of the continuous wavelet transform (CWT) of a function $f$ \cite{kaiser}
+\begin{equation}\label{eq:cwt}
+        \tilde{f}(s, \tau)\int_{-\infty}^{\infty}\psi_{s,\tau}^*(t)f(t) dt,
+\end{equation}
+where $\psi_{s,\tau}^*$ is the complex conjugate of the function $\psi_{s, \tau}$.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 \section{Piecewise polynomials}
 Suppose we have an interval $[a,b]$ divided into $M$ contiguous subintervals.
