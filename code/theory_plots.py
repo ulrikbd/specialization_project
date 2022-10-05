@@ -3,13 +3,25 @@ import matplotlib.pyplot as plt
 import seaborn
 from sklearn.linear_model import LinearRegression
 from scipy.interpolate import LSQUnivariateSpline
-from scipy.signal import periodogram, welch
+from scipy.signal import (
+        periodogram, welch, spectrogram
+)
 
 
 
 def underlying(t):
     """ Underlying time series """
     return np.sin(2*np.pi*t) + 1/4*np.cos(6*np.pi*t) + t / 3
+
+
+def non_stationary_func(t):
+    """
+    Example function which has frequencies on multiple scales,
+    which changes over time
+    """
+
+    return np.where(t < 2, 3*np.sin(500*2*np.pi*t) + 2*np.sin(30*2*np.pi*t) + np.sin(100*2*np.pi*t),
+               np.sin(300*2*np.pi*t) + 2*np.sin(50*2*np.pi*t) + 3*np.sin(700*2*np.pi*t))
 
 
 def plot_non_stationary_time_series(t, y):
@@ -83,8 +95,8 @@ def plot_periodogram(t, y):
     plt.ylim([1e-5, 1e1])
     plt.xlabel("Frequency [Hz]")
     plt.ylabel("Power spectrum")
-    plt.savefig("./figures/periodogram_basic.pdf", bbox_inches="tight")
-    # plt.show()
+    # plt.savefig("./figures/periodogram_basic.pdf", bbox_inches="tight")
+    plt.show()
 
 
 def plot_smoothed_periodogram(t, y):
@@ -142,7 +154,37 @@ def plot_windows():
     plt.savefig("./figures/windows.pdf", bbox_inches = "tight")
     # plt.show()
 
-plt.xlabel(r'$\omega$')
+
+def spectrogram_example():
+    """
+    Illustrate the difference in the periodogram, STFT and CWT
+    """
+
+    # Generate sample time series
+    t = np.linspace(0, 4, 10000)
+    y = non_stationary_func(t)
+    
+    # Compute periodogram
+    fs = 1/(t[1] - t[0])
+    f, Pxx_den = periodogram(y ,fs, window = "hann",
+                             scaling = "density")
+    plt.figure(figsize = (12, 5))
+    plt.semilogy(f, Pxx_den)
+    plt.xlabel("Frequency [Hz]")
+    plt.ylabel("Power spectrum")
+    plt.show()
+
+    # Compute short-time Fourier transform and plot spectrogram
+    fo, time, Sxx = spectrogram(y, fs, window = "hann")
+    plt.pcolormesh(time, fo, Sxx)
+    plt.ylabel("Frequency [Hz]")
+    plt.xlabel("Time")
+    plt.show()
+   
+
+    
+    
+
 def main():
     seaborn.set_theme()
     np.random.seed(28)
@@ -156,7 +198,8 @@ def main():
     # plot_cubic_splines(t, y)
     # plot_periodogram(t, y)
     # plot_smoothed_periodogram(t, y)
-    plot_windows()
+    # plot_windows()
+    spectrogram_example()
 
 if __name__ == "__main__":
     main()

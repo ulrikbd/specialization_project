@@ -11,7 +11,7 @@
 \usepackage{tikz}
 
 \usepackage[
-style=authoryear]
+style=ieee]
 {biblatex}
 \addbibresource{sources.bib}
 
@@ -444,6 +444,30 @@ This culminates in the definition of the continuous wavelet transform (CWT) of a
         \tilde{f}(s, \tau)\int_{-\infty}^{\infty}\psi_{s,\tau}^*(t)f(t) dt,
 \end{equation}
 where $\psi_{s,\tau}^*$ is the complex conjugate of the function $\psi_{s, \tau}$.
+
+Again considering the discrete sample $y_1, y_2, \hdots, y_n$ with $\delta t = y_{t+1} - y_t, \ t = 1, \hdots, n$, its continuous wavelet transform is given by \cite{torrence}
+\begin{equation}\label{eq:cwt_d}
+        \tilde{f}_n(s, \tau) = \sum_{t = 1}^{n} y_t \psi^* \left( \frac{\delta t}{s}(t- \tau) \right),
+\end{equation}
+where $\tau$ now is a time index $\tau \in \{ 1, 2, \hdots, n \}$.
+It is computationally efficient \cite{torrence} to represent the CWT as the inverse Fourier transform
+\begin{align*}
+        &\tilde{f}_n(s, \tau) \sum_{t = 1}^{n}\hat{y}_k \hat{\psi}^*(s\omega_k)e^{i \omega_k n\delta t}, \\
+        & \hat{y}_k = \frac{1}{n}\sum_{t = 1}^{n}y_t e^{-\frac{i2\pi kt}{n}},\\
+        &\omega_k = 
+                \begin{cases}
+                      \frac{2\pi k}{n \delta t},   &  k \leq \frac{n}{2} \\
+                      -\frac{2\pi k}{n \delta t},   &  k > \frac{n}{2} \\
+                \end{cases}.
+\end{align*}
+As always we are interested in the power spectrum, which for the CWT is defined as $|\tilde{f}_n(s,\tau)|^w$.
+
+There exists many choices for the mother wavelet, and certain important criteria it must satisfy \cite{kaiser}.
+One popular wavelet is the Morlet wavelet defined as
+\begin{equation}\label{eq:morlet}
+        \psi_0(\eta) = \pi^{-1/4} e^{i\omega_0 \eta}e^{-\eta^2 / 2},
+\end{equation}
+where $\omega_0$ is a parameter chosen to fit the criteria.
 
 
 
