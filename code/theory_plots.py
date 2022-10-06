@@ -7,6 +7,10 @@ from scipy.signal import (
         periodogram, welch, spectrogram
 )
 
+import pycwt as wavelet
+from pycwt.helpers import find
+
+from helper_functions import plot_scalogram
 
 
 def underlying(t):
@@ -19,9 +23,10 @@ def non_stationary_func(t):
     Example function which has frequencies on multiple scales,
     which changes over time
     """
-
-    return np.where(t < 2, 3*np.sin(500*2*np.pi*t) + 2*np.sin(30*2*np.pi*t) + np.sin(100*2*np.pi*t),
-               np.sin(300*2*np.pi*t) + 2*np.sin(50*2*np.pi*t) + 3*np.sin(700*2*np.pi*t))
+    w1, w2, w3 = 2.4, 4.7, 17
+    w4, w5, w6 = 0.7, 1.4, 6.4
+    return np.where(t < 40, 3*np.sin(w1*2*np.pi*t) + 2*np.sin(w2*2*np.pi*t) + np.sin(w3*2*np.pi*t),
+               np.sin(w4*2*np.pi*t) + 2*np.sin(w5*2*np.pi*t) + 3*np.sin(w6*2*np.pi*t))
 
 
 def plot_non_stationary_time_series(t, y):
@@ -155,15 +160,11 @@ def plot_windows():
     # plt.show()
 
 
-def spectrogram_example():
+def spectrogram_example(t, y):
     """
     Illustrate the difference in the periodogram, STFT and CWT
     """
 
-    # Generate sample time series
-    t = np.linspace(0, 4, 10000)
-    y = non_stationary_func(t)
-    
     # Compute periodogram
     fs = 1/(t[1] - t[0])
     f, Pxx_den = periodogram(y ,fs, window = "hann",
@@ -182,6 +183,62 @@ def spectrogram_example():
     plt.show()
    
 
+def wavelet_example(t, y):
+    """
+    Example to understand and play with CWT parameters
+    """
+
+    # Normalize
+    std = np.std(y)
+    y = (y - np.mean(y)) / std
+
+    # Save length
+    n = len(y)
+
+    # Sampling time
+    dt = t[1] - t[0]
+
+    # Number of frequency scales
+    num_scales = 18
+    # Frequency upper bound
+    w_max = 20
+    # Frequency lower bound
+    w_min = 0.5
+
+    # Starting scale (smallest scale)
+    s0 = 1/w_max
+    # Largest scale 
+    sn = 1/w_min
+    # Number of powers of two with dj sub-octaves
+    J =  num_scales - 1
+    # Number of sub-octaves per octave
+    dj = 1/J*np.log2(sn/s0)
+    # Mother wavelet
+    mother = wavelet.Morlet(6)
+
+    wave, scales, freqs, coi, fft, fftfreqs = wavelet.cwt(
+            y, dt, dj, s0, J, mother)
+    # wave has shape: (num_scales, n)
+    iwave = wavelet.icwt(wave, scales, dt, dj, mother)
+
+
+    power = np.abs(wave)**2
+    fft_power = np.abs(fft)**2
+    period = 1/freqs
+
+    # Divide power by the scales to be able to compare them Liu 2007
+    power /= scales[:, None]
+    
+    
+    # plt.figure()
+    # plot_scalogram(power, t, freqs, scales)
+    # plt.show()
+    
+    i = 10
+    plt.plot(t, power[i,:])
+    plt.title(str(freqs[i]))
+    plt.show()
+
     
     
 
@@ -199,7 +256,14 @@ def main():
     # plot_periodogram(t, y)
     # plot_smoothed_periodogram(t, y)
     # plot_windows()
-    spectrogram_example()
+
+    # Generate sample time series
+    t2 = np.arange(10000) / 120
+    n2 = len(t2)
+    y2 = non_stationary_func(t2) + np.random.normal(0, 0.3, n2)
+    
+    # spectrogram_example(t2, y2)
+    wavelet_example(t2, y2) 
 
 if __name__ == "__main__":
     main()

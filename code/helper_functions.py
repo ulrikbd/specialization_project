@@ -6,6 +6,8 @@ import pickle
 
 from scipy.interpolate import LSQUnivariateSpline
 
+import matplotlib.pyplot as plt
+
 
 def spline_regression(y, dim, freq, knot_freq):
     """
@@ -133,3 +135,33 @@ def rot2expmap(rot_mat):
     return expmap
 
 
+
+def plot_scalogram(power, t, freqs, scales):
+    """
+    Plots the spectrogram of the power density
+    achived using a continuous wavelet transform
+
+    Arguments:
+        power (np.ndarray): Estimated power for all 
+            time points across multiple scales
+    """
+     
+    # Find appropriate contour levels
+    ax = plt.subplot()
+    min_level = int(np.log2(power).min())
+    max_level = int(np.log2(power).max())
+    level_step = (max_level - min_level) // 10 
+    levels = np.arange(min_level, max_level, level_step)
+
+    cnf = plt.contourf(t, np.log2(freqs), np.log2(power),
+                 levels = levels, extend="both",
+                 cmap=plt.cm.viridis)
+    cbar = plt.colorbar(cnf)
+    cbar.set_ticks(levels)
+    cbar.set_ticklabels(np.char.mod("%.1e", 2.**levels))
+    y_ticks = 2**np.arange(np.ceil(np.log2(freqs.min())),
+                           np.ceil(np.log2(freqs).max()))
+    ax.set_yticks(np.log2(y_ticks))
+    ax.set_yticklabels(y_ticks)
+    ax.set_xlabel("Time")
+    ax.set_ylabel("Frequency")
