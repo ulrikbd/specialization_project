@@ -558,6 +558,7 @@ The goal of the analysis is to cluster these time points into distinct distingui
 \textcolor{red}{Some summarization: "This is achieved by..."}
 
 \section{Feature extraction}
+\subsection{Detrending}
 The first step is to analyse each time series separately, modifying them and thus creating $D \times n$ features which we will extract the behavioral information from.
 Let $y_t = \{ y_1, y_2, \hdots, y_m \} = y_i^d(t)$ for some $d \in \{ 1, 2, \hdots, D \}$ and $i \in \{ 1, 2, \hdots, n \}$ be one such series.
 
@@ -577,6 +578,33 @@ Figure \ref{fig:detrending_bc} shows an example of a detrended time series using
 The bottom figure shows the detrended time series.}
         \label{fig:detrending_bc}
 \end{figure}
+
+
+\subsection{Time Frequency Analysis}
+To make the extracted features comparable, we normalize the time series by dividing it by its standard deviation
+\begin{equation*}
+        \sigma_y = \frac{1}{n}\sum_{t = 1}^{n} \left( y_t - \frac{1}{n}\sum_{i = 1}^{n}y_i \right)^2.
+\end{equation*}
+The detrended time series contain information about how the movements vary around the trend.
+We assume this movement is repetitive in nature, and can be interpreted as a signal.
+By applying time frequency analysis to the detrended time series, we obtain additional information about how the frequencies of these movements vary over time.
+In turn this can contribute to detecting the clusters behaviour clusters.
+
+As we are unaware of at which scales these movements occur beforehand, we opt for a continuous wavelet transform as opposed to the short-time Fourier transform.
+Let $J$ be the number of predefined frequency scales, ranging from $\omega_{\text{min}}$ to $\omega_{\text{max}}$.
+The scales $s_1, s_2, \hdots, s_n$ in equation \eqref{eq:cwt_d} are chosen as fractional powers of two—as suggested in \cite{torrence}—e.g.,
+\begin{align*}
+        &s_j = \frac{2^{j\delta j}}{\omega_{\text{max}}}, \quad j = 0, 1, \hdots, J - 1, \\
+        & \delta j = \frac{1}{J - 1} \log_2 \left( \frac{\omega_{\text{max}}}{\omega_{\text{min}}} \right).
+\end{align*}
+
+
+
+
+
+
+
+
 
 \section{Manifold embedding}
 

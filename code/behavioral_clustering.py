@@ -2,9 +2,12 @@ import numpy as np
 import pickle as pkl
 
 from helper_functions import (
-        pickle_relevant_features,
-        spline_regression,
+        pickle_relevant_features, spline_regression,
+        plot_scalogram,
 )
+
+import pycwt as wavelet
+from pycwt.helpers import find
 
 
 
@@ -35,10 +38,23 @@ class BehavioralClustering():
             per animal.
         capture_framerate (int): Frequency (Hz) of the 
             recorded postural time series.
+        dt (float): Time interval in the time series
         used_indices (list(np.ndarray)): Indices of non-NaN values
             in the raw features
         data (list(list(np.ndarray))): Starting point for the 
             analysis. Time series data without NaN-values.
+        num_freq (int): Number of dyadically spaced frequency
+            scales used in the CWT
+        min_freq (float): Minumum frequency scale used in 
+            the CWT
+        max_freq (float): Maximum frequency scale used in 
+            the CWT
+        dj (float): The number of sub-octaves per octave,
+            logarithmic spacing for the scales used
+            in the CWT
+        mother (str): Mother wavelet used in the CWT
+        features (list(np.ndarray): Features extracted 
+            from the time frequency analysis
     """
 
     def __init__(self):
@@ -52,9 +68,16 @@ class BehavioralClustering():
         self.data_detrended = []
         self.n_features = None
         self.capture_framerate = 120 
+        self.dt = 1/self.capture_framerate
         self.used_indices = []
         self.data = []
-    
+        self.num_freq = 18
+        self.min_freq = 0.5
+        self.max_freq = 20
+        self.dj = 1/(self.num_freq - 1)*np.log2(
+                self.max_freq/self.min_freq)
+        self.mother = "MORLET"
+        self.features = None
 
 
     def remove_nan(self):
@@ -82,15 +105,70 @@ class BehavioralClustering():
         """
        
        # Iterate over animals
-        for i in range(len(self.data)):
+        for d in range(len(self.data)):
             # Perform spline regression on each time series
             trend = [spline_regression(y, self.spline_dim,
                         self.capture_framerate,
-                        self.knot_frequency) for y in self.data[i].T]
+                        self.knot_frequency) for y in self.data[d].T]
             self.trend.append(np.array(trend).T)
-            self.data_detrended.append(self.data[i] - self.trend[i])
+            self.data_detrended.append(self.data[d] - self.trend[d])
+            # Normalize data
+            std = np.std(self.data_detrended[-1], axis = 0)
+            self.data_detrended[-1] = self.data_detrended[-1] / std
+
+
+    def time_frequency_analysis(self):
+        """
+        Perform time frequency analysis
+        using the continuous wavelet transform on the 
+        detrended time series data. The power spectrum
+        is computed using the pycwt python package,
+        and divided by the scales. Taking the square root,
+        centering and rescaling by the trend standard 
+        deviation, the extended time series are concatenated
+        with the normalized trend data creating new
+        features.
+        """ 
+        
+        # Iterate over animals
+        for d in range(len(self.data)):
+            # Create storage for new feature vector
+            x_d = np.zeros(shape = (len(self.data[d]),
+                                    self.n_features*
+                                    (self.num_freq + 1)))
+
+            # Iterate over raw features
+            for i in range(self.n_features):
+                # Apply cwt
+                wave, scales, freqs, coi, fft, fftfreqs = wavelet.cwt(
+                        self.data[d][:,i], self.dt, self.dj, 1/self.max_freq,
+                        self.num_freq - 1, self.mother)
+                # Compute wavelet power spectrum
+                power = np.abs(wave)**2
+                # Normalize over scales (Liu et. al. 07)
+                power /= scales[:, None]
+                # Take the square root to ...
+                power = np.sqrt(power)
+                
+                # Center and rescale trend
+                trend = self.trend[d][:,i]
+                trend_std = np.std(trend)
+                trend = (trend - np.mean(trend)) / trend_std
+
+                # Center and rescale power spectrum 
+                power = (power - np.mean(power)) / trend_std    
+                 
+                # Store new features
+                x_d[:,i] = trend
+                x_d[:,self.n_features - 1 + i*self.num_freq:self.n_features  - 1 +(i + 1)*
+                    self.num_freq] = power
+        
+            self.features.append(x_d)
+
 
         
+
+
     
     def set_original_file_path(self, original_file_path):
         self.original_file_path = original_file_path

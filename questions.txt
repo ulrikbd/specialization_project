@@ -1,4 +1,4 @@
  - LaTeX template? Citations?
- - Why are all points assigned to a behaviour? 
- At times the rats are just running around (I thought this is part of the assumptions).
- - Are the analysis done on one rat at a time?
+ - Why is the time series centered before the detrending?
+ - Could we just normalize the time series in the beginning and be done with it?
+ - In your code twice as high number of frequency scales are used in the transform, before it is averaged over scale intervals afterwards. Where is the justification for this?

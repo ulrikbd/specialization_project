@@ -209,7 +209,7 @@ def wavelet_example(t, y):
     s0 = 1/w_max
     # Largest scale 
     sn = 1/w_min
-    # Number of powers of two with dj sub-octaves
+    # Number of scales minus one
     J =  num_scales - 1
     # Number of sub-octaves per octave
     dj = 1/J*np.log2(sn/s0)
@@ -234,10 +234,12 @@ def wavelet_example(t, y):
     # plot_scalogram(power, t, freqs, scales)
     # plt.show()
     
-    i = 10
-    plt.plot(t, power[i,:])
-    plt.title(str(freqs[i]))
-    plt.show()
+    i = 5 
+    
+    print(period)
+    print(period[2*i])
+    sel = find(abs(period - period[2*i]) < 0.05)
+    print(sel)
 
     
     
