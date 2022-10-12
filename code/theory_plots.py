@@ -10,7 +10,7 @@ from scipy.signal import (
 import pycwt as wavelet
 from pycwt.helpers import find
 
-from helper_functions import plot_scalogram
+from helper_functions import plot_scaleogram
 
 
 def underlying(t):
@@ -230,16 +230,11 @@ def wavelet_example(t, y):
     power /= scales[:, None]
     
     
-    # plt.figure()
-    # plot_scalogram(power, t, freqs, scales)
-    # plt.show()
+    plt.figure()
+    plot_scaleogram(power, t, freqs, scales)
+    plt.show()
     
-    i = 5 
     
-    print(period)
-    print(period[2*i])
-    sel = find(abs(period - period[2*i]) < 0.05)
-    print(sel)
 
     
     
@@ -265,7 +260,7 @@ def main():
     y2 = non_stationary_func(t2) + np.random.normal(0, 0.3, n2)
     
     # spectrogram_example(t2, y2)
-    wavelet_example(t2, y2) 
+    # wavelet_example(t2, y2) 
 
 if __name__ == "__main__":
     main()

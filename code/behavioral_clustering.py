@@ -3,7 +3,7 @@ import pickle as pkl
 
 from helper_functions import (
         pickle_relevant_features, spline_regression,
-        plot_scalogram,
+        plot_scaleogram,
 )
 
 import pycwt as wavelet
@@ -33,6 +33,8 @@ class BehavioralClustering():
             time series by spline regression
         data_detrended (list(np.ndarray)): The detrended
             time series.
+        feature_names (list(str)): Names of the features
+            used
         n_features (int): Number of different recorded
             features, i.e., number of movements recorded
             per animal.
@@ -53,8 +55,12 @@ class BehavioralClustering():
             logarithmic spacing for the scales used
             in the CWT
         mother (str): Mother wavelet used in the CWT
+        power (list(np.ndarray)): The computed power
+            spectrum from the cwt
         features (list(np.ndarray): Features extracted 
             from the time frequency analysis
+        scales (np.ndarray): Stores the cwt scales
+        freqs (np.ndarray): Stores the cwt frequencies
     """
 
     def __init__(self):
@@ -66,7 +72,10 @@ class BehavioralClustering():
         self.spline_dim = 3
         self.trend = []
         self.data_detrended = []
-        self.n_features = None
+        self.feature_names = ["exp0", "exp1", "exp2",
+                              "speed2", "BackPitch",
+                              "BackAzimuth", "NeckElevation"]
+        self.n_features = len(self.feature_names)
         self.capture_framerate = 120 
         self.dt = 1/self.capture_framerate
         self.used_indices = []
@@ -76,8 +85,11 @@ class BehavioralClustering():
         self.max_freq = 20
         self.dj = 1/(self.num_freq - 1)*np.log2(
                 self.max_freq/self.min_freq)
-        self.mother = "MORLET"
-        self.features = None
+        self.mother = "morlet"
+        self.power = []
+        self.features = []
+        self.scales = np.zeros(self.num_freq)
+        self.freqs = np.zeros(self.num_freq)
 
 
     def remove_nan(self):
@@ -127,7 +139,8 @@ class BehavioralClustering():
         centering and rescaling by the trend standard 
         deviation, the extended time series are concatenated
         with the normalized trend data creating new
-        features.
+        features. We store the power matrix, scales and 
+        frequencies to be used for plotting scaleograms.
         """ 
         
         # Iterate over animals
@@ -136,6 +149,10 @@ class BehavioralClustering():
             x_d = np.zeros(shape = (len(self.data[d]),
                                     self.n_features*
                                     (self.num_freq + 1)))
+            # Create storage for power spectrum
+            power_d = np.zeros(shape = (self.n_features,
+                                        self.num_freq,
+                                        len(self.data[d])))
 
             # Iterate over raw features
             for i in range(self.n_features):
@@ -143,12 +160,18 @@ class BehavioralClustering():
                 wave, scales, freqs, coi, fft, fftfreqs = wavelet.cwt(
                         self.data[d][:,i], self.dt, self.dj, 1/self.max_freq,
                         self.num_freq - 1, self.mother)
+                # Store the frequencies and scales
+                if scales.all() != self.scales.all():
+                    self.scales = scales
+                    self.freqs = freqs
                 # Compute wavelet power spectrum
-                power = np.abs(wave)**2
+                power_i = np.abs(wave)**2
                 # Normalize over scales (Liu et. al. 07)
-                power /= scales[:, None]
+                power_i /= scales[:, None]
+                # Store power
+                power_d[i] = power_i
                 # Take the square root to ...
-                power = np.sqrt(power)
+                power_i = np.sqrt(power_i)
                 
                 # Center and rescale trend
                 trend = self.trend[d][:,i]
@@ -156,20 +179,16 @@ class BehavioralClustering():
                 trend = (trend - np.mean(trend)) / trend_std
 
                 # Center and rescale power spectrum 
-                power = (power - np.mean(power)) / trend_std    
-                 
+                power_i = (power_i - np.mean(power_i)) / trend_std    
                 # Store new features
                 x_d[:,i] = trend
                 x_d[:,self.n_features - 1 + i*self.num_freq:self.n_features  - 1 +(i + 1)*
-                    self.num_freq] = power
+                    self.num_freq] = power_i.T
         
             self.features.append(x_d)
-
+            self.power.append(power_d)
 
         
-
-
-    
     def set_original_file_path(self, original_file_path):
         self.original_file_path = original_file_path
 

@@ -460,7 +460,7 @@ It is computationally efficient \cite{torrence} to represent the CWT as the inve
                       -\frac{2\pi k}{n \delta t},   &  k > \frac{n}{2} \\
                 \end{cases}.
 \end{align*}
-As always we are interested in the power spectrum, which for the CWT is defined as $|\tilde{f}_n(s,\tau)|^w$.
+As always we are interested in the power spectrum, which for the CWT is defined as $|\tilde{f}_n(s,\tau)|^2$.
 
 There exists many choices for the mother wavelet, and certain important criteria it must satisfy \cite{kaiser}.
 One popular wavelet is the Morlet wavelet defined as
@@ -572,7 +572,7 @@ Figure \ref{fig:detrending_bc} shows an example of a detrended time series using
 
 \begin{figure}[tb ]
         \centering
-        \includegraphics[width=\linewidth]{./code/figures/detrending_bc.pdf}
+        \includegraphics[width=\linewidth]{./code/figures/detrending/detrending_animal_1_BackPitch.pdf}
         \caption{Detrended time series using cubic spline regression.
         The top figure shows the original time series in black with the fitted trend in red.
 The bottom figure shows the detrended time series.}
@@ -583,20 +583,36 @@ The bottom figure shows the detrended time series.}
 \subsection{Time Frequency Analysis}
 To make the extracted features comparable, we normalize the time series by dividing it by its standard deviation
 \begin{equation*}
-        \sigma_y = \frac{1}{n}\sum_{t = 1}^{n} \left( y_t - \frac{1}{n}\sum_{i = 1}^{n}y_i \right)^2.
+        \sigma_x = \frac{1}{m}\sum_{t = 1}^{m} \left( x_t - \frac{1}{m}\sum_{i = 1}^{m}x_i \right)^2.
 \end{equation*}
 The detrended time series contain information about how the movements vary around the trend.
 We assume this movement is repetitive in nature, and can be interpreted as a signal.
 By applying time frequency analysis to the detrended time series, we obtain additional information about how the frequencies of these movements vary over time.
-In turn this can contribute to detecting the clusters behaviour clusters.
+In turn this can contribute to detecting the behavioural clusters.
 
 As we are unaware of at which scales these movements occur beforehand, we opt for a continuous wavelet transform as opposed to the short-time Fourier transform.
 Let $J$ be the number of predefined frequency scales, ranging from $\omega_{\text{min}}$ to $\omega_{\text{max}}$.
-The scales $s_1, s_2, \hdots, s_n$ in equation \eqref{eq:cwt_d} are chosen as fractional powers of two—as suggested in \cite{torrence}—e.g.,
+The scales $s_1, s_2, \hdots, s_J$ in equation \eqref{eq:cwt_d} are chosen as fractional powers of two—as suggested in \cite{torrence}—e.g.,
 \begin{align*}
-        &s_j = \frac{2^{j\delta j}}{\omega_{\text{max}}}, \quad j = 0, 1, \hdots, J - 1, \\
+        &s_j = \frac{2^{(j - 1)\delta j}}{\omega_{\text{max}}}, \quad j = 1, 2, \hdots, J, \\
         & \delta j = \frac{1}{J - 1} \log_2 \left( \frac{\omega_{\text{max}}}{\omega_{\text{min}}} \right).
 \end{align*}
+Choice of mother wavelet can for instance be based on expected features in the time series \cite{torrence}.
+Using equation \eqref{eq:cwt_d} we compute the discrete continuous wavelet transform $\tilde{f}_m(s, \tau)$, and in turn the scaled scaleogram
+\begin{equation}\label{eq:s_spec}
+       \frac{1}{s_j} \left|\tilde{f}_m(s_j, t) \right|^2, \quad j = 1, 2, \hdots, J, \ t = 1, 2, \hdots, m.
+\end{equation}
+The scaling is done to keep the power comparable across the varying scales \cite{liu}.
+An example plot of such a scaleogram is shown in figure \ref{fig:scaleogram_bc}.
+
+\begin{figure}[tb]
+        \centering
+        \includegraphics[width=\linewidth]{./code/figures/scaleograms/scaleogram_animal_1_BackPitch.pdf}
+        \caption{Scaleogram of the continuous wavelet transform performed on the detrended time series shown in figure \ref{fig:detrending_bc}.
+        The figure shows how the power at different frequency scales changes over time.}
+        \label{fig:scaleogram_bc}
+\end{figure}
+
 
 
 

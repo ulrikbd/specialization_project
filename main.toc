@@ -26,5 +26,5 @@
 \contentsline {section}{\numberline {3.1}Feature extraction}{19}{section.3.1}%
 \contentsline {subsection}{\numberline {3.1.1}Detrending}{19}{subsection.3.1.1}%
 \contentsline {subsection}{\numberline {3.1.2}Time Frequency Analysis}{19}{subsection.3.1.2}%
-\contentsline {section}{\numberline {3.2}Manifold embedding}{20}{section.3.2}%
-\contentsline {chapter}{Bibliography}{21}{section*.4}%
+\contentsline {section}{\numberline {3.2}Manifold embedding}{21}{section.3.2}%
+\contentsline {chapter}{Bibliography}{23}{section*.4}%

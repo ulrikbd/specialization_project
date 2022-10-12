@@ -136,7 +136,7 @@ def rot2expmap(rot_mat):
 
 
 
-def plot_scaleogram(power, t, freqs, scales):
+def plot_scalogram(power, t, freqs, scales):
     """
     Plots the spectrogram of the power density
     achived using a continuous wavelet transform
@@ -148,10 +148,13 @@ def plot_scaleogram(power, t, freqs, scales):
      
     # Find appropriate contour levels
     ax = plt.subplot()
-    min_level = np.log2(power).min() / 2
-    max_level = np.max([np.log2(power).max(), 1])
-    level_step = (max_level - min_level) / 9
-    levels = np.arange(min_level, max_level + level_step, level_step)
+    min_level = int(np.log2(power).min())
+    max_level = int(np.log2(power).max())
+    level_step = (max_level - min_level) // 10 
+    levels = np.arange(min_level, max_level + level_step,
+                       level_step)
+
+    level = np.log2([0.0625, 0.125, 0.25, 0.5, 1, 2, 4, 8, 16])
 
     cnf = plt.contourf(t, np.log2(freqs), np.log2(power),
                  levels = levels, extend="both",
@@ -163,5 +166,5 @@ def plot_scaleogram(power, t, freqs, scales):
                            np.ceil(np.log2(freqs).max()))
     ax.set_yticks(np.log2(y_ticks))
     ax.set_yticklabels(y_ticks)
-    ax.set_xlabel("Time [" + r'$s$' + "]")
-    ax.set_ylabel("Frequency [Hz]")
+    ax.set_xlabel("Time")
+    ax.set_ylabel("Frequency")
