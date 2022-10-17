@@ -469,6 +469,24 @@ One popular wavelet is the Morlet wavelet defined as
 \end{equation}
 where $\omega_0$ is a parameter chosen to fit the criteria.
 
+In figure \ref{fig:scaleogram_ex} a scaleogram is shown for the function
+\begin{equation}\label{eq:ex_scale}
+        f(t) = 
+                \begin{cases}
+                        3 \sin(2.4 \cdot 2\pi t) + 2 \sin(4.7 \cdot 2 \pi t) + \sin(17 \cdot 2 \pi t), & t < 30 \\
+                        \sin(0.7 \cdot 2 \pi t) + 2 \sin(1.4 \cdot 2 \pi t) + 3 \sin(6.4 \cdot 2 \pi t), & t \geq 30, \\
+                \end{cases}
+\end{equation}
+with added Gaussian noise.
+The continuous wavelet transform is computed at 18 frequencies between $0.5$Hz and $18$ Hz.
+
+\begin{figure}[tb]
+        \centering
+        \includegraphics[width=\linewidth]{./code/figures/scaleogram_example.pdf}
+        \caption{An example of a scaleogram of the continuous wavelet transform of function \eqref{eq:ex_scale}.
+        The }
+        \label{fig:scaleogram_ex}
+\end{figure}
 
 
 
@@ -515,7 +533,7 @@ A common choice is letting $k = 3$, providing continuous second derivatives over
 This is called \textit{cubic} splines, and are often considered sufficiently smooth for function approximations.
 It is also common to add curvature constraints at the endpoints, $s_3''(a) = s_3''(b)$, arriving at the \textit{natural} cubic splines.
 
-\subsection{Regression splines}
+\subsection{Regression Splines}
 Suppose now we have data points $y_{t_1}, y_{t_2}, \hdots, y_{t_n}$ on $[a = t_1, b = t_n]$. 
 A spline of order $k$ with chosen knots at $a = t_1 = \xi_0, \xi_1, \hdots, \xi_{M} = t_n = b$ can be parameterized as 
 \begin{equation}\label{eq:lsq_spline}
@@ -530,7 +548,7 @@ with $(t)_+ = \max_{} \{ t, 0 \}$ \cite{hastie}.
 The parameters $\beta_i$ can be found using least squares.
 An example of cubic spline regression are shown in figure \ref{fig:cubic_splines}.
 
-\begin{figure}[tb ]
+\begin{figure}[tb]
         \centering
         \includegraphics[width=\linewidth]{./code/figures/cubic_splines.pdf}
         \caption{Two cubic splines fitted using least square regression on the time series from figure \ref{fig:time_series_example}.
@@ -541,8 +559,26 @@ An example of cubic spline regression are shown in figure \ref{fig:cubic_splines
 
 
 
-\section{Dimensionality reduction}
+\section{Dimensionality Reduction}
+Suppose we have $n$ datapoints, each having $p$ numerical features. 
+Mathematically we represent them as the vectors $x_i = (x_{i1}, x_{i2}, \hdots, x_{in} ) \in \mathbb{R}^p, \ i = 1, 2, \hdots, n$, often represented in the $n \times p$ data matrix $X, \ X_{ij} = x_{ij}, \ i = 1, 2, \hdots, n, \ j = 1, 2, \hdots, p$.
+Dimensionality reduction is about finding a low dimensional representation of the data still containing most of its properties.
+There can be many reasons for performing dimensionality reduction, and often it is performed as a form of feature extraction used before predictive modelling or clustering \cite{hastie}.
+If the data is sparse or the features highly correlated, reducing the dimensionality could improve computation speed and remove noise.
+Reducing the data to two dimensions often allows for easier visualization and interpretability of the data.
+
+
+
 \subsection{Principal Component Analysis}
+
+
+
+
+
+
+
+
+
 \subsection{t-Stochastic Neighbor Embedding}
 \section{Watershed segmentation}
 

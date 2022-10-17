@@ -182,7 +182,7 @@ class BehavioralClustering():
                 power_i = (power_i - np.mean(power_i)) / trend_std    
                 # Store new features
                 x_d[:,i] = trend
-                x_d[:,self.n_features - 1 + i*self.num_freq:self.n_features  - 1 +(i + 1)*
+                x_d[:,self.n_features + i*self.num_freq:self.n_features +(i + 1)*
                     self.num_freq] = power_i.T
         
             self.features.append(x_d)

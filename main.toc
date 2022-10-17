@@ -16,12 +16,12 @@
 \contentsline {subsection}{\numberline {2.4.1}Short-Time Fourier Transform}{14}{subsection.2.4.1}%
 \contentsline {subsection}{\numberline {2.4.2}Wavelet Transform}{15}{subsection.2.4.2}%
 \contentsline {section}{\numberline {2.5}Piecewise polynomials}{16}{section.2.5}%
-\contentsline {subsection}{\numberline {2.5.1}Splines}{16}{subsection.2.5.1}%
-\contentsline {subsection}{\numberline {2.5.2}Regression splines}{17}{subsection.2.5.2}%
-\contentsline {section}{\numberline {2.6}Dimensionality reduction}{17}{section.2.6}%
-\contentsline {subsection}{\numberline {2.6.1}Principal Component Analysis}{17}{subsection.2.6.1}%
-\contentsline {subsection}{\numberline {2.6.2}t-Stochastic Neighbor Embedding}{17}{subsection.2.6.2}%
-\contentsline {section}{\numberline {2.7}Watershed segmentation}{17}{section.2.7}%
+\contentsline {subsection}{\numberline {2.5.1}Splines}{17}{subsection.2.5.1}%
+\contentsline {subsection}{\numberline {2.5.2}Regression Splines}{17}{subsection.2.5.2}%
+\contentsline {section}{\numberline {2.6}Dimensionality Reduction}{17}{section.2.6}%
+\contentsline {subsection}{\numberline {2.6.1}Principal Component Analysis}{18}{subsection.2.6.1}%
+\contentsline {subsection}{\numberline {2.6.2}t-Stochastic Neighbor Embedding}{18}{subsection.2.6.2}%
+\contentsline {section}{\numberline {2.7}Watershed segmentation}{18}{section.2.7}%
 \contentsline {chapter}{\chapternumberline {3}Methodology}{19}{chapter.3}%
 \contentsline {section}{\numberline {3.1}Feature extraction}{19}{section.3.1}%
 \contentsline {subsection}{\numberline {3.1.1}Detrending}{19}{subsection.3.1.1}%

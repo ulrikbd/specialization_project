@@ -25,7 +25,7 @@ def non_stationary_func(t):
     """
     w1, w2, w3 = 2.4, 4.7, 17
     w4, w5, w6 = 0.7, 1.4, 6.4
-    return np.where(t < 40, 3*np.sin(w1*2*np.pi*t) + 2*np.sin(w2*2*np.pi*t) + np.sin(w3*2*np.pi*t),
+    return np.where(t < 30, 3*np.sin(w1*2*np.pi*t) + 2*np.sin(w2*2*np.pi*t) + np.sin(w3*2*np.pi*t),
                np.sin(w4*2*np.pi*t) + 2*np.sin(w5*2*np.pi*t) + 3*np.sin(w6*2*np.pi*t))
 
 
@@ -191,13 +191,10 @@ def wavelet_example(t, y):
     # Normalize
     std = np.std(y)
     y = (y - np.mean(y)) / std
-
     # Save length
     n = len(y)
-
     # Sampling time
     dt = t[1] - t[0]
-
     # Number of frequency scales
     num_scales = 18
     # Frequency upper bound
@@ -227,12 +224,13 @@ def wavelet_example(t, y):
     period = 1/freqs
 
     # Divide power by the scales to be able to compare them Liu 2007
-    power /= scales[:, None]
+    # power /= scales[:, None]
     
     
-    plt.figure()
+    plt.figure(figsize = (12, 5))
     plot_scaleogram(power, t, freqs, scales)
-    plt.show()
+    plt.savefig("./figures/scaleogram_example.pdf")
+    # plt.show()
     
     
 
@@ -255,12 +253,12 @@ def main():
     # plot_windows()
 
     # Generate sample time series
-    t2 = np.arange(10000) / 120
+    t2 = np.arange(60*120 + 1) / 120
     n2 = len(t2)
     y2 = non_stationary_func(t2) + np.random.normal(0, 0.3, n2)
     
     # spectrogram_example(t2, y2)
-    # wavelet_example(t2, y2) 
+    wavelet_example(t2, y2) 
 
 if __name__ == "__main__":
     main()
