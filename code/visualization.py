@@ -85,11 +85,13 @@ def plot_scaleograms():
         for feat_ind in range(bc.n_features):
             power = bc.power[animal_ind][feat_ind] 
             t = np.arange(len(bc.data[animal_ind])) / bc.capture_framerate
-            # Only plot the first 60 seconds
-            max_ind = 60*bc.capture_framerate 
+
+            # Plot the first 10 seconds in the third minute
+            min_ind = 180*bc.capture_framerate
+            max_ind = min_ind + 10*bc.capture_framerate + 1
             
             plt.figure(figsize = (12, 5))
-            plot_scaleogram(power[:,:max_ind], t[:max_ind],
+            plot_scaleogram(power[:,min_ind:max_ind], t[min_ind:max_ind],
                             bc.freqs, bc.scales)
             path = "./figures/scaleograms/"
             path += ("scaleogram_animal_" + str(animal_ind) +
@@ -102,8 +104,8 @@ def plot_scaleograms():
 
 def main():
     seaborn.set_theme()
-    plot_detrending()
-    # plot_scaleograms()
+    # plot_detrending()
+    plot_scaleograms()
 
 
 

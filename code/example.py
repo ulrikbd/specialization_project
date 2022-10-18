@@ -51,19 +51,6 @@ def load_example():
 def main():
     pickle_example()
     bc = load_example()
-    animal_ind = 1
-    feature_ind = 2
-
-    power = bc.power[animal_ind][feature_ind]
-    power = np.sqrt(power)
-    max_ind = 1000
-    t = np.arange(len(bc.data[animal_ind])) / bc.capture_framerate
-        
-
-    plt.figure()
-    plot_scaleogram(power[:,:max_ind], t[:max_ind], bc.freqs, bc.scales)
-    plt.show()
-
 
 
 

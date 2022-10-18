@@ -570,6 +570,15 @@ Reducing the data to two dimensions often allows for easier visualization and in
 
 
 \subsection{Principal Component Analysis}
+One of the most commonly used dimensionality reduction methods is called principal component analysis (PCA).
+There are multiple ways to both derive and interpret the method.
+Given the $n \times p$ data matrix $X$ we find a sequence of $q \leq p$ orthogonal $p \times 1$ unit vectors $v_1, v_2, \hdots, v_q$, each one chosen such that $Z_j = Xv_j$ has maximum variance.
+On matrix form we write it as $Z = X V_q$, where the columns of $V_q$ are $v_j, j = 1, 2, \hdots, q$. 
+The principal components scores—which represents our new features when applying dimensionality reduction—is given by the $q$ columns in $Z$.
+Let $\Sigma$ be the covariance matrix of $X$.
+It can be shown \cite{jolliffe} that the vectors $v_j$ that maximises the variance while subject to the mentioned constraints, are the eigenvectors of $\Sigma$, with the corresponding eigenvalue $\lambda_j, \ \lambda_i > \lambda_{i+1},\ i = 1, 2, \hdots, p-1$.
+For this reason we need to standardize the columns of $X$ to have mean zero and variance one before applying PCA.
+
 
 
 

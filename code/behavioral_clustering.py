@@ -9,6 +9,7 @@ from helper_functions import (
 import pycwt as wavelet
 from pycwt.helpers import find
 
+from sklearn.decomposition import PCA
 
 
 class BehavioralClustering():
@@ -61,6 +62,13 @@ class BehavioralClustering():
             from the time frequency analysis
         scales (np.ndarray): Stores the cwt scales
         freqs (np.ndarray): Stores the cwt frequencies
+        var_pca (np.ndarray): Percentage ratios of the 
+            explained variance in the principal component
+            analysis
+        n_pca (int): Number of principal components
+            explaining more than 95% of the data
+        fit_pca (np.ndarray): The transformed (reduced) 
+            features using principal component analysis
     """
 
     def __init__(self):
@@ -90,6 +98,9 @@ class BehavioralClustering():
         self.features = []
         self.scales = np.zeros(self.num_freq)
         self.freqs = np.zeros(self.num_freq)
+        self.var_pca = None
+        self.n_pca = None
+        self.fit_pca = None
 
 
     def remove_nan(self):
@@ -188,7 +199,43 @@ class BehavioralClustering():
             self.features.append(x_d)
             self.power.append(power_d)
 
+    
+    def standardize_features(self):
+        """
+        Standardizes the features extracted via CWT such that they can
+        be used in PCA, i.e., with mean zero and variance one.
+        """
         
+        # Iterate over animals
+        for i in range(len(self.data)):
+            self.features[i] = ((self.features[i] - np.mean(self.features[i], axis = 0)) /
+                                np.std(self.features[i], axis = 0))
+
+        
+    def pca(self):
+        """
+        Compute the principal components explaining 95% of
+        the variance in features extracted via CWT.
+        Stores the new reduced features as an attribute.
+        """
+
+        # Concatenate features
+        features = np.concatenate(self.features, axis = 0)
+        
+        # Find principal components
+        pca = PCA()
+        pca.fit(features)
+
+        # Find number of features explaning 95% of the variance
+        self.var_pca = pca.explained_variance_ratio_
+        self.n_pca = np.argmax(np.cumsum(self.var_pca) > 0.95) + 1
+
+        # Apply the transformation using the sufficient
+        # number of principal components
+        pca = PCA(n_components = self.n_pca)
+        self.fit_pca = pca.fit_transform(features)
+          
+
     def set_original_file_path(self, original_file_path):
         self.original_file_path = original_file_path
 
