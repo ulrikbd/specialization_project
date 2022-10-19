@@ -483,24 +483,9 @@ The continuous wavelet transform is computed at 18 frequencies between $0.5$Hz a
 \begin{figure}[tb]
         \centering
         \includegraphics[width=\linewidth]{./code/figures/scaleogram_example.pdf}
-        \caption{An example of a scaleogram of the continuous wavelet transform of function \eqref{eq:ex_scale}.
-        The }
+        \caption{An example of a scaleogram of the continuous wavelet transform of function \eqref{eq:ex_scale} with added Gaussian noise.}
         \label{fig:scaleogram_ex}
 \end{figure}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -575,20 +560,67 @@ There are multiple ways to both derive and interpret the method.
 Given the $n \times p$ data matrix $X$ we find a sequence of $q \leq p$ orthogonal $p \times 1$ unit vectors $v_1, v_2, \hdots, v_q$, each one chosen such that $Z_j = Xv_j$ has maximum variance.
 On matrix form we write it as $Z = X V_q$, where the columns of $V_q$ are $v_j, j = 1, 2, \hdots, q$. 
 The principal components scores—which represents our new features when applying dimensionality reduction—is given by the $q$ columns in $Z$.
-Let $\Sigma$ be the covariance matrix of $X$.
-It can be shown \cite{jolliffe} that the vectors $v_j$ that maximises the variance while subject to the mentioned constraints, are the eigenvectors of $\Sigma$, with the corresponding eigenvalue $\lambda_j, \ \lambda_i > \lambda_{i+1},\ i = 1, 2, \hdots, p-1$.
+Let $S$ be the sample covariance matrix of $X$.
+It can be shown \cite{jolliffe} that the vectors $v_j$ that maximises the variance while subject to the mentioned constraints, are the eigenvectors of $S$, with the corresponding eigenvalue $\lambda_j$. Note that $\lambda_i > \lambda_{i+1},\ i = 1, 2, \hdots, p-1$.
 For this reason we need to standardize the columns of $X$ to have mean zero and variance one before applying PCA.
-
-
-
-
-
-
-
+The proportion of the total variance explained by the first $q$ principal components is given by
+\begin{equation*}
+        \frac{\sum_{i = 1}^{q}\lambda_i}{\sum_{j = 1}^{p} \lambda_j}.
+\end{equation*}
+Thus when using PCA for dimensionality reduction we set a variance threshold, and keep the number of principal components keeping enough variance.
 
 
 
 \subsection{t-Stochastic Neighbor Embedding}
+Another dimensionality reduction method specially suited for visualizing data in two dimension, is called t-Stochastic Neighbor Embedding (t-SNE).
+Again we start with the $n \times p$ data matrix, and wish to embed it into a low dimensional space preserving as much of the original structure in the data as possible.
+Instead of trying to emulate the Euclidian distances between the data points $x_1, x_2, \hdots, x_n$, we convert them into conditional probabilities 
+\begin{equation}\label{eq:gaus}
+       p_{j|i} = \frac{\exp \left\{ \frac{-||x_i - x_j||^2}{2\sigma_i} \right\}}{\sum_{k \neq i}^{} \exp \left\{ \frac{-||x_i - x_k||^2}{2\sigma_i^2} \right\}}, \quad i \neq j, \ p_{i|i} = 0. 
+\end{equation}
+For a point $x_i$, $p_{j|i}$ is large for nearby points $x_j$, the magnitude proportional to a Gaussian distribution centered at $x_i$ with variance $\sigma_i^2$ \cite{hinton}.
+The individual variance $\sigma_i^2$ is a tuning parameter to be chosen by the user.
+
+In the low dimensional representation we model the similarities as joint probabilities based on the Student t-distribution with one degree of freedom
+\begin{equation}\label{eq:student}
+        q_{ij} = \frac{(1 + ||y_i - y_j||^2)^{-1}}{\sum_{k \neq  l}^{}(1 + ||y_k - y_l||^2)^{-1}}, \quad i \neq  j, \ q_{ii} = 0.
+\end{equation}
+It is beneficial to define a joint probability distribution in the high dimensional space as with $p_{ij}= \frac{p_{j|i} + p_{i|j}}{2n}$ \cite{hinton}.
+To find the low dimensional embedding $Y$, t-SNE minimizes the total Kullback-Leibler divergence between the discrete joint probability distributions 
+\begin{equation}\label{eq:KL}
+        KL(P||Q) = \sum_{i = 1}^{n}\sum_{j = 1}^{n} p_{ij}\log \left( \frac{p_{ij}}{q_{ij}} \right).
+\end{equation}
+The choice of using the Student-t distribution in equation \eqref{eq:student} as opposed to a Gaussian (as in the high dimensional space \eqref{eq:gaus}), stems from its heavier tails.
+This allows data points which are relatively dissimilar in the original data, but still close enough to make a difference in the cost function, to be modelled far apart in the low dimensional embedding.
+I.e., t-SNE focusses on the local structures in the data, and allows clusters to be well separated in the embedding.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 \section{Watershed segmentation}
 
 
