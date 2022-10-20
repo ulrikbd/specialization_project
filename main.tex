@@ -594,6 +594,21 @@ The choice of using the Student-t distribution in equation \eqref{eq:student} as
 This allows data points which are relatively dissimilar in the original data, but still close enough to make a difference in the cost function, to be modelled far apart in the low dimensional embedding.
 I.e., t-SNE focusses on the local structures in the data, and allows clusters to be well separated in the embedding.
 
+Furthermore, we need to choose the tuning parameters $\sigma_i$.
+They relate to the Gaussian distribution modelling the neighbors of $x_i$.
+For points with many close by neighbors it makes sense to keep $\sigma_i$ small, while increasing it is beneficial when there are few neighbors.
+The algorithm solves this by letting the user choose a perplexity parameter
+\begin{equation*}
+        \text{Perp}(P_i) = 2^{H(P_i)}, \\
+\end{equation*}
+where 
+\begin{equation*}
+        H(P_i) = -\sum_{j = 1}^{n}\log_2(p_{j|i})
+\end{equation*}
+is the Shannon entropy.
+Then it finds $\sigma_i$ such that the perplexity satisfies our choice.
+Van der Maaten and Hinton \cite{hinton} suggests values between 5 and 50, roughly reflecting the number of neighbors in the algorithm.
+
 
 
 
@@ -682,6 +697,8 @@ Using equation \eqref{eq:cwt_d} we compute the discrete continuous wavelet trans
 The scaling is done to keep the power comparable across the varying scales \cite{liu}.
 An example plot of such a scaleogram is shown in figure \ref{fig:scaleogram_bc}.
 
+\textcolor{red}{There is more done here, square root etc..}
+
 \begin{figure}[tb]
         \centering
         \includegraphics[width=\linewidth]{./code/figures/scaleograms/scaleogram_animal_1_BackPitch.pdf}
@@ -693,14 +710,13 @@ An example plot of such a scaleogram is shown in figure \ref{fig:scaleogram_bc}.
 
 
 
-
-
-
-
-
-
 \section{Manifold embedding}
-
+After performing the time-frequency analysis on all time series for all animals, we concatenate the results into a new feature vector.
+For animal $d$, we have $m_d$ time points, each containing information about the $n$ trend values, together with the $n \cdot J$ frequency powers.
+The concatenated feature vector thus have dimension $(m_1 + m_2 + \hdots + m_D) \times (n \cdot (J + 1))$.
+To cluster these time points into behaviours, we first reduce the feature dimension.
+It is logical that there should exist strong correlations between the various frequencies.
+\textcolor{red}{Insert discussion about why we do PCA first. Computation time for the t-SNE?}
 
 
 
