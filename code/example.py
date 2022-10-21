@@ -20,6 +20,8 @@ def get_example_pipeline():
     bc.remove_nan()
     bc.detrend()
     bc.time_frequency_analysis()
+    bc.pca()
+    bc.tsne()
 
     return bc
 
@@ -49,9 +51,9 @@ def load_example():
 
 
 def main():
-    pickle_example()
+    # pickle_example()
     bc = load_example()
-
+   
 
 
 

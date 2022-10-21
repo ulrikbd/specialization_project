@@ -10,6 +10,7 @@ import pycwt as wavelet
 from pycwt.helpers import find
 
 from sklearn.decomposition import PCA
+from sklearn.manifold import TSNE
 
 
 class BehavioralClustering():
@@ -69,6 +70,11 @@ class BehavioralClustering():
             explaining more than 95% of the data
         fit_pca (np.ndarray): The transformed (reduced) 
             features using principal component analysis
+        ds_rate (int): Downsampling frequency in [Hz],
+            used as t-SNE memory complexity is O(n^2)
+        perp (float): Perplexity parameter used in t-SNE
+        embdedded (np.ndarray): The low dimensional embedding
+            obtained from tsne
     """
 
     def __init__(self):
@@ -101,6 +107,9 @@ class BehavioralClustering():
         self.var_pca = None
         self.n_pca = None
         self.fit_pca = None
+        self.ds_rate = 1
+        self.perp = 30
+        self.embedded = None
 
 
     def remove_nan(self):
@@ -235,6 +244,26 @@ class BehavioralClustering():
         pca = PCA(n_components = self.n_pca)
         self.fit_pca = pca.fit_transform(features)
           
+
+    def tsne(self):
+        """
+        Embed the principal component scores onto a 
+        two dimensional manifold using t-SNE.
+        Previous to the dimensionality reduction 
+        we downsample to reduce memory complexity in
+        the algorithm.
+        """
+
+        # Downsample the principal component scores
+        ind = np.arange(0, len(self.fit_pca),
+                        int(self.capture_framerate * self.ds_rate))
+        train = self.fit_pca[ind,:] 
+
+        # Perform t-SNE
+        self.embedded = TSNE(n_components = 2,
+                            perplexity = self.perp,
+                            init = "pca").fit_transform(train)
+         
 
     def set_original_file_path(self, original_file_path):
         self.original_file_path = original_file_path
