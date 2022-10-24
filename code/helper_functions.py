@@ -7,6 +7,7 @@ import pickle
 from scipy.interpolate import LSQUnivariateSpline
 
 import matplotlib.pyplot as plt
+import numpy.random as rd
 
 
 def spline_regression(y, dim, freq, knot_freq):
@@ -165,3 +166,105 @@ def plot_scaleogram(power, t, freqs, scales):
     ax.set_yticklabels(y_ticks)
     ax.set_xlabel("Time [" + r'$s$' + "]")
     ax.set_ylabel("Frequency [Hz]")
+
+
+def generate_example_data():
+    """
+    Generate example data to test the implementation
+    choices. Each distinct behaviour is characterised
+    by a set of features, each a superpostion of 
+    sine waves corresponding frequencies and amplitudes.
+    """
+
+    rd.seed(666)
+
+    # Number of distinct behaviours
+    n_b = 10
+    # Number of features
+    n_f = 5
+    # Number of sine-waves per feature
+    n_s = 4
+    # Length of recorded time series, in seconds
+    t_max = 240
+    # Capture framerate
+    fr = 120
+    # Example data
+    data = np.zeros(shape = (fr * t_max, n_f))
+    # Store labels
+    labels = np.zeros(len(data))
+    # Time points
+    t = np.arange(t_max * fr) / fr
+    # Expected length of a behaviour, in seconds
+    length = 3
+    # Lower frequency bound, Hz
+    w_lower = 0.5
+    # Upper frequency bound, Hz
+    w_upper = 18
+    # Mu amplitude parameter
+    a_mu = 1 
+    # Sigma amplitude parameter
+    a_sig = 0.5
+    # Determine the corresponding frequencies
+    w = w_lower + (w_upper - w_lower) * rd.rand(n_b, n_f, n_s)
+    # Determine the corresponding amplitudes
+    a = rd.lognormal(mean = a_mu, sigma = a_sig, size = (n_b, n_f, n_s))
+
+    # Define feature generating function given amplitudes and frequencies
+    def feature(freq, ampl, t):
+        val = 0
+        for i in range(len(freq)):
+            val += ampl[i]*np.sin(2*np.pi*freq[i]*t)
+        return val + rd.normal()/2
+
+
+    ## Simulate data
+    # Choose behavioural changing times
+    t_change = np.sort(rd.randint(0, len(data), int(len(data) / length / fr)))
+    t_change = np.append(t_change, len(data))
+    t_change = np.insert(t_change, 0, 0)
+    # Choose behaviour labels
+    behaviours = rd.randint(0, n_b - 1, len(t_change))
+
+    # Iterate through behaviours
+    for i in range(1, len(t_change)):
+        beh = behaviours[i]
+        t_c = t_change[i]
+        t_vals = t[t_change[i - 1]:t_change[i]]
+        labels[t_change[i - 1]:t_change[i]] = np.ones(len(t_vals))*beh
+
+        # Iterate over features
+        for j in range(n_f):
+            freq = w[beh, j, :]
+            ampl = a[beh, j, :]
+            temp = lambda time: feature(freq, ampl, time)
+            data[t_change[i - 1]:t_change[i], j] = temp(t_vals)
+            
+    return data, labels, t_change, behaviours
+        
+
+def get_simulated_data():
+    """
+    Retrieve dictionary of simulated data
+    """
+
+    with open("./extracted_data/simulated_data.pkl", "rb") as file:
+        df = pickle.load(file)
+
+    return df
+
+
+def main():
+    data, labels, t_change, behaviours = generate_example_data()
+    df = {
+            "data": data,
+            "labels": labels,
+            "t_change": t_change,
+            "behaviours": behaviours
+    }
+
+    with open("./extracted_data/simulated_data.pkl", "wb") as file:
+        pickle.dump(df, file)
+
+
+if __name__ == "__main__":
+    main()

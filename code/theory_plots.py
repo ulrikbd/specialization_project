@@ -10,7 +10,10 @@ from scipy.signal import (
 import pycwt as wavelet
 from pycwt.helpers import find
 
-from helper_functions import plot_scaleogram
+from helper_functions import (
+        plot_scaleogram, get_simulated_data,
+)
+                            
 
 
 def underlying(t):
@@ -234,9 +237,6 @@ def wavelet_example(t, y):
     
     
 
-    
-    
-
 def main():
     seaborn.set_theme()
     np.random.seed(28)
@@ -259,6 +259,7 @@ def main():
     
     # spectrogram_example(t2, y2)
     wavelet_example(t2, y2) 
+
 
 if __name__ == "__main__":
     main()
