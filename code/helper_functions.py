@@ -185,7 +185,7 @@ def generate_example_data():
     # Number of sine-waves per feature
     n_s = 4
     # Length of recorded time series, in seconds
-    t_max = 240
+    t_max = 600
     # Capture framerate
     fr = 120
     # Example data
@@ -199,7 +199,7 @@ def generate_example_data():
     # Lower frequency bound, Hz
     w_lower = 0.5
     # Upper frequency bound, Hz
-    w_upper = 18
+    w_upper = 20
     # Mu amplitude parameter
     a_mu = 1 
     # Sigma amplitude parameter
@@ -208,13 +208,15 @@ def generate_example_data():
     w = w_lower + (w_upper - w_lower) * rd.rand(n_b, n_f, n_s)
     # Determine the corresponding amplitudes
     a = rd.lognormal(mean = a_mu, sigma = a_sig, size = (n_b, n_f, n_s))
+    # Gaussian noise added to the features
+    noise_std = 0.2
 
     # Define feature generating function given amplitudes and frequencies
     def feature(freq, ampl, t):
         val = 0
         for i in range(len(freq)):
             val += ampl[i]*np.sin(2*np.pi*freq[i]*t)
-        return val + rd.normal()/2
+        return val + rd.normal(0, noise_std)
 
 
     ## Simulate data
@@ -223,7 +225,7 @@ def generate_example_data():
     t_change = np.append(t_change, len(data))
     t_change = np.insert(t_change, 0, 0)
     # Choose behaviour labels
-    behaviours = rd.randint(0, n_b - 1, len(t_change))
+    behaviours = rd.randint(0, n_b, len(t_change))
 
     # Iterate through behaviours
     for i in range(1, len(t_change)):
@@ -239,7 +241,7 @@ def generate_example_data():
             temp = lambda time: feature(freq, ampl, time)
             data[t_change[i - 1]:t_change[i], j] = temp(t_vals)
             
-    return data, labels, t_change, behaviours
+    return data, labels, t_change, behaviours, w, t
         
 
 def get_simulated_data():
@@ -254,12 +256,14 @@ def get_simulated_data():
 
 
 def main():
-    data, labels, t_change, behaviours = generate_example_data()
+    data, labels, t_change, behaviours, w, t = generate_example_data()
     df = {
             "data": data,
             "labels": labels,
             "t_change": t_change,
-            "behaviours": behaviours
+            "behaviours": behaviours,
+            "freqencies": w,
+            "time": t,
     }
 
     with open("./extracted_data/simulated_data.pkl", "wb") as file:
