@@ -5,9 +5,59 @@ import vg
 import pickle
 
 from scipy.interpolate import LSQUnivariateSpline
+from scipy.stats import gaussian_kde
 
 import matplotlib.pyplot as plt
 import numpy.random as rd
+
+
+
+def estimate_pdf(array, bw):
+    """
+    Estimate the probability density
+    of a 2D array.
+    Applies a kernel density estimator
+    with given bandwidth
+
+    Parameters:
+        array (np.ndarray(float)): Array to be 
+            used for the estimation
+        bw (float): Bandwidth used in the kde algorithm
+    """
+
+
+    kernel = gaussian_kde(array.T)
+
+    xmax, ymax = np.max(array, axis = 0)
+    xmin, ymin = np.min(array, axis = 0)
+    X, Y = np.mgrid[xmin:xmax:100j, ymin:ymax:100j]
+    positions = np.vstack([X.ravel(), Y.ravel()])
+    kde = np.reshape(kernel(positions).T, X.shape)
+    # Truncate low values to zero, such that we get an
+    # outer border
+    kde[np.abs(kde) < 1e-5] = 0
+
+    return kde 
+
+
+def get_watershed_labels(image):
+    """
+    Performs watershed segmentation on
+    an image.
+
+    Parameters:
+        image (ndarray): nxm image array where
+            high values are far from the border.
+    """
+
+    max_coords = peak_local_max(image)
+    local_maxima = np.zeros_like(image, dtype = bool)
+    local_maxima[tuple(max_coords.T)] = True
+    markers = ndi.label(local_maxima)[0]
+    labels = watershed(-image, markers, mask = image)
+
+    return labels
+
 
 
 def spline_regression(y, dim, freq, knot_freq):
@@ -168,9 +218,9 @@ def plot_scaleogram(power, t, freqs, scales):
     ax.set_ylabel("Frequency [Hz]")
 
 
-def generate_example_data():
+def generate_simulated_data():
     """
-    Generate example data to test the implementation
+    Generate simulated data to test the implementation
     choices. Each distinct behaviour is characterised
     by a set of features, each a superpostion of 
     sine waves corresponding frequencies and amplitudes.
@@ -255,8 +305,12 @@ def get_simulated_data():
     return df
 
 
-def main():
-    data, labels, t_change, behaviours, w, t = generate_example_data()
+def pickle_simulated_data():
+    """
+    Generate simulated data and pickle it
+    for easy retrieval elsewhere.
+    """
+    data, labels, t_change, behaviours, w, t = generate_simulated_data()
     df = {
             "data": data,
             "labels": labels,
@@ -268,6 +322,10 @@ def main():
 
     with open("./extracted_data/simulated_data.pkl", "wb") as file:
         pickle.dump(df, file)
+
+
+def main():
+    pickle_simulated_data()
 
 
 if __name__ == "__main__":

@@ -12,8 +12,15 @@ from pycwt.helpers import find
 
 from helper_functions import (
         plot_scaleogram, get_simulated_data,
+        estimate_pdf,
 )
                             
+from simulated_data import load_simulated
+
+import cv2
+from skimage.segmentation import watershed
+from skimage.feature import peak_local_max
+from scipy import ndimage as ndi
 
 
 def underlying(t):
@@ -237,6 +244,37 @@ def wavelet_example(t, y):
     
     
 
+def watershed_example():
+    """
+    Applies kernel denisity estimation
+    followed by watershed segmentation
+    on simulated data.
+    Plots exemplifies the groupings.
+    """
+    df = load_simulated()
+    bc = df["bc"]
+    data = bc.embedded
+    kde = estimate_pdf(data, 0.2)
+
+    plt.figure()
+    seaborn.kdeplot(x = data[:,0], y = data[:,1],
+                    fill = True, cmap = "coolwarm",
+                    thresh = 0.05, levels = 40,
+                    bw_method = 0.2)
+    plt.show()
+    
+    plt.figure()
+    ax1 = plt.subplot(121)
+    ax1.imshow(kde, cmap = "coolwarm")
+    ax2 = plt.subplot(122)
+    ax2.imshow(labels)
+    plt.show()
+
+    
+
+
+
+
 def main():
     seaborn.set_theme()
     np.random.seed(28)
@@ -258,7 +296,9 @@ def main():
     y2 = non_stationary_func(t2) + np.random.normal(0, 0.3, n2)
     
     # spectrogram_example(t2, y2)
-    wavelet_example(t2, y2) 
+    # wavelet_example(t2, y2) 
+
+    watershed_example()
 
 
 if __name__ == "__main__":
