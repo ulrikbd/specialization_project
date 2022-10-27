@@ -610,24 +610,21 @@ Then it finds $\sigma_i$ such that the perplexity satisfies our choice.
 Van der Maaten and Hinton \cite{hinton} suggests values between 5 and 50, roughly reflecting the number of neighbors in the algorithm.
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+\section{Kernel Density Estimation}
+Let $x_1, x_2, \hdots, x_n, \ x_i \in \mathbb{R}^p$ be a random sample from a random variable with an underlying unknown density function $f(x)$, which we want to estimate.
+The general expression for the multivariate kernel density estimator is \cite{simonoff}
+\begin{equation}\label{eq:kde}
+        \hat{f}(x)   = \frac{1}{n} \sum_{i = 1}^{n} K_p \left[ H^{-1}(x - x_i) \right],
+\end{equation}
+where $|H| = |\text{det} (H)|$, $H$ being the $p \times p$ non-singular bandwidth matrix.
+The function $K_p : \mathbb{R}^p \rightarrow \mathbb{R}$ in \eqref{eq:kde} is called the kernel function, and must satisfy
+\begin{equation*}
+        \int_{\mathbb{R}^p}^{} K_p [u]du = 1, \ \int_{\mathbb{R}^p}^{}uK_p [u]du = 0 \in \mathbb{R}^p, \ \int_{\mathbb{R}^p}^{} u u^T K_p [u]du = I_p,
+\end{equation*}
+$I_p$ being the $p \times p$ identity matrix \cite{simonoff}.
+We can view $\hat{f}(x)$ as a mixture of densities centered at the observations $x_1, x_2, \hdots, x_n$.
+The bandwidth matrix $H$ needs to be selected by the user.
+Changing the bandwidth matrix has a large impact on the resulting estimated density, and is often chosen to suit the problem at hand.
 
 
 
@@ -637,6 +634,10 @@ Van der Maaten and Hinton \cite{hinton} suggests values between 5 and 50, roughl
 
 
 \section{Watershed segmentation}
+
+
+
+
 
 
 
@@ -720,6 +721,44 @@ It is logical that there should exist strong correlations between the various fr
 
 
 
+
+
+
+
+\chapter{Discussion}
+\section{Simulated Data}
+To exemplify and visualize the impact of various implementation choices, we make use of simulated data inhibiting the properties we assume to be true for animal behaviour.
+We simulate one animal with five recorded time series features, each over ten minutes with a recording frequency of 120Hz.
+We create ten distinct behaviors.
+For each behavior and feature, the underlying feature is generated as a superposition of four sine waves
+\begin{equation*}
+        \sum_{i = 1}^{4} a_i \sin (\omega_i 2 \pi t).
+\end{equation*}
+The $10 \times 5 \times 4$ frequencies $\omega$ are randomly generated uniformly between 0.5Hz and 20Hz.
+Similarly, the amplitudes $a$ are randomly generated as a lognormal distribution with parameters $\mu_a = 1, \sigma_a = 0.5$.
+A Gaussian noise is added with $\mu_n = 0, \sigma_n = 0.2$.
+The length of the behaviors are modelled to follow an exponential distribution with mean $\lambda = 3$.
+This is equivalent to generate $10 \cdot 60 / 3 = 200$ time points uniformly over $[0, 600]$, each interval assigned a random behavior.
+Figure \ref{fig:color_coded_feature_1} shows one such feature, colored by the underlying behaviour at the first 50 seconds.
+
+
+\begin{figure}[tb]
+        \centering
+        \includegraphics[width=1\linewidth]{./code/figures/simulated/features/color_coded_feature_1.pdf}
+        \caption{Simulated feature vector showing changes in behavior during the first 50 seconds.}
+        \label{fig:color_coded_feature_1}
+\end{figure}
+
+
+\section{Benefits of t-SNE}
+
+\begin{itemize}
+        \item Discuss several dimensionality reduction methods and their strength/weakness. 
+                Include sources for all the methods.
+        \item Refer to the theory section about why t-SNE is goo at separating clusters in 2D.
+        \item 
+        Plot 2D visualization of four methods in a grid, on simulated data.
+\end{itemize}
 
 
 
