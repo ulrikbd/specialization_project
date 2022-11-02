@@ -12,7 +12,8 @@ from pycwt.helpers import find
 
 from helper_functions import (
         plot_scaleogram, get_simulated_data,
-        estimate_pdf,
+        estimate_pdf, get_watershed_labels,
+        get_contours, plot_watershed_heat,
 )
                             
 from simulated_data import load_simulated
@@ -254,21 +255,58 @@ def watershed_example():
     df = load_simulated()
     bc = df["bc"]
     data = bc.embedded
-    kde = estimate_pdf(data, 0.2)
+    border = 30
+    bw = 0.2
+    pixels = 1000j 
+    kde = estimate_pdf(data, bw, border, pixels)
+    labels = get_watershed_labels(kde)
+    contours = get_contours(kde, labels)
 
-    plt.figure()
-    seaborn.kdeplot(x = data[:,0], y = data[:,1],
-                    fill = True, cmap = "coolwarm",
-                    thresh = 0.05, levels = 40,
-                    bw_method = 0.2)
+    outside = np.ones(kde.shape)
+    outside[kde == 0] = 0
+
+    xmax, ymax = np.max(data, axis = 0) + border
+    xmin, ymin = np.min(data, axis = 0) - border
+
+    lab = df["labels"][::int(bc.capture_framerate * bc.ds_rate)]
+    plt.figure(figsize = (12, 12))
+    ax1 = plt.subplot(221)
+    plt.imshow(np.zeros(contours.shape), 
+               alpha = np.zeros(contours.shape),
+               extent = [xmin, xmax, ymin, ymax]) 
+    plt.scatter(data[:,0], data[:,1], c = lab + 1,
+                cmap = "Paired", marker = ".")
+    plt.xlim([xmin, xmax])
+    plt.ylim([ymin, ymax])
+    plt.xticks([])
+    plt.yticks([])
+    ax2 = plt.subplot(222, sharex = ax1, sharey = ax1)
+    im1 = ax2.imshow(kde, cmap = "coolwarm", alpha = outside,
+               extent = [xmin, xmax, ymin, ymax]) 
+    plt.grid(None)
+    plt.xticks([])
+    plt.yticks([])
+    ax3 = plt.subplot(223)
+    plot_watershed_heat(data, kde, contours, border)
+    plt.xticks([])
+    plt.yticks([])
+    ax4 = plt.subplot(224)
+    plt.imshow(np.zeros(contours.shape), alpha = contours,
+               extent = [xmin, xmax, ymin, ymax]) 
+    plt.scatter(data[:,0], data[:,1], c = lab + 1,
+                cmap = "Paired", marker = ".")
+    plt.xlim([xmin, xmax])
+    plt.ylim([ymin, ymax])
+    plt.xticks([])
+    plt.yticks([])
+
+    plt.subplots_adjust(wspace = 0.1, hspace = 0)
+
+    
+    # plt.savefig("./figures/clustering_example.pdf",
+                # bbox_inches = "tight")
     plt.show()
     
-    plt.figure()
-    ax1 = plt.subplot(121)
-    ax1.imshow(kde, cmap = "coolwarm")
-    ax2 = plt.subplot(122)
-    ax2.imshow(labels)
-    plt.show()
 
     
 

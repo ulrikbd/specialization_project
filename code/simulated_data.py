@@ -45,7 +45,7 @@ def get_simulated_pipeline():
     bc = BehavioralClustering()
     bc.raw_features = [data]
     bc.n_features = data.shape[1]
-    bc.plot()
+    bc.remove_nan()
     bc.detrend()
     bc.time_frequency_analysis()
     bc.standardize_features()
@@ -106,10 +106,10 @@ def plot_simulated_features(df):
 
 def main():
     seaborn.set_theme()
-    # pickle_simulated()
+    pickle_simulated()
     df = load_simulated()
 
-    plot_simulated_features(df)
+    # plot_simulated_features(df)
 
 
 if __name__ == "__main__":

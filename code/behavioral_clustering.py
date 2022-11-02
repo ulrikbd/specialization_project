@@ -44,9 +44,6 @@ class BehavioralClustering():
             recorded postural time series.
         dt (float): Time interval in the time series
         used_indices (list(np.ndarray)): Indices of non-NaN values
-            in the raw features
-        data (list(list(np.ndarray))): Starting point for the 
-            analysis. Time series data without NaN-values.
         num_freq (int): Number of dyadically spaced frequency
             scales used in the CWT
         min_freq (float): Minumum frequency scale used in 

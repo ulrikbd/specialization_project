@@ -9,6 +9,7 @@ from behavioral_clustering import BehavioralClustering
 
 from example import load_example
 
+
 def describe(array):
     """
     Show descriptive statistics for an numpy.ndarray
@@ -17,6 +18,7 @@ def describe(array):
     print(f'Length: {len(array)}, #NaN: {n_nan}, %NaN: {n_nan / len(array) * 100:.2f}%')
     print(f'Min: {np.nanmin(array):.2f}, Max: {np.nanmax(array):.2f}, '
           f'Mean: {np.nanmean(array):.2f}, Median: {np.nanmedian(array):.2f}')
+
 
 def show_feature_information(relevant_features):
     """

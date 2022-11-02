@@ -12,6 +12,7 @@ seaborn = "*"
 sklearn = "*"
 opencv-python = "*"
 scikit-image = "*"
+imutils = "*"
 
 [dev-packages]
 

@@ -6,33 +6,45 @@ import pickle
 
 from scipy.interpolate import LSQUnivariateSpline
 from scipy.stats import gaussian_kde
+from scipy import ndimage as ndi
 
 import matplotlib.pyplot as plt
 import numpy.random as rd
 
+from skimage.segmentation import watershed
+from skimage.feature import peak_local_max
+
+import cv2 as cv
+import imutils
 
 
-def estimate_pdf(array, bw):
+
+def estimate_pdf(array, bw, border, pixels):
     """
     Estimate the probability density
     of a 2D array.
     Applies a kernel density estimator
     with given bandwidth
 
-    Parameters:
+    Arguments:
         array (np.ndarray(float)): Array to be 
             used for the estimation
         bw (float): Bandwidth used in the kde algorithm
+        border (float): Padding around data to make
+            watershed segmentation easier
+        pixels (int): Pixelation along each axis
+            to compute the pdf on
     """
 
 
     kernel = gaussian_kde(array.T)
 
-    xmax, ymax = np.max(array, axis = 0)
-    xmin, ymin = np.min(array, axis = 0)
-    X, Y = np.mgrid[xmin:xmax:100j, ymin:ymax:100j]
+    xmax, ymax = np.max(array, axis = 0) + border
+    xmin, ymin = np.min(array, axis = 0) - border
+    X, Y = np.mgrid[xmin:xmax:pixels, ymin:ymax:pixels]
     positions = np.vstack([X.ravel(), Y.ravel()])
     kde = np.reshape(kernel(positions).T, X.shape)
+    kde = np.rot90(kde)
     # Truncate low values to zero, such that we get an
     # outer border
     kde[np.abs(kde) < 1e-5] = 0
@@ -45,7 +57,7 @@ def get_watershed_labels(image):
     Performs watershed segmentation on
     an image.
 
-    Parameters:
+    Arguments:
         image (ndarray): nxm image array where
             high values are far from the border.
     """
@@ -57,6 +69,69 @@ def get_watershed_labels(image):
     labels = watershed(-image, markers, mask = image)
 
     return labels
+
+
+def get_contours(image, labels):
+    """
+    Obtain the contours for an image,
+    here a watershed segmentation.
+
+    Arguments:
+        image (ndarray): nxm image array where
+            high values are far from the border.
+        labels (ndarray): nxm array with the 
+            labels found by watershed segmentation
+
+    Returns:
+        countours (ndarray): nxm array which is
+            zero everywhere except at countours,
+            where it is one.
+    """
+
+    unique_labels = np.unique(labels)
+    # Create space for the contours
+    contours = np.zeros(image.shape)
+
+    
+    # Iterate over the clusters
+    for i in range(1, len(unique_labels)):
+        # Create image only showing the single cluster
+        mask = np.zeros(image.shape, dtype = "uint8")
+        mask[labels == unique_labels[i]] = 255
+
+        # Find the contours
+        cnts = cv.findContours(mask.copy(),
+                                cv.RETR_LIST,
+                                cv.CHAIN_APPROX_NONE)
+        cnts = imutils.grab_contours(cnts)[0]
+        
+        for pair in cnts:
+            contours[pair[0][0], pair[0][1]] = 1
+
+    return contours.T
+
+
+def plot_watershed_heat(data, image, contours, border):
+    """
+    Plots the segmented heatmat of the pdf obtained
+    via kernel density estimation of the t-SNE
+    embedding.
+
+    Arguments:
+        data (ndarray):
+    """
+
+    xmax, ymax = np.max(data, axis = 0) + border
+    xmin, ymin = np.min(data, axis = 0) - border
+
+    outside = np.ones(image.shape)
+    outside[image == 0] = 0
+
+    plt.imshow(image, cmap = "coolwarm", alpha = outside,
+               extent = [xmin, xmax, ymin, ymax]) 
+    plt.imshow(np.zeros(contours.shape), alpha = contours,
+               extent = [xmin, xmax, ymin, ymax]) 
+    plt.grid(None)
 
 
 
