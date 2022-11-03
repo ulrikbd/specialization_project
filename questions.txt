@@ -1,4 +1,0 @@
- - LaTeX template? Citations?
- - Why is the time series centered before the detrending?
- - Could we just normalize the time series in the beginning and be done with it?
- - In your code twice as high number of frequency scales are used in the transform, before it is averaged over scale intervals afterwards. Where is the justification for this?

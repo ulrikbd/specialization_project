@@ -11,9 +11,14 @@
 *.gz
 
 
-# Hide the data
+# Hide the data and litterature
 /code/dataset/
 /code/extracted_data/
-/litterature/kaiser.pdf
+/litterature/
 /code/figures/
 /code/models/
+
+
+# Personal files
+notes.txt
+questions.txt

@@ -625,6 +625,7 @@ $I_p$ being the $p \times p$ identity matrix \cite{simonoff}.
 We can view $\hat{f}(x)$ as a mixture of densities centered at the observations $x_1, x_2, \hdots, x_n$.
 The bandwidth matrix $H$ needs to be selected by the user.
 Changing the bandwidth matrix has a large impact on the resulting estimated density, and is often chosen to suit the problem at hand.
+An example of kernel density estimation is shown in figure \ref{fig:clustering_example}.
 
 
 
@@ -632,11 +633,22 @@ Changing the bandwidth matrix has a large impact on the resulting estimated dens
 
 
 
+\section{Watershed Segmentation}
+Watershed segmentation is an image processing technique commonly used to separate objects in an image.
+Assuming a greyscale image it treats it like a topological map where intense areas are considered to have large altitude \cite{najman}.
+Using an estimated gradient the algorithm finds the local minima in the image, and gradually "flood" the topography with water and mark the lines where the filled basins meet.
+The watershed segmentation applied to an estimated probability density function is shown in figure \ref{fig:clustering_example}.
 
-\section{Watershed segmentation}
 
-
-
+\begin{figure}[tb]
+        \centering
+        \includegraphics[width=0.8\linewidth]{./code/figures/clustering_example.pdf}
+        \caption{Clustering in the t-SNE plane. \textit{Top left}: t-SNE embedding of simulated data, color coded by actual behavior. 
+        \textit{Top right}: Kernel density estimation of the t-SNE embedding.
+\textit{Bottom left}: Watershed segmentation applied to the kernel density estimation.
+\textit{Bottom right}: Contours of the watershed segmentation with the t-SNE clusters shown inside.}
+        \label{fig:clustering_example}
+\end{figure}
 
 
 
