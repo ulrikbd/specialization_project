@@ -14,6 +14,7 @@ from helper_functions import (
         plot_scaleogram, get_simulated_data,
         estimate_pdf, get_watershed_labels,
         get_contours, plot_watershed_heat,
+        assign_labels,
 )
                             
 from simulated_data import load_simulated
@@ -252,15 +253,17 @@ def watershed_example():
     on simulated data.
     Plots exemplifies the groupings.
     """
+
     df = load_simulated()
     bc = df["bc"]
     data = bc.embedded
     border = 30
     bw = 0.2
-    pixels = 1000j 
-    kde = estimate_pdf(data, bw, border, pixels)
+    pixels = 200j 
+    kde, grid = estimate_pdf(data, bw, border, pixels)
     labels = get_watershed_labels(kde)
     contours = get_contours(kde, labels)
+    data_labels = assign_labels(data, labels, grid) 
 
     outside = np.ones(kde.shape)
     outside[kde == 0] = 0
@@ -269,48 +272,52 @@ def watershed_example():
     xmin, ymin = np.min(data, axis = 0) - border
 
     lab = df["labels"][::int(bc.capture_framerate * bc.ds_rate)]
+
+    # plt.figure(figsize = (12, 12))
+    # ax1 = plt.subplot(221)
+    # plt.imshow(np.zeros(contours.shape), 
+    #            alpha = np.zeros(contours.shape),
+    #            extent = [xmin, xmax, ymin, ymax]) 
+    # plt.scatter(data[:,0], data[:,1], c = lab + 1,
+    #             cmap = "Paired", marker = ".")
+    # plt.xlim([xmin, xmax])
+    # plt.ylim([ymin, ymax])
+    # plt.xticks([])
+    # plt.yticks([])
+    # ax2 = plt.subplot(222, sharex = ax1, sharey = ax1)
+    # im1 = ax2.imshow(kde, cmap = "coolwarm", alpha = outside,
+    #            extent = [xmin, xmax, ymin, ymax]) 
+    # plt.grid(None)
+    # plt.xticks([])
+    # plt.yticks([])
+    # ax3 = plt.subplot(223)
+    # plot_watershed_heat(data, kde, contours, border)
+    # plt.xticks([])
+    # plt.yticks([])
+    # ax4 = plt.subplot(224)
+    # plt.imshow(np.zeros(contours.shape), alpha = contours,
+    #            extent = [xmin, xmax, ymin, ymax]) 
+    # plt.scatter(data[:,0], data[:,1], c = lab + 1,
+    #             cmap = "Paired", marker = ".")
+    # plt.xlim([xmin, xmax])
+    # plt.ylim([ymin, ymax])
+    # plt.xticks([])
+    # plt.yticks([])
+    # plt.subplots_adjust(wspace = 0.1, hspace = 0)
+    # plt.savefig("./figures/clustering_example.pdf",
+    # plt.show()
+    
+
+
     plt.figure(figsize = (12, 12))
     ax1 = plt.subplot(221)
-    plt.imshow(np.zeros(contours.shape), 
-               alpha = np.zeros(contours.shape),
-               extent = [xmin, xmax, ymin, ymax]) 
-    plt.scatter(data[:,0], data[:,1], c = lab + 1,
-                cmap = "Paired", marker = ".")
-    plt.xlim([xmin, xmax])
-    plt.ylim([ymin, ymax])
-    plt.xticks([])
-    plt.yticks([])
-    ax2 = plt.subplot(222, sharex = ax1, sharey = ax1)
-    im1 = ax2.imshow(kde, cmap = "coolwarm", alpha = outside,
-               extent = [xmin, xmax, ymin, ymax]) 
-    plt.grid(None)
-    plt.xticks([])
-    plt.yticks([])
-    ax3 = plt.subplot(223)
-    plot_watershed_heat(data, kde, contours, border)
-    plt.xticks([])
-    plt.yticks([])
-    ax4 = plt.subplot(224)
     plt.imshow(np.zeros(contours.shape), alpha = contours,
                extent = [xmin, xmax, ymin, ymax]) 
-    plt.scatter(data[:,0], data[:,1], c = lab + 1,
+    plt.scatter(data[:,0], data[:,1], c = data_labels,
                 cmap = "Paired", marker = ".")
     plt.xlim([xmin, xmax])
     plt.ylim([ymin, ymax])
-    plt.xticks([])
-    plt.yticks([])
-
-    plt.subplots_adjust(wspace = 0.1, hspace = 0)
-
-    
-    # plt.savefig("./figures/clustering_example.pdf",
-                # bbox_inches = "tight")
     plt.show()
-    
-
-    
-
-
 
 
 def main():

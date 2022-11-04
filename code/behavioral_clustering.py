@@ -3,7 +3,8 @@ import pickle as pkl
 
 from helper_functions import (
         pickle_relevant_features, spline_regression,
-        plot_scaleogram,
+        plot_scaleogram, estimate_pdf, 
+        get_watershed_labels, assign_labels,
 )
 
 import pycwt as wavelet
@@ -11,6 +12,8 @@ from pycwt.helpers import find
 
 from sklearn.decomposition import PCA
 from sklearn.manifold import TSNE
+
+from scipy.spatial.distance import cdist
 
 
 class BehavioralClustering():
@@ -72,6 +75,16 @@ class BehavioralClustering():
         perp (float): Perplexity parameter used in t-SNE
         embdedded (np.ndarray): The low dimensional embedding
             obtained from tsne
+        tsne_ind (np.ndarray): Indices of time points used
+            when finding the t-SNE embedding
+        kde (np.ndarray): Kernel density estimation of
+            the t-SNE embedding
+        grid (list(np.ndarray)): Grid on which the 
+            kernel density estimation is applied
+        bw (float): Bandwidth used in the kernel
+            density estimation
+        ws_labels (np.ndarray): Assigned clusters
+            found by watershed segmentation
     """
 
     def __init__(self):
@@ -107,6 +120,9 @@ class BehavioralClustering():
         self.ds_rate = 1
         self.perp = 30
         self.embedded = None
+        self.kde = None
+        self.bw = 0.2
+        self.ws_labels = None
 
 
     def remove_nan(self):
@@ -252,14 +268,67 @@ class BehavioralClustering():
         """
 
         # Downsample the principal component scores
-        ind = np.arange(0, len(self.fit_pca),
+        self.tsne_ind = np.arange(0, len(self.fit_pca),
                         int(self.capture_framerate * self.ds_rate))
-        train = self.fit_pca[ind,:] 
+        train = self.fit_pca[self.tsne_ind,:] 
 
         # Perform t-SNE
         self.embedded = TSNE(n_components = 2,
                             perplexity = self.perp,
                             init = "pca").fit_transform(train)
+         
+    
+    def kernel_density_estimation(self, pixels):
+        """
+        Perform kernel density estimation on the t-SNE 
+        embedding, estimating the pdf using Gaussian kernels.
+
+        Arguments:
+            pixels (int): Pixelation aloach each axis which
+                the pdf is computed on
+        """
+
+        # Outer border set for better visualizations
+        border = 30
+        self.kde, self.grid = estimate_pdf(
+                self.embedded, self.bw, border, pixels)
+
+
+    def watershed_segmentation(self):
+        """
+        Perform watershed segmentation on the 
+        kernel density estimation pdf.
+        """
+
+        self.ws_labels = get_watershed_labels(self.kde)   
+
+
+    def classify(self):
+        """
+        Assigns a behavioral action label to 
+        all (non-nan) time points in the data set.
+        """
+
+        # Classify the embedded points
+        emb_labels = assign_labels(self.embedded, 
+                                   self.ws_labels,
+                                   self.grid)
+        
+        # Principal component scores for 
+        # points used to find t-SNE embedding.
+        pca_train = self.fit_pca[self.tsne_ind,:]
+
+        # Create storage for classifications
+        self.beh_labels = np.zeros(len(self.fit_pca))
+         
+        # Iterate over all time points
+        for i in range(len(self.fit_pca)):
+            # Find closest time point in PCA space
+            dist = cdist(self.fit_pca[i,:][np.newaxis,:],
+                         pca_train)
+            # Find the label assigned to the corresponding
+            # time point
+            self.beh_labels = emb_labels[dist.argmin()]
          
 
     def set_original_file_path(self, original_file_path):

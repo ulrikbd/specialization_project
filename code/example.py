@@ -22,7 +22,9 @@ def get_example_pipeline():
     bc.time_frequency_analysis()
     bc.pca()
     bc.tsne()
-
+    bc.kernel_density_estimation(100j)
+    bc.watershed_segmentation()
+    bc.classify()
     return bc
 
 

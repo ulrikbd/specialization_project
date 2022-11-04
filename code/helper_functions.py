@@ -34,6 +34,14 @@ def estimate_pdf(array, bw, border, pixels):
             watershed segmentation easier
         pixels (int): Pixelation along each axis
             to compute the pdf on
+
+    Returns:
+        kde (np.ndarray): Pdf estimated by kernel
+            density estimation on a grid defined
+            by xmin, ymin, dx, dy
+        grid (list(np.ndarray)): List containing 
+            information (X, Y) about the grid where 
+            kde were applied
     """
 
 
@@ -48,8 +56,9 @@ def estimate_pdf(array, bw, border, pixels):
     # Truncate low values to zero, such that we get an
     # outer border
     kde[np.abs(kde) < 1e-5] = 0
+    
 
-    return kde 
+    return kde, [X, Y]
 
 
 def get_watershed_labels(image):
@@ -60,6 +69,11 @@ def get_watershed_labels(image):
     Arguments:
         image (ndarray): nxm image array where
             high values are far from the border.
+
+    Returns:
+        labels (np.ndarray): Label array
+            given by the watershed segmentation
+            algorithm
     """
 
     max_coords = peak_local_max(image)
@@ -111,6 +125,50 @@ def get_contours(image, labels):
     return contours.T
 
 
+
+def assign_labels(data, labels, grid):
+    """
+    Classify data points to labels given by
+    a watershed segmentation.
+
+    Arguments:
+        data (np.ndarray): Collection of 
+            data points (t-SNE embeddings)
+            to be classified.
+        labels (np.ndarray): Label array
+            given by the watershed segmentation
+            algorithm
+        grid (list(np.ndarry)): X and Y coordinates
+            to which the kernel density estimation was
+            applied.
+
+    Returns:
+        data_labels (np.ndarray): Array
+            containing the assigned labels
+    """
+
+    # Rotate the watershed image 270 degrees 
+    # to match the embedding coordinates
+    labels = np.rot90(labels, 3)
+
+    X = grid[0]
+    Y = grid[1]
+
+    # Create storage for the labels
+    data_labels = np.zeros(len(data))
+
+    # Iterate over every data point
+    for i in range(len(data)):
+        # Find the closest grid point
+        xi = (np.abs(X[:,0] - data[i,0])).argmin()
+        yi = (np.abs(Y[0,:] - data[i,1])).argmin()
+        
+        # Assign label
+        data_labels[i] = int(labels[xi, yi])
+
+    return data_labels
+
+        
 def plot_watershed_heat(data, image, contours, border):
     """
     Plots the segmented heatmat of the pdf obtained
