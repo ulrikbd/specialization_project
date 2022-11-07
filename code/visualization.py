@@ -101,14 +101,66 @@ def plot_scaleograms():
                     ".pdf")
             plt.savefig(path, bbox_inches = "tight")
             
+
+def plot_tsne():
+    """
+    Show a scatter plot of the t-SNE embedding on the 
+    downsampled points
+    """
+
+    bc = load_example()
+
+    plt.figure(figsize = (12, 5))
+    plt.scatter(bc.embedded[:,0], bc.embedded[:, 1],
+                marker = ".")
+    plt.show()
+
+
             
+def plot_kde():
+    """
+    Plot the kernel density estimation of the tsne embedding
+    """
+
+    bc = load_example()
+
+    plt.figure(figsize = (12, 5))
+    plt.imshow(bc.kde, cmap = "coolwarm")
+    plt.show()
+
+
+def plot_watershed():
+    """
+    Plots the watershed segmentation of the kernel
+    kernel density estimation.
+    """
+
+    bc = load_example()
+    
+    contours = get_contours(bc.kde, bc.ws_labels)
+
+    outside = np.ones(bc.kde.shape)
+    outside[bc.kde == 0] = 0
+
+    xmax, ymax = np.max(bc.embedded, axis = 0) + bc.border
+    xmin, ymin = np.min(bc.embedded, axis = 0) - bc.border
+
+    plt.figure(figsize = (12, 5))
+    plot_watershed_heat(bc.embedded, bc.kde, contours,
+                        bc.border)
+    plt.show()
+     
+
+
 
 
 def main():
     seaborn.set_theme()
     # plot_detrending()
-    plot_scaleograms()
-
+    # plot_scaleograms()
+    plot_tsne()
+    plot_kde()
+    plot_watershed()
 
 
 if __name__ == "__main__":

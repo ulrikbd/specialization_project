@@ -3,7 +3,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 from behavioral_clustering import BehavioralClustering
-from helper_functions import plot_scaleogram
+from helper_functions import (
+        plot_scaleogram, assign_labels,
+)
 
 
 def get_example_pipeline():
@@ -55,6 +57,10 @@ def load_example():
 def main():
     # pickle_example()
     bc = load_example()
+    
+
+
+
    
 
 

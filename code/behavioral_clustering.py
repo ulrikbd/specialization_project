@@ -79,12 +79,17 @@ class BehavioralClustering():
             when finding the t-SNE embedding
         kde (np.ndarray): Kernel density estimation of
             the t-SNE embedding
+        border (int): Border around the t-SNE embedding
+            for improved watershed segmentation, and 
+            visualization
         grid (list(np.ndarray)): Grid on which the 
             kernel density estimation is applied
-        bw (float): Bandwidth used in the kernel
+        bw (float/str): Bandwidth method used in the kernel
             density estimation
         ws_labels (np.ndarray): Assigned clusters
             found by watershed segmentation
+        beh_labels (np.ndarry): Final classification of
+            the non-nan time points
     """
 
     def __init__(self):
@@ -117,12 +122,15 @@ class BehavioralClustering():
         self.var_pca = None
         self.n_pca = None
         self.fit_pca = None
-        self.ds_rate = 1
+        self.ds_rate = 0.5
         self.perp = 30
         self.embedded = None
         self.kde = None
-        self.bw = 0.2
+        self.border = 30
+        self.grid = None
+        self.bw = "scott" 
         self.ws_labels = None
+        self.beh_labels = None
 
 
     def remove_nan(self):
@@ -289,9 +297,8 @@ class BehavioralClustering():
         """
 
         # Outer border set for better visualizations
-        border = 30
         self.kde, self.grid = estimate_pdf(
-                self.embedded, self.bw, border, pixels)
+                self.embedded, self.bw, self.border, pixels)
 
 
     def watershed_segmentation(self):
@@ -328,7 +335,7 @@ class BehavioralClustering():
                          pca_train)
             # Find the label assigned to the corresponding
             # time point
-            self.beh_labels = emb_labels[dist.argmin()]
+            self.beh_labels[i] = emb_labels[dist.argmin()]
          
 
     def set_original_file_path(self, original_file_path):
