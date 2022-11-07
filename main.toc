@@ -1,34 +1,34 @@
-\contentsline {chapter}{\chapternumberline {1}Introduction}{5}{chapter.1}%
-\contentsline {section}{\numberline {1.1}Motivation}{5}{section.1.1}%
-\contentsline {section}{\numberline {1.2}Previous work}{5}{section.1.2}%
-\contentsline {chapter}{\chapternumberline {2}Theory}{7}{chapter.2}%
-\contentsline {section}{\numberline {2.1}Time series analysis}{7}{section.2.1}%
-\contentsline {subsection}{\numberline {2.1.1}Stationarity}{7}{subsection.2.1.1}%
-\contentsline {subsection}{\numberline {2.1.2}Detrending}{8}{subsection.2.1.2}%
-\contentsline {section}{\numberline {2.2}Fourier analysis}{9}{section.2.2}%
-\contentsline {subsection}{\numberline {2.2.1}Discrete-Time Fourier Transform}{10}{subsection.2.2.1}%
-\contentsline {section}{\numberline {2.3}Spectral density estimation}{11}{section.2.3}%
-\contentsline {subsection}{\numberline {2.3.1}Periodogram}{11}{subsection.2.3.1}%
-\contentsline {subsection}{\numberline {2.3.2}Sample spectrum}{12}{subsection.2.3.2}%
-\contentsline {subsection}{\numberline {2.3.3}Spectral Window}{12}{subsection.2.3.3}%
-\contentsline {subsection}{\numberline {2.3.4}Lag window}{13}{subsection.2.3.4}%
-\contentsline {section}{\numberline {2.4}Time-Frequency Analysis}{14}{section.2.4}%
-\contentsline {subsection}{\numberline {2.4.1}Short-Time Fourier Transform}{14}{subsection.2.4.1}%
-\contentsline {subsection}{\numberline {2.4.2}Wavelet Transform}{15}{subsection.2.4.2}%
-\contentsline {section}{\numberline {2.5}Piecewise polynomials}{16}{section.2.5}%
-\contentsline {subsection}{\numberline {2.5.1}Splines}{17}{subsection.2.5.1}%
-\contentsline {subsection}{\numberline {2.5.2}Regression Splines}{17}{subsection.2.5.2}%
-\contentsline {section}{\numberline {2.6}Dimensionality Reduction}{17}{section.2.6}%
-\contentsline {subsection}{\numberline {2.6.1}Principal Component Analysis}{18}{subsection.2.6.1}%
-\contentsline {subsection}{\numberline {2.6.2}t-Stochastic Neighbor Embedding}{18}{subsection.2.6.2}%
-\contentsline {section}{\numberline {2.7}Kernel Density Estimation}{19}{section.2.7}%
-\contentsline {section}{\numberline {2.8}Watershed Segmentation}{20}{section.2.8}%
-\contentsline {chapter}{\chapternumberline {3}Methodology}{23}{chapter.3}%
-\contentsline {section}{\numberline {3.1}Feature extraction}{23}{section.3.1}%
-\contentsline {subsection}{\numberline {3.1.1}Detrending}{23}{subsection.3.1.1}%
-\contentsline {subsection}{\numberline {3.1.2}Time Frequency Analysis}{23}{subsection.3.1.2}%
-\contentsline {section}{\numberline {3.2}Manifold embedding}{25}{section.3.2}%
-\contentsline {chapter}{\chapternumberline {4}Discussion}{27}{chapter.4}%
-\contentsline {section}{\numberline {4.1}Simulated Data}{27}{section.4.1}%
-\contentsline {section}{\numberline {4.2}Benefits of t-SNE}{27}{section.4.2}%
-\contentsline {chapter}{Bibliography}{29}{section*.4}%
+\contentsline {chapter}{\chapternumberline {1}Introduction}{3}{chapter.1}%
+\contentsline {section}{\numberline {1.1}Motivation}{3}{section.1.1}%
+\contentsline {section}{\numberline {1.2}Previous work}{3}{section.1.2}%
+\contentsline {chapter}{\chapternumberline {2}Theory}{5}{chapter.2}%
+\contentsline {section}{\numberline {2.1}Time series analysis}{5}{section.2.1}%
+\contentsline {subsection}{\numberline {2.1.1}Stationarity}{5}{subsection.2.1.1}%
+\contentsline {subsection}{\numberline {2.1.2}Detrending}{6}{subsection.2.1.2}%
+\contentsline {section}{\numberline {2.2}Fourier analysis}{7}{section.2.2}%
+\contentsline {subsection}{\numberline {2.2.1}Discrete-Time Fourier Transform}{8}{subsection.2.2.1}%
+\contentsline {section}{\numberline {2.3}Spectral density estimation}{9}{section.2.3}%
+\contentsline {subsection}{\numberline {2.3.1}Periodogram}{9}{subsection.2.3.1}%
+\contentsline {subsection}{\numberline {2.3.2}Sample spectrum}{10}{subsection.2.3.2}%
+\contentsline {subsection}{\numberline {2.3.3}Spectral Window}{10}{subsection.2.3.3}%
+\contentsline {subsection}{\numberline {2.3.4}Lag window}{11}{subsection.2.3.4}%
+\contentsline {section}{\numberline {2.4}Time-Frequency Analysis}{12}{section.2.4}%
+\contentsline {subsection}{\numberline {2.4.1}Short-Time Fourier Transform}{12}{subsection.2.4.1}%
+\contentsline {subsection}{\numberline {2.4.2}Wavelet Transform}{13}{subsection.2.4.2}%
+\contentsline {section}{\numberline {2.5}Piecewise polynomials}{14}{section.2.5}%
+\contentsline {subsection}{\numberline {2.5.1}Splines}{15}{subsection.2.5.1}%
+\contentsline {subsection}{\numberline {2.5.2}Regression Splines}{15}{subsection.2.5.2}%
+\contentsline {section}{\numberline {2.6}Dimensionality Reduction}{15}{section.2.6}%
+\contentsline {subsection}{\numberline {2.6.1}Principal Component Analysis}{16}{subsection.2.6.1}%
+\contentsline {subsection}{\numberline {2.6.2}t-Stochastic Neighbor Embedding}{16}{subsection.2.6.2}%
+\contentsline {section}{\numberline {2.7}Kernel Density Estimation}{17}{section.2.7}%
+\contentsline {section}{\numberline {2.8}Watershed Segmentation}{18}{section.2.8}%
+\contentsline {chapter}{\chapternumberline {3}Methodology}{21}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Feature extraction}{21}{section.3.1}%
+\contentsline {subsection}{\numberline {3.1.1}Detrending}{21}{subsection.3.1.1}%
+\contentsline {subsection}{\numberline {3.1.2}Time Frequency Analysis}{21}{subsection.3.1.2}%
+\contentsline {section}{\numberline {3.2}Manifold embedding}{23}{section.3.2}%
+\contentsline {chapter}{\chapternumberline {4}Discussion}{25}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Simulated Data}{25}{section.4.1}%
+\contentsline {section}{\numberline {4.2}Benefits of t-SNE}{25}{section.4.2}%
+\contentsline {chapter}{Bibliography}{29}{section*.3}%

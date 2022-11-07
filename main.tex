@@ -53,28 +53,6 @@ style=ieee]
 \clearpage
 
 
-\section*{Steps:}
-\begin{enumerate}
-        \item z-scoring (standardization \textcolor{red}{although dividing by standard deviation is commented out})
-        \item Smoothing by 3d splines
-        \item Detrending around the smoothed curve \textcolor{red}{(Why do we need to do this? Do we expect trends?)}
-        \item Morlet continuous wavelet transformation
-                \begin{enumerate}
-                        \item Hypothesis testing against 1st order autoregressive process
-                        \item Smoothing of power across scales
-                        \item Scale-averaged wavelet power
-                        \item Rescaling features
-                        \item Concatenating trend data and power spectrum
-                \end{enumerate}
-        \item \underline{Feature vectors were downsampled in time at 1 Hz and pooled acreoss animals and conditions}. \textcolor{red}{Where is this done in the code?}
-        it
-        \item PCA, reducing to feature dimension explaining at least 95\% of the variance
-        \item t-SNE
-        \item Watershed segmentation
-\end{enumerate}
-\newpage
-
-
 
 \chapter{Introduction}
 \section{Motivation}
@@ -643,7 +621,7 @@ The watershed segmentation applied to an estimated probability density function 
 \begin{figure}[tb]
         \centering
         \includegraphics[width=0.8\linewidth]{./code/figures/clustering_example.pdf}
-        \caption{Clustering in the t-SNE plane. \textit{Top left}: t-SNE embedding of simulated data, color coded by actual behavior. 
+        \caption{Clustering the two-dimensional t-SNE embedding. \textit{Top left}: t-SNE embedding of simulated data, color coded by actual behavior. 
         \textit{Top right}: Kernel density estimation of the t-SNE embedding.
 \textit{Bottom left}: Watershed segmentation applied to the kernel density estimation.
 \textit{Bottom right}: Contours of the watershed segmentation with the t-SNE clusters shown inside.}
@@ -763,15 +741,32 @@ Figure \ref{fig:color_coded_feature_1} shows one such feature, colored by the un
 
 
 \section{Benefits of t-SNE}
+There are many popular methods for embedding a high dimensional dataset into a lower dimensional space.
+Principal component analysis is discussed in the theory section, and is a good method to use for variance reduction.
+It is also commonly used for visualizing data in two or three dimensions.
+A large caveat is its linearity in the original features, which makes it unable to capture non-linear effects in the data.
+Another common method is multidimensional scaling (MDS) \cite{hastie}.
+It preserves the high dimensional distances as euclidean distances in the low dimensional space.
+MDS emphasises the global structure in the data, as all points contribute significantly to the loss function.
+There exists multiple methods extending the MDS methodology, making it more suitable for finding local and non-linear structures in the data. 
+One of these methods is ISOMAP, which first creates a neighborhood graph, on which it computes geodesic distances between points as the shortest path in the graph \cite{tenenbaum}.
+Using these distances it finds the low dimensional embedding via MDS.
 
-\begin{itemize}
-        \item Discuss several dimensionality reduction methods and their strength/weakness. 
-                Include sources for all the methods.
-        \item Refer to the theory section about why t-SNE is goo at separating clusters in 2D.
-        \item 
-        Plot 2D visualization of four methods in a grid, on simulated data.
-\end{itemize}
+As previously stated in the theory section, t-SNE preserves conditional probabilities created from the high dimensional euclidean distances \cite{hinton}.
+Due to this it places emphasis on the local structure, and is a natural choice when the goal is to visualize high dimensional clusters in two dimensions.
+Figure \ref{fig:dimensionality_reduction} illustrates these differences.
+All methods are able to separate the clusters to some degree, bu t-SNE clearly stands out in its ability to distinguish them.
 
+\begin{figure}[tb]
+        \centering
+        \includegraphics[width=1\linewidth]{./code/figures/dimensionality_reduction.pdf}
+        \caption{Two dimensional embedding of the standardized simulated data using different dimensionality reduction methods.
+        \textit{Top left:} Principal component analysis. 
+\textit{Top right:} Multidimensional scaling.
+\textit{Bottom left:} ISOMAP using $n = 20$ neighbors construction the graph.
+\textit{Bottom right:} t-SNE with perplexity $\sigma = 30$.}
+        \label{fig:dimensionality_reduction}
+\end{figure}
 
 
 

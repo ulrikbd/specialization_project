@@ -2,6 +2,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn
 from sklearn.linear_model import LinearRegression
+from sklearn.decomposition import PCA
+from sklearn.manifold import MDS, Isomap, TSNE
 from scipy.interpolate import LSQUnivariateSpline
 from scipy.signal import (
         periodogram, welch, spectrogram
@@ -320,6 +322,73 @@ def watershed_example():
     plt.show()
 
 
+def dimensionality_reduction():
+    """
+    Visualize the difference in two dimensional 
+    embedding reached by PCA, MDS, ISOMAP and t-SNE
+    on simulated data.
+    """
+
+    df = load_simulated()
+    bc = df["bc"]
+    labels = df["labels"]
+    feat = bc.features[0]
+
+    # Downsample
+    ind = np.arange(0, len(feat), 120)
+    feat = feat[ind,:]
+    labels = labels[ind]
+
+    
+    ## PCA
+    pca = PCA(n_components = 2)
+    fit_pca = pca.fit_transform(feat)
+
+    ## MDS
+    mds = MDS(n_components = 2)
+    fit_mds = mds.fit_transform(feat)
+
+    ## ISOMAP
+    isomap = Isomap(n_components = 2, n_neighbors = 20)
+    fit_isomap = isomap.fit_transform(feat)
+    
+    ## t-SNE
+    tsne = TSNE(n_components = 2)
+    fit_tsne = tsne.fit_transform(feat)
+
+    plt.figure(figsize = (12, 10))
+    ax1 = plt.subplot(221)
+    plt.scatter(fit_pca[:,0], fit_pca[:,1], c = labels,
+                cmap = "Paired")
+    plt.title("PCA")
+
+    ax2 = plt.subplot(222)
+    plt.scatter(fit_mds[:,0], fit_mds[:,1], c = labels,
+                cmap = "Paired")
+    plt.title("MDS")
+    
+    ax3 = plt.subplot(223)
+    plt.scatter(fit_isomap[:,0], fit_isomap[:,1], c = labels,
+                cmap = "Paired")
+    plt.title("ISOMAP")
+
+    ax4 = plt.subplot(224)
+    plt.scatter(fit_tsne[:,0], fit_tsne[:,1], c = labels,
+                cmap = "Paired")
+    plt.title("t-SNE")
+
+    plt.savefig("./figures/dimensionality_reduction.pdf", 
+                bbox_inches = "tight")
+    # plt.show()
+
+
+
+
+
+
+       
+
+
 def main():
     seaborn.set_theme()
     np.random.seed(28)
@@ -343,7 +412,8 @@ def main():
     # spectrogram_example(t2, y2)
     # wavelet_example(t2, y2) 
 
-    watershed_example()
+    # watershed_example()
+    dimensionality_reduction()
 
 
 if __name__ == "__main__":
