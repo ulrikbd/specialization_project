@@ -352,7 +352,7 @@ class BehavioralClustering():
         data, pickle it, and dump it in the location
         specified in the extraced_file_path attribute
 
-        Attributes:
+        Parameters:
             file_names (List(str)): File names of original data
         """
         for name in file_names:
@@ -368,7 +368,7 @@ class BehavioralClustering():
         instance attribute to be used for training.
         Stores number of features as attribute.
 
-        Attrubutes:
+        Parameters:
             train_files (List(str)): Names of training files
         """
 

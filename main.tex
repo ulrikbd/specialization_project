@@ -576,12 +576,12 @@ Furthermore, we need to choose the tuning parameters $\sigma_i$.
 They relate to the Gaussian distribution modelling the neighbors of $x_i$.
 For points with many close by neighbors it makes sense to keep $\sigma_i$ small, while increasing it is beneficial when there are few neighbors.
 The algorithm solves this by letting the user choose a perplexity parameter
-\begin{equation*}
+\begin{equation}\label{eq:perp}
         \text{Perp}(P_i) = 2^{H(P_i)}, \\
-\end{equation*}
+\end{equation}
 where 
 \begin{equation*}
-        H(P_i) = -\sum_{j = 1}^{n}\log_2(p_{j|i})
+        H(P_i) = -\sum_{j = 1}^{n} p_{j|i}\log_2(p_{j|i})
 \end{equation*}
 is the Shannon entropy.
 Then it finds $\sigma_i$ such that the perplexity satisfies our choice.
@@ -764,9 +764,31 @@ All methods are able to separate the clusters to some degree, bu t-SNE clearly s
         \textit{Top left:} Principal component analysis. 
 \textit{Top right:} Multidimensional scaling.
 \textit{Bottom left:} ISOMAP using $n = 20$ neighbors construction the graph.
-\textit{Bottom right:} t-SNE with perplexity $\sigma = 30$.}
+\textit{Bottom right:} t-SNE with perplexity $30$.}
         \label{fig:dimensionality_reduction}
 \end{figure}
+
+
+\section{Tuning the perplexity parameter}
+The perplexity parameter from equation \eqref{eq:perp} plays a significant role in the t-SNE embedding \cite{hinton}.
+It is closely related to the number of neighbors considered when creating the conditional probabilities \eqref{eq:gaus}.
+When the perplexity is small all points contribute "equally little" to the cost function, meaning the algorithm is not able to detect anything.
+When the perplexity is large it attributes significance to more points, reducing the separation of clusters in the two dimensional embedding.
+Large datasets should therefore need larges perplexity values.
+Choosing it between 5 and 50 is suggested.
+Figure \ref{fig:perplexity_tuning_simulated} shows how the perplexity parameter affects the clustering of the simulated data.
+Perplexity values 30 and 50 give good results.
+Note that only 3600 points were used calculating the embedding.
+
+
+\begin{figure}[tb]
+        \centering
+        \includegraphics[width=1\linewidth]{./code/figures/perplexity_tuning_simulated.pdf}
+        \caption{Clustering of the simulated data varying the perplexity parameter in t-SNE.
+        The bandwidth for the kernel density estimation is 0.2 for all embeddings.}
+        \label{fig:perplexity_tuning_simulated}
+\end{figure}
+
 
 
 

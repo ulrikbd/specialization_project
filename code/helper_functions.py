@@ -26,7 +26,7 @@ def estimate_pdf(array, bw, border, pixels):
     Applies a kernel density estimator
     with given bandwidth
 
-    Arguments:
+    Parameters:
         array (np.ndarray(float)): Array to be 
             used for the estimation
         bw (float): Bandwidth used in the kde algorithm
@@ -66,7 +66,7 @@ def get_watershed_labels(image):
     Performs watershed segmentation on
     an image.
 
-    Arguments:
+    Parameters:
         image (ndarray): nxm image array where
             high values are far from the border.
 
@@ -90,7 +90,7 @@ def get_contours(image, labels):
     Obtain the contours for an image,
     here a watershed segmentation.
 
-    Arguments:
+    Parameters:
         image (ndarray): nxm image array where
             high values are far from the border.
         labels (ndarray): nxm array with the 
@@ -131,7 +131,7 @@ def assign_labels(data, labels, grid):
     Classify data points to labels given by
     a watershed segmentation.
 
-    Arguments:
+    Parameters:
         data (np.ndarray): Collection of 
             data points (t-SNE embeddings)
             to be classified.
@@ -175,7 +175,7 @@ def plot_watershed_heat(data, image, contours, border):
     via kernel density estimation of the t-SNE
     embedding.
 
-    Arguments:
+    Parameters:
         data (ndarray):
     """
 
@@ -325,7 +325,7 @@ def plot_scaleogram(power, t, freqs, scales):
     Plots the spectrogram of the power density
     achived using a continuous wavelet transform
 
-    Arguments:
+    Parameters:
         power (np.ndarray): Estimated power for all 
             time points across multiple scales
     """

@@ -31,4 +31,5 @@
 \contentsline {chapter}{\chapternumberline {4}Discussion}{25}{chapter.4}%
 \contentsline {section}{\numberline {4.1}Simulated Data}{25}{section.4.1}%
 \contentsline {section}{\numberline {4.2}Benefits of t-SNE}{25}{section.4.2}%
+\contentsline {section}{\numberline {4.3}Tuning the perplexity parameter}{26}{section.4.3}%
 \contentsline {chapter}{Bibliography}{29}{section*.3}%

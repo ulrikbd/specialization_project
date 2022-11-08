@@ -2,9 +2,14 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pickle as pkl
 import seaborn
+from sklearn.decomposition import PCA
+from sklearn.manifold import MDS, Isomap, TSNE
 
 from behavioral_clustering import BehavioralClustering
-from helper_functions import get_simulated_data
+from helper_functions import (
+        get_simulated_data, plot_watershed_heat,
+        get_contours,
+)
 
 import matplotlib.colors as mcolors
 
@@ -96,12 +101,96 @@ def plot_simulated_features(df):
         # plt.show()     
 
 
+def dimensionality_reduction():
+    """
+    Visualize the difference in two dimensional 
+    embedding reached by PCA, MDS, ISOMAP and t-SNE
+    on simulated data.
+    """
+
+    df = load_simulated()
+    bc = df["bc"]
+    labels = df["labels"]
+    feat = bc.features[0]
+
+    # Downsample
+    ind = np.arange(0, len(feat), 120)
+    feat = feat[ind,:]
+    labels = labels[ind]
+
     
+    ## PCA
+    pca = PCA(n_components = 2)
+    fit_pca = pca.fit_transform(feat)
+
+    ## MDS
+    mds = MDS(n_components = 2)
+    fit_mds = mds.fit_transform(feat)
+
+    ## ISOMAP
+    isomap = Isomap(n_components = 2, n_neighbors = 20)
+    fit_isomap = isomap.fit_transform(feat)
+    
+    ## t-SNE
+    tsne = TSNE(n_components = 2)
+    fit_tsne = tsne.fit_transform(feat)
+
+    plt.figure(figsize = (12, 10))
+    ax1 = plt.subplot(221)
+    plt.scatter(fit_pca[:,0], fit_pca[:,1], c = labels,
+                cmap = "Paired")
+    plt.title("PCA")
+
+    ax2 = plt.subplot(222)
+    plt.scatter(fit_mds[:,0], fit_mds[:,1], c = labels,
+                cmap = "Paired")
+    plt.title("MDS")
+    
+    ax3 = plt.subplot(223)
+    plt.scatter(fit_isomap[:,0], fit_isomap[:,1], c = labels,
+                cmap = "Paired")
+    plt.title("ISOMAP")
+
+    ax4 = plt.subplot(224)
+    plt.scatter(fit_tsne[:,0], fit_tsne[:,1], c = labels,
+                cmap = "Paired")
+    plt.title("t-SNE")
+
+    plt.savefig("./figures/dimensionality_reduction.pdf", 
+                bbox_inches = "tight")
+    # plt.show()
+
+
+def perplexity_tuning():
+    """
+    Perform the clustering on the simulated data
+    varying the perplexity parameter i t-SNE.
+    """
+
+    # Perplexity values to be tested
+    perp = [1, 5, 30, 50, 200, 500]
+
+    df = load_simulated()
+    bc = df["bc"]
+    bc.bw = 0.2
+
+    plt.figure(figsize = (12, 8))
+    # Iterate over chosen perplexities
+    for i in range(len(perp)):
+        bc.perp = perp[i]
+        bc.tsne()
+        bc.kernel_density_estimation(500j)
+        bc.watershed_segmentation()
+
+        contours = get_contours(bc.kde, bc.ws_labels)
         
-
-    
-
-    
+        plt.subplot(2, 3, i + 1)
+        plt.title("Perplexity = " + str(perp[i]))
+        plot_watershed_heat(bc.embedded, bc.kde,
+                            contours, bc.border)
+    plt.savefig("./figures/perplexity_tuning_simulated.pdf",
+                bbox_inches = "tight")
+    plt.show()
 
 
 def main():
@@ -110,6 +199,8 @@ def main():
     df = load_simulated()
 
     # plot_simulated_features(df)
+    # dimensionality_reduction()
+    perplexity_tuning()
 
 
 if __name__ == "__main__":
