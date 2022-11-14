@@ -12,6 +12,7 @@ from helper_functions import (
 )
 
 import matplotlib.colors as mcolors
+import matplotlib.cm as cm
 
 
 def pickle_simulated():
@@ -195,12 +196,12 @@ def perplexity_tuning():
 
 def main():
     seaborn.set_theme()
-    pickle_simulated()
+    # pickle_simulated()
     df = load_simulated()
 
-    # plot_simulated_features(df)
+    plot_simulated_features(df)
     # dimensionality_reduction()
-    perplexity_tuning()
+    # perplexity_tuning()
 
 
 if __name__ == "__main__":

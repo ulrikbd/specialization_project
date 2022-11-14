@@ -30,7 +30,6 @@ def get_example_pipeline():
     return bc
 
 
-
 def pickle_example():
     """
     Pickle example model to be easily retrieved 
@@ -58,11 +57,6 @@ def main():
     # pickle_example()
     bc = load_example()
     
-
-
-
-   
-
 
 if __name__ == "__main__":
     main()

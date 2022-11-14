@@ -215,7 +215,7 @@ def spline_regression(y, dim, freq, knot_freq):
     
     # Calculate the interior knots
     space = int(freq / knot_freq)
-    rem = len(t) & space
+    rem = len(t) % space
     knots = np.arange(freq + rem // 2, len(t), space)
     
     spl = LSQUnivariateSpline(t, y, knots, k = dim)
