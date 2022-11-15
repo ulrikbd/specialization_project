@@ -32,4 +32,5 @@
 \contentsline {section}{\numberline {4.1}Simulated Data}{25}{section.4.1}%
 \contentsline {section}{\numberline {4.2}Benefits of t-SNE}{25}{section.4.2}%
 \contentsline {section}{\numberline {4.3}Tuning the perplexity parameter}{26}{section.4.3}%
+\contentsline {section}{\numberline {4.4}Tuning the bandwidth matrix}{26}{section.4.4}%
 \contentsline {chapter}{Bibliography}{29}{section*.3}%

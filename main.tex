@@ -532,7 +532,7 @@ Reducing the data to two dimensions often allows for easier visualization and in
 
 
 
-\subsection{Principal Component Analysis}
+\subsection{Principal Component Analysis}\label{sec:pca}
 One of the most commonly used dimensionality reduction methods is called principal component analysis (PCA).
 There are multiple ways to both derive and interpret the method.
 Given the $n \times p$ data matrix $X$ we find a sequence of $q \leq p$ orthogonal $p \times 1$ unit vectors $v_1, v_2, \hdots, v_q$, each one chosen such that $Z_j = Xv_j$ has maximum variance.
@@ -549,7 +549,7 @@ Thus when using PCA for dimensionality reduction we set a variance threshold, an
 
 
 
-\subsection{t-Stochastic Neighbor Embedding}
+\subsection{t-Stochastic Neighbor Embedding}\label{sec:tsne}
 Another dimensionality reduction method specially suited for visualizing data in two dimension, is called t-Stochastic Neighbor Embedding (t-SNE).
 Again we start with the $n \times p$ data matrix, and wish to embed it into a low dimensional space preserving as much of the original structure in the data as possible.
 Instead of trying to emulate the Euclidian distances between the data points $x_1, x_2, \hdots, x_n$, we convert them into conditional probabilities 
@@ -588,7 +588,7 @@ Then it finds $\sigma_i$ such that the perplexity satisfies our choice.
 Van der Maaten and Hinton \cite{hinton} suggests values between 5 and 50, roughly reflecting the number of neighbors in the algorithm.
 
 
-\section{Kernel Density Estimation}
+\section{Kernel Density Estimation}\label{sec:kde}
 Let $x_1, x_2, \hdots, x_n, \ x_i \in \mathbb{R}^p$ be a random sample from a random variable with an underlying unknown density function $f(x)$, which we want to estimate.
 The general expression for the multivariate kernel density estimator is \cite{simonoff}
 \begin{equation}\label{eq:kde}
@@ -742,7 +742,7 @@ Figure \ref{fig:color_coded_feature_1} shows one such feature, colored by the un
 
 \section{Benefits of t-SNE}
 There are many popular methods for embedding a high dimensional dataset into a lower dimensional space.
-Principal component analysis is discussed in the theory section, and is a good method to use for variance reduction.
+Principal component analysis is discussed in section \ref{sec:pca}, and is a good method to use for variance reduction.
 It is also commonly used for visualizing data in two or three dimensions.
 A large caveat is its linearity in the original features, which makes it unable to capture non-linear effects in the data.
 Another common method is multidimensional scaling (MDS) \cite{hastie}.
@@ -752,7 +752,7 @@ There exists multiple methods extending the MDS methodology, making it more suit
 One of these methods is ISOMAP, which first creates a neighborhood graph, on which it computes geodesic distances between points as the shortest path in the graph \cite{tenenbaum}.
 Using these distances it finds the low dimensional embedding via MDS.
 
-As previously stated in the theory section, t-SNE preserves conditional probabilities created from the high dimensional euclidean distances \cite{hinton}.
+As previously stated in section \ref{sec:tsne}, t-SNE preserves conditional probabilities created from the high dimensional euclidean distances \cite{hinton}.
 Due to this it places emphasis on the local structure, and is a natural choice when the goal is to visualize high dimensional clusters in two dimensions.
 Figure \ref{fig:dimensionality_reduction} illustrates these differences.
 All methods are able to separate the clusters to some degree, bu t-SNE clearly stands out in its ability to distinguish them.
@@ -790,6 +790,13 @@ Note that only 3600 points were used calculating the embedding.
 \end{figure}
 
 
+\section{Tuning the bandwidth matrix}
+The kernel density estimation \eqref{eq:kde} plays a significant role in final the clustering.
+It smooths the two dimensional embedding creating local peaks which we interpret as individual behaviors.
+The degree of smoothing is determined by the bandwidth $2 \times 2$ matrix $H$ briefly discussed in section \ref{sec:kde}.
+Several ways of choosing this parameter have been discussed in literature, most of them based on minimizing the asymptotic mean integrated squared error \cite{simonoff}.
+As our goal is visualizing clusters, it is better to test several different values, choosing the one which provide the best visualization.
+To limit the possibilities, we let the scaling be identical in both dimensions, letting $H$ be a diagonal matrix with identical elements.
 
 
 \newpage
