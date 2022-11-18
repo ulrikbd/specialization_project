@@ -43,8 +43,35 @@ def non_stationary_func(t):
                np.sin(w4*2*np.pi*t) + 2*np.sin(w5*2*np.pi*t) + 3*np.sin(w6*2*np.pi*t))
 
 
-def plot_non_stationary_time_series(t, y):
+def get_theory_data():
+    """
+    Create simple simulated time series data to exemplify
+    the various methods.
+    """
+    n, t0, tn = 500, 0, 4
+    t = np.linspace(t0, tn, n).reshape(-1, 1)
+    y = underlying(t[:,0]) + np.random.normal(0, 0.3, n)
+
+    return y, t
+
+
+def get_non_stationary_data():
+    """
+    Create simulated non-stationary data on multiple 
+    frequency scales.
+    """
+
+    t = np.arange(60*120 + 1) / 120
+    n = len(t)
+    y = non_stationary_func(t) + np.random.normal(0, 0.3, n)
+
+    return y, t
+    
+
+def plot_non_stationary_time_series():
     """ Example plot of a non-stationary time series """ 
+
+    y, t = get_theory_data()
 
     plt.figure(figsize = (12, 5))
     plt.plot(t, y, c = "k", label = "Observed series")
@@ -53,11 +80,13 @@ def plot_non_stationary_time_series(t, y):
     # plt.show()
 
 
-def plot_linear_trend(t, y):
+def plot_linear_trend():
     """ 
     Plot the linear trend in non-stationary time series
     found by linear regression 
     """
+
+    y, t = get_theory_data()
 
     reg = LinearRegression().fit(t, y) 
 
@@ -70,12 +99,14 @@ def plot_linear_trend(t, y):
     # plt.show()
 
 
-def plot_cubic_splines(t, y):
+def plot_cubic_splines():
     """ 
     Apply cubic spline regression using 
     least squares on the data
     """
 
+    y, t = get_theory_data()
+    
     deg = 3
     t = np.reshape(t, t.size)  # Need to flatten the array
     n, t0, tn = len(t), t[0], t[-1]
@@ -98,10 +129,13 @@ def plot_cubic_splines(t, y):
     # plt.show()
 
 
-def plot_periodogram(t, y):
+def plot_periodogram():
     """
     Plot the periodogram, i.e., the estimated power spectral density 
     """
+
+    y, t = get_theory_data()
+
     fs = 1/(t[1] - t[0])
     f, Pxx_den = periodogram(y ,fs, window = "boxcar",
                              detrend = "linear", scaling = "density")
@@ -118,11 +152,14 @@ def plot_periodogram(t, y):
     plt.show()
 
 
-def plot_smoothed_periodogram(t, y):
+def plot_smoothed_periodogram():
     """
     Plot the smoothed periodogram, i.e., the estimated 
     power spectral density using a spectral window.
     """
+
+    y, t = get_theory_data()
+
     fs = 1/(t[1] - t[0])
     f, Pxx_den = welch(y ,fs, window = "bartlett", noverlap = 0,
                              nperseg = 256, detrend = "linear",  
@@ -174,10 +211,12 @@ def plot_windows():
     # plt.show()
 
 
-def spectrogram_example(t, y):
+def spectrogram_example():
     """
     Illustrate the difference in the periodogram, STFT and CWT
     """
+
+    y, t = get_non_stationary_data()
 
     # Compute periodogram
     fs = 1/(t[1] - t[0])
@@ -197,10 +236,12 @@ def spectrogram_example(t, y):
     plt.show()
    
 
-def wavelet_example(t, y):
+def wavelet_example():
     """
     Example to understand and play with CWT parameters
     """
+
+    y, t = get_non_stationary_data()
 
     # Normalize
     std = np.std(y)
@@ -275,56 +316,39 @@ def watershed_example():
 
     lab = df["labels"][::int(bc.capture_framerate * bc.ds_rate)]
 
-    # plt.figure(figsize = (12, 12))
-    # ax1 = plt.subplot(221)
-    # plt.imshow(np.zeros(contours.shape), 
-    #            alpha = np.zeros(contours.shape),
-    #            extent = [xmin, xmax, ymin, ymax]) 
-    # plt.scatter(data[:,0], data[:,1], c = lab + 1,
-    #             cmap = "Paired", marker = ".")
-    # plt.xlim([xmin, xmax])
-    # plt.ylim([ymin, ymax])
-    # plt.xticks([])
-    # plt.yticks([])
-    # ax2 = plt.subplot(222, sharex = ax1, sharey = ax1)
-    # im1 = ax2.imshow(kde, cmap = "coolwarm", alpha = outside,
-    #            extent = [xmin, xmax, ymin, ymax]) 
-    # plt.grid(None)
-    # plt.xticks([])
-    # plt.yticks([])
-    # ax3 = plt.subplot(223)
-    # plot_watershed_heat(data, kde, contours, border)
-    # plt.xticks([])
-    # plt.yticks([])
-    # ax4 = plt.subplot(224)
-    # plt.imshow(np.zeros(contours.shape), alpha = contours,
-    #            extent = [xmin, xmax, ymin, ymax]) 
-    # plt.scatter(data[:,0], data[:,1], c = lab + 1,
-    #             cmap = "Paired", marker = ".")
-    # plt.xlim([xmin, xmax])
-    # plt.ylim([ymin, ymax])
-    # plt.xticks([])
-    # plt.yticks([])
-    # plt.subplots_adjust(wspace = 0.1, hspace = 0)
-    # plt.savefig("./figures/clustering_example.pdf",
-    # plt.show()
-    
-
-
     plt.figure(figsize = (12, 12))
     ax1 = plt.subplot(221)
-    plt.imshow(np.zeros(contours.shape), alpha = contours,
+    plt.imshow(np.zeros(contours.shape), 
+               alpha = np.zeros(contours.shape),
                extent = [xmin, xmax, ymin, ymax]) 
-    plt.scatter(data[:,0], data[:,1], c = data_labels,
+    plt.scatter(data[:,0], data[:,1], c = lab + 1,
                 cmap = "Paired", marker = ".")
     plt.xlim([xmin, xmax])
     plt.ylim([ymin, ymax])
-    plt.show()
-
-
-
-
-
+    plt.xticks([])
+    plt.yticks([])
+    ax2 = plt.subplot(222, sharex = ax1, sharey = ax1)
+    im1 = ax2.imshow(kde, cmap = "coolwarm", alpha = outside,
+               extent = [xmin, xmax, ymin, ymax]) 
+    plt.grid(None)
+    plt.xticks([])
+    plt.yticks([])
+    ax3 = plt.subplot(223)
+    plot_watershed_heat(data, kde, contours, border)
+    plt.xticks([])
+    plt.yticks([])
+    ax4 = plt.subplot(224)
+    plt.imshow(np.zeros(contours.shape), alpha = contours,
+               extent = [xmin, xmax, ymin, ymax]) 
+    plt.scatter(data[:,0], data[:,1], c = lab + 1,
+                cmap = "Paired", marker = ".")
+    plt.xlim([xmin, xmax])
+    plt.ylim([ymin, ymax])
+    plt.xticks([])
+    plt.yticks([])
+    plt.subplots_adjust(wspace = 0.1, hspace = 0)
+    plt.savefig("./figures/clustering_example.pdf",
+    # plt.show()
 
        
 
@@ -333,25 +357,15 @@ def main():
     seaborn.set_theme()
     np.random.seed(28)
 
-    n, t0, tn = 500, 0, 4
-    t = np.linspace(t0, tn, n).reshape(-1, 1)
-    y = underlying(t[:,0]) + np.random.normal(0, 0.3, n)
-
-    # plot_non_stationary_time_series(t, y)
-    # plot_linear_trend(t, y)
-    # plot_cubic_splines(t, y)
-    # plot_periodogram(t, y)
-    # plot_smoothed_periodogram(t, y)
+    # plot_non_stationary_time_series()
+    # plot_linear_trend()
+    # plot_cubic_splines()
+    # plot_periodogram()
+    # plot_smoothed_periodogram()
     # plot_windows()
 
-    # Generate sample time series
-    t2 = np.arange(60*120 + 1) / 120
-    n2 = len(t2)
-    y2 = non_stationary_func(t2) + np.random.normal(0, 0.3, n2)
-    
-    # spectrogram_example(t2, y2)
-    # wavelet_example(t2, y2) 
-
+    # spectrogram_example()
+    # wavelet_example() 
     # watershed_example()
 
 

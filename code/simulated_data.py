@@ -118,20 +118,16 @@ def dimensionality_reduction():
     ind = np.arange(0, len(feat), 120)
     feat = feat[ind,:]
     labels = labels[ind]
-
     
     ## PCA
     pca = PCA(n_components = 2)
     fit_pca = pca.fit_transform(feat)
-
     ## MDS
     mds = MDS(n_components = 2)
     fit_mds = mds.fit_transform(feat)
-
     ## ISOMAP
     isomap = Isomap(n_components = 2, n_neighbors = 20)
     fit_isomap = isomap.fit_transform(feat)
-    
     ## t-SNE
     tsne = TSNE(n_components = 2)
     fit_tsne = tsne.fit_transform(feat)
@@ -141,22 +137,18 @@ def dimensionality_reduction():
     plt.scatter(fit_pca[:,0], fit_pca[:,1], c = labels,
                 cmap = "Paired")
     plt.title("PCA")
-
     ax2 = plt.subplot(222)
     plt.scatter(fit_mds[:,0], fit_mds[:,1], c = labels,
                 cmap = "Paired")
     plt.title("MDS")
-    
     ax3 = plt.subplot(223)
     plt.scatter(fit_isomap[:,0], fit_isomap[:,1], c = labels,
                 cmap = "Paired")
     plt.title("ISOMAP")
-
     ax4 = plt.subplot(224)
     plt.scatter(fit_tsne[:,0], fit_tsne[:,1], c = labels,
                 cmap = "Paired")
     plt.title("t-SNE")
-
     plt.savefig("./figures/dimensionality_reduction.pdf", 
                 bbox_inches = "tight")
     # plt.show()
@@ -191,17 +183,32 @@ def perplexity_tuning():
                             contours, bc.border)
     plt.savefig("./figures/perplexity_tuning_simulated.pdf",
                 bbox_inches = "tight")
-    plt.show()
+    # plt.show()
 
+
+def test_scaling():
+    """
+    Try the clustering algorithm with various 
+    scaling choices for the wavelet spectrum.
+    """
+
+    df = load_simulated()
+    bc = df["bc"]
+    data = bc.data
+    print(data[0].shape)
+
+    
+    
 
 def main():
     seaborn.set_theme()
     # pickle_simulated()
     df = load_simulated()
 
-    plot_simulated_features(df)
+    # plot_simulated_features(df)
     # dimensionality_reduction()
     # perplexity_tuning()
+    test_scaling()
 
 
 if __name__ == "__main__":

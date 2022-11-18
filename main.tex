@@ -60,7 +60,6 @@ The human brain is an incredibly complex structures that researchers have been t
 One way to gain information about how the brain operates is to study its neurons.
 Neurons are cells which can communicate with each other through synapses.
 This communication are electric signals and can be recorded.
-\textcolor{red}{Source?}
 At Kavli Institute for Systems Neuroscience at NTNU they are interested in relating these neural spike recordings to the behavior in rats.
 This in turn begs the question of how rats behave.
 Manually labelling video recordings of rats running around seems a tedious and unfruitful endeavor.
@@ -68,7 +67,16 @@ Additionally it introduces bias in our prior assumptions of how the rats behave,
 Thus, a methodology for automatically detecting distinct behaviours is needed.
 
 \section{Previous work}
-\textcolor{red}{Is this necessary?}
+Through recent advances in machine learning and computer vision, many attempts at decomposing animal behavior into small modules has been made.
+Manually labelling recordings of \textit{Drosophila melanogaster}, the fruit fly, before applying machine learning predation techniques shows performance on par with human labelling \cite{kain}
+Unsupervised clustering techniques have also been developed for the fruit fly, using dimensionality reduction techniques to separate distinct behaviors in a two dimensional space \cite{berman}.
+Research has not only been done on the fruit fly.
+The MoSeq group at Harvard university uses 3D video capturing on free ranging mice.
+Modelling the behavior modules as vector autoregressive processes, and changes between modules as a hidden Markov model, allows researches to extract information about mouse body language and behavior \cite{wiltschko}.
+Recording the behavior in 3D as opposed to 2D plays a big part of these methods success \cite{marshall}
+As opposed to using depth cameras to provide the 3D kinematic recording, use of motion sensors have also been used. 
+
+
 
 
 
@@ -371,7 +379,7 @@ with $M = 5$.
 
 
 
-\section{Time-Frequency Analysis}
+\section{Time frequency analysis}
 The methods mentioned so far are only suitable for extracting information about the frequencies of a signal.
 If the process is stationary this is often all we need.
 However, if the process is non-stationary and the frequencies change over time, the periodogram is unable to capture this.
@@ -406,7 +414,7 @@ In the case where frequencies exists in the data on several different scales, th
 
 
 
-\subsection{Wavelet Transform}
+\subsection{Wavelet transform}
 The wavelet transform works in a very similar way as the STFT, but circumvents the problem of choosing a fixed width of the window by introducing scaling.
 Let $\psi(t)$ be a window function (possibly complex valued) which we will call the mother wavelet.
 One way of scaling the mother wavelet by a factor $s$ is
@@ -456,7 +464,7 @@ In figure \ref{fig:scaleogram_ex} a scaleogram is shown for the function
                 \end{cases}
 \end{equation}
 with added Gaussian noise.
-The continuous wavelet transform is computed at 18 frequencies between $0.5$Hz and $18$ Hz.
+The continuous wavelet transform is computed at 18 frequencies between $0.5$Hz and $20$ Hz.
 
 \begin{figure}[tb]
         \centering
@@ -496,7 +504,7 @@ A common choice is letting $k = 3$, providing continuous second derivatives over
 This is called \textit{cubic} splines, and are often considered sufficiently smooth for function approximations.
 It is also common to add curvature constraints at the endpoints, $s_3''(a) = s_3''(b)$, arriving at the \textit{natural} cubic splines.
 
-\subsection{Regression Splines}
+\subsection{Regression splines}
 Suppose now we have data points $y_{t_1}, y_{t_2}, \hdots, y_{t_n}$ on $[a = t_1, b = t_n]$. 
 A spline of order $k$ with chosen knots at $a = t_1 = \xi_0, \xi_1, \hdots, \xi_{M} = t_n = b$ can be parameterized as 
 \begin{equation}\label{eq:lsq_spline}
@@ -522,7 +530,7 @@ An example of cubic spline regression are shown in figure \ref{fig:cubic_splines
 
 
 
-\section{Dimensionality Reduction}
+\section{Dimensionality reduction}
 Suppose we have $n$ datapoints, each having $p$ numerical features. 
 Mathematically we represent them as the vectors $x_i = (x_{i1}, x_{i2}, \hdots, x_{in} ) \in \mathbb{R}^p, \ i = 1, 2, \hdots, n$, often represented in the $n \times p$ data matrix $X, \ X_{ij} = x_{ij}, \ i = 1, 2, \hdots, n, \ j = 1, 2, \hdots, p$.
 Dimensionality reduction is about finding a low dimensional representation of the data still containing most of its properties.
@@ -532,7 +540,7 @@ Reducing the data to two dimensions often allows for easier visualization and in
 
 
 
-\subsection{Principal Component Analysis}\label{sec:pca}
+\subsection{Principal component analysis}\label{sec:pca}
 One of the most commonly used dimensionality reduction methods is called principal component analysis (PCA).
 There are multiple ways to both derive and interpret the method.
 Given the $n \times p$ data matrix $X$ we find a sequence of $q \leq p$ orthogonal $p \times 1$ unit vectors $v_1, v_2, \hdots, v_q$, each one chosen such that $Z_j = Xv_j$ has maximum variance.
@@ -588,7 +596,7 @@ Then it finds $\sigma_i$ such that the perplexity satisfies our choice.
 Van der Maaten and Hinton \cite{hinton} suggests values between 5 and 50, roughly reflecting the number of neighbors in the algorithm.
 
 
-\section{Kernel Density Estimation}\label{sec:kde}
+\section{Kernel density estimation}\label{sec:kde}
 Let $x_1, x_2, \hdots, x_n, \ x_i \in \mathbb{R}^p$ be a random sample from a random variable with an underlying unknown density function $f(x)$, which we want to estimate.
 The general expression for the multivariate kernel density estimator is \cite{simonoff}
 \begin{equation}\label{eq:kde}
@@ -611,7 +619,7 @@ An example of kernel density estimation is shown in figure \ref{fig:clustering_e
 
 
 
-\section{Watershed Segmentation}
+\section{Watershed segmentation}
 Watershed segmentation is an image processing technique commonly used to separate objects in an image.
 Assuming a greyscale image it treats it like a topological map where intense areas are considered to have large altitude \cite{najman}.
 Using an estimated gradient the algorithm finds the local minima in the image, and gradually "flood" the topography with water and mark the lines where the filled basins meet.
@@ -663,7 +671,7 @@ The bottom figure shows the detrended time series.}
 \end{figure}
 
 
-\subsection{Time Frequency Analysis}
+\subsection{Time frequency analysis}
 To make the extracted features comparable, we normalize the time series by dividing it by its standard deviation
 \begin{equation*}
         \sigma_x = \frac{1}{m}\sum_{t = 1}^{m} \left( x_t - \frac{1}{m}\sum_{i = 1}^{m}x_i \right)^2.
@@ -797,6 +805,20 @@ The degree of smoothing is determined by the bandwidth $2 \times 2$ matrix $H$ b
 Several ways of choosing this parameter have been discussed in literature, most of them based on minimizing the asymptotic mean integrated squared error \cite{simonoff}.
 As our goal is visualizing clusters, it is better to test several different values, choosing the one which provide the best visualization.
 To limit the possibilities, we let the scaling be identical in both dimensions, letting $H$ be a diagonal matrix with identical elements.
+
+
+\section{Scaling the spectrogram}
+It is the power spectrum provided by the wavelet transform which contains all the information we use to separate the behavioral clusters.
+For each original feature we extract power at a range of frequencies, as shown in the scaleogram \ref{fig:scaleogram_bc}
+As these are the features which is to be reduced into two dimensions, we need to prepare them as best as possible for the dimensionality reduction techniques.
+Firstly we want all frequencies to contribute equally.
+This creates the need for scaling across frequencies, as the wavelet transform creates larger spectral peaks for lower frequencies \cite{liu} \cite{berman}.
+A suggested remedy for this is simply to divide the (squared) spectrum by its corresponding scale \cite{liu}.
+Secondly all features should have equal contributions.
+This is solved by standardizing the features, which is commonly done before applying principal component analysis anyway.
+
+
+
 
 
 \newpage
