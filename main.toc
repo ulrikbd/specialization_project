@@ -1,37 +1,40 @@
-\contentsline {chapter}{\chapternumberline {1}Introduction}{3}{chapter.1}%
-\contentsline {section}{\numberline {1.1}Motivation}{3}{section.1.1}%
-\contentsline {section}{\numberline {1.2}Previous work}{3}{section.1.2}%
-\contentsline {chapter}{\chapternumberline {2}Theory}{5}{chapter.2}%
-\contentsline {section}{\numberline {2.1}Time series analysis}{5}{section.2.1}%
-\contentsline {subsection}{\numberline {2.1.1}Stationarity}{5}{subsection.2.1.1}%
-\contentsline {subsection}{\numberline {2.1.2}Detrending}{6}{subsection.2.1.2}%
-\contentsline {section}{\numberline {2.2}Fourier analysis}{7}{section.2.2}%
-\contentsline {subsection}{\numberline {2.2.1}Discrete-Time Fourier Transform}{8}{subsection.2.2.1}%
-\contentsline {section}{\numberline {2.3}Spectral density estimation}{9}{section.2.3}%
-\contentsline {subsection}{\numberline {2.3.1}Periodogram}{9}{subsection.2.3.1}%
-\contentsline {subsection}{\numberline {2.3.2}Sample spectrum}{10}{subsection.2.3.2}%
-\contentsline {subsection}{\numberline {2.3.3}Spectral Window}{10}{subsection.2.3.3}%
-\contentsline {subsection}{\numberline {2.3.4}Lag window}{11}{subsection.2.3.4}%
-\contentsline {section}{\numberline {2.4}Time frequency analysis}{12}{section.2.4}%
-\contentsline {subsection}{\numberline {2.4.1}Short-Time Fourier Transform}{12}{subsection.2.4.1}%
-\contentsline {subsection}{\numberline {2.4.2}Wavelet transform}{13}{subsection.2.4.2}%
-\contentsline {section}{\numberline {2.5}Piecewise polynomials}{14}{section.2.5}%
-\contentsline {subsection}{\numberline {2.5.1}Splines}{15}{subsection.2.5.1}%
-\contentsline {subsection}{\numberline {2.5.2}Regression splines}{15}{subsection.2.5.2}%
-\contentsline {section}{\numberline {2.6}Dimensionality reduction}{15}{section.2.6}%
-\contentsline {subsection}{\numberline {2.6.1}Principal component analysis}{16}{subsection.2.6.1}%
-\contentsline {subsection}{\numberline {2.6.2}t-Stochastic Neighbor Embedding}{16}{subsection.2.6.2}%
-\contentsline {section}{\numberline {2.7}Kernel density estimation}{17}{section.2.7}%
-\contentsline {section}{\numberline {2.8}Watershed segmentation}{18}{section.2.8}%
-\contentsline {chapter}{\chapternumberline {3}Methodology}{21}{chapter.3}%
-\contentsline {section}{\numberline {3.1}Feature extraction}{21}{section.3.1}%
-\contentsline {subsection}{\numberline {3.1.1}Detrending}{21}{subsection.3.1.1}%
-\contentsline {subsection}{\numberline {3.1.2}Time frequency analysis}{21}{subsection.3.1.2}%
-\contentsline {section}{\numberline {3.2}Manifold embedding}{23}{section.3.2}%
-\contentsline {chapter}{\chapternumberline {4}Discussion}{25}{chapter.4}%
-\contentsline {section}{\numberline {4.1}Simulated Data}{25}{section.4.1}%
-\contentsline {section}{\numberline {4.2}Benefits of t-SNE}{25}{section.4.2}%
-\contentsline {section}{\numberline {4.3}Tuning the perplexity parameter}{26}{section.4.3}%
-\contentsline {section}{\numberline {4.4}Tuning the bandwidth matrix}{26}{section.4.4}%
-\contentsline {section}{\numberline {4.5}Scaling the spectrogram}{27}{section.4.5}%
-\contentsline {chapter}{Bibliography}{29}{section*.3}%
+\contentsline {chapter}{List of Figures}{3}{section*.2}%
+\contentsline {chapter}{\chapternumberline {1}Introduction}{7}{chapter.1}%
+\contentsline {section}{\numberline {1.1}Motivation}{7}{section.1.1}%
+\contentsline {section}{\numberline {1.2}Previous work}{7}{section.1.2}%
+\contentsline {chapter}{\chapternumberline {2}Theory}{9}{chapter.2}%
+\contentsline {section}{\numberline {2.1}Time series analysis}{9}{section.2.1}%
+\contentsline {subsection}{\numberline {2.1.1}Stationarity}{9}{subsection.2.1.1}%
+\contentsline {subsection}{\numberline {2.1.2}Detrending}{10}{subsection.2.1.2}%
+\contentsline {section}{\numberline {2.2}Fourier analysis}{11}{section.2.2}%
+\contentsline {subsection}{\numberline {2.2.1}Discrete-Time Fourier Transform}{12}{subsection.2.2.1}%
+\contentsline {section}{\numberline {2.3}Spectral density estimation}{13}{section.2.3}%
+\contentsline {subsection}{\numberline {2.3.1}Periodogram}{14}{subsection.2.3.1}%
+\contentsline {subsection}{\numberline {2.3.2}Sample spectrum}{14}{subsection.2.3.2}%
+\contentsline {subsection}{\numberline {2.3.3}Spectral Window}{15}{subsection.2.3.3}%
+\contentsline {subsection}{\numberline {2.3.4}Lag window}{16}{subsection.2.3.4}%
+\contentsline {section}{\numberline {2.4}Time frequency analysis}{17}{section.2.4}%
+\contentsline {subsection}{\numberline {2.4.1}Short-Time Fourier Transform}{17}{subsection.2.4.1}%
+\contentsline {subsection}{\numberline {2.4.2}Wavelet transform}{18}{subsection.2.4.2}%
+\contentsline {section}{\numberline {2.5}Piecewise polynomials}{19}{section.2.5}%
+\contentsline {subsection}{\numberline {2.5.1}Splines}{20}{subsection.2.5.1}%
+\contentsline {subsection}{\numberline {2.5.2}Regression splines}{20}{subsection.2.5.2}%
+\contentsline {section}{\numberline {2.6}Dimensionality reduction}{21}{section.2.6}%
+\contentsline {subsection}{\numberline {2.6.1}Principal component analysis}{21}{subsection.2.6.1}%
+\contentsline {subsection}{\numberline {2.6.2}t-Stochastic Neighbor Embedding}{22}{subsection.2.6.2}%
+\contentsline {section}{\numberline {2.7}Kernel density estimation}{23}{section.2.7}%
+\contentsline {section}{\numberline {2.8}Watershed segmentation}{23}{section.2.8}%
+\contentsline {chapter}{\chapternumberline {3}Methodology}{25}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Feature extraction}{25}{section.3.1}%
+\contentsline {subsection}{\numberline {3.1.1}Detrending}{25}{subsection.3.1.1}%
+\contentsline {subsection}{\numberline {3.1.2}Time frequency analysis}{26}{subsection.3.1.2}%
+\contentsline {section}{\numberline {3.2}Manifold embedding}{27}{section.3.2}%
+\contentsline {chapter}{\chapternumberline {4}Discussion}{29}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Simulated Data}{29}{section.4.1}%
+\contentsline {section}{\numberline {4.2}Benefits of t-SNE}{29}{section.4.2}%
+\contentsline {section}{\numberline {4.3}Tuning the perplexity parameter}{30}{section.4.3}%
+\contentsline {section}{\numberline {4.4}Tuning the bandwidth matrix}{31}{section.4.4}%
+\contentsline {section}{\numberline {4.5}Scaling the spectrogram}{32}{section.4.5}%
+\contentsline {chapter}{\chapternumberline {5}Results}{33}{chapter.5}%
+\contentsline {chapter}{\chapternumberline {6}Conclusions}{35}{chapter.6}%
+\contentsline {chapter}{Bibliography}{37}{section*.4}%

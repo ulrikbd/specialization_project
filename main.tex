@@ -1,6 +1,8 @@
-\documentclass[a4paper]{memoir}
+\documentclass[a4paper, 11pt]{memoir}
 
-\usepackage[utf8]{inputenc} \usepackage{geometry}
+
+\usepackage[utf8]{inputenc} 
+\usepackage{geometry}
 \usepackage{amsmath, amsfonts, amssymb, amsthm, mathtools}
 \usepackage{graphicx}
 \usepackage{parskip}
@@ -45,12 +47,50 @@ style=ieee]
 \theoremstyle{remark}
 \newtheorem*{remark}{Remark}
 
+
+\newlength{\tpheight}\setlength{\tpheight}{0.9\textheight}
+\newlength{\txtheight}\setlength{\txtheight}{0.9\tpheight}
+\newlength{\tpwidth}\setlength{\tpwidth}{0.9\textwidth}
+\newlength{\txtwidth}\setlength{\txtwidth}{0.9\tpwidth}
+\newlength{\drop}
+
+
+\newcommand*{\titleMS}{\begingroup% Thesis
+\drop=0.1\txtheight
+\vspace*{\drop}
+\centering 
+{\LARGE Norwegian Institute of Science and Technology}\\[2\baselineskip]
+{\LARGE\sffamily Clustering animal behavior \par}
+\vfill
+{\LARGE TMA4500}\par
+\vspace{\drop}
+{\large Specialization project in Industrial Mathematics \\
+        autumn 2022, supervised by Associate Professor  \\
+        Benjamin Adric Dunn\par}
+\vfill
+{\large\bfseries Ulrik Bernhardt Danielsen}\par
+\vspace*{\drop}
+\endgroup}
+
+
 \begin{document}
 
-\maketitle
+\begin{titlingpage}
+\titleMS
+\end{titlingpage}
 
 \tableofcontents*
 \clearpage
+\listoffigures
+\clearpage
+
+
+\begin{abstract}
+        This specialization project serves as a preparation for the master thesis in Industrial Mathematics at NTNU. 
+        My aim is to extend and justify a clustering methodology grouping motion recordings of free roaming mice into distinct behaviours.
+        Using time frequency analysis to extract information about repeating movement patterns, and dimensionality reduction techniques such as principal component analysis and t-distributed stochastic neighbor embedding, we can separate behaviors in a two dimensional space.
+        These detected behaviors can then be used further research, e.g., investigating connections between neural recordings and behavior, or behavioral effects by various stimulation.
+\end{abstract}
 
 
 
@@ -196,9 +236,9 @@ The set of frequencies making up the series is called the \textit{spectrum}.
 As a consequence the coefficients $c_k$ can be viewed as weighting the importance of the contributions for the different frequencies making up the full sequence.
 This is formalized by the definitions of energy and power,
 \begin{align}\label{eq:energy}
-        \text{energy} &= \sum_{t = 2}^{n} Z_t^2 = n \sum_{k = -\frac{n -1}{2}}^{\frac{n - 1}{2}} |c_k|^2 ,\\ 
+        &\text{energy} = \sum_{t = 2}^{n} Z_t^2 = n \sum_{k = -\frac{n -1}{2}}^{\frac{n - 1}{2}} |c_k|^2 ,\\ 
         \label{eq:power}
-        \text{power} = \frac{\text{energy}}{n} &= \sum_{k = -\frac{n -1}{2}}^{\frac{n - 1}{2}} |c_k|^2. 
+        &\text{power} = \frac{\text{energy}}{n} = \sum_{k = -\frac{n -1}{2}}^{\frac{n - 1}{2}} |c_k|^2. 
 \end{align}
 Let $p_k$ be the contribution to the power from frequency $k = 0, 1, \hdots, (n-1)/2$.
 As $\omega_k$ and $\omega_{-k}$ corresponds to the same frequency the contribution is given as $p_0 = c_0^2, p_k = 2|c_k|^2, k = 1, \hdots, (n-1)/2$.
@@ -818,6 +858,10 @@ Secondly all features should have equal contributions.
 This is solved by standardizing the features, which is commonly done before applying principal component analysis anyway.
 
 
+\chapter{Results}
+
+
+\chapter{Conclusions}
 
 
 
