@@ -1,4 +1,4 @@
-\documentclass[a4paper, 11pt]{memoir}
+\documentclass[a4paper, 10pt]{memoir}
 
 
 \usepackage[utf8]{inputenc} 
@@ -81,13 +81,14 @@ style=ieee]
 
 \tableofcontents*
 \clearpage
-\listoffigures
+\listoffigures*
 \clearpage
 
-
+\lhead{}
+\rhead{}
 \begin{abstract}
         This specialization project serves as a preparation for the master thesis in Industrial Mathematics at NTNU. 
-        My aim is to extend and justify a clustering methodology grouping motion recordings of free roaming mice into distinct behaviours.
+        My aim is to extend and justify a clustering methodology grouping motion recordings of free roaming rats into distinct behaviours.
         Using time frequency analysis to extract information about repeating movement patterns, and dimensionality reduction techniques such as principal component analysis and t-distributed stochastic neighbor embedding, we can separate behaviors in a two dimensional space.
         These detected behaviors can then be used further research, e.g., investigating connections between neural recordings and behavior, or behavioral effects by various stimulation.
 \end{abstract}
@@ -95,6 +96,8 @@ style=ieee]
 
 
 \chapter{Introduction}
+\lhead{\rightmark}
+\rhead{\leftmark}
 \section{Motivation}
 The human brain is an incredibly complex structures that researchers have been trying to understand for a long time.
 One way to gain information about how the brain operates is to study its neurons.
@@ -112,7 +115,7 @@ Manually labelling recordings of \textit{Drosophila melanogaster}, the fruit fly
 Unsupervised clustering techniques have also been developed for the fruit fly, using dimensionality reduction techniques to separate distinct behaviors in a two dimensional space \cite{berman}.
 Research has not only been done on the fruit fly.
 The MoSeq group at Harvard university uses 3D video capturing on free ranging mice.
-Modelling the behavior modules as vector autoregressive processes, and changes between modules as a hidden Markov model, allows researches to extract information about mouse body language and behavior \cite{wiltschko}.
+Modelling the behavior modules as vector autoregressive processes, and changes between modules as a hidden Markov model, allows researches to extract information about rat body language and behavior \cite{wiltschko}.
 Recording the behavior in 3D as opposed to 2D plays a big part of these methods success \cite{marshall}
 As opposed to using depth cameras to provide the 3D kinematic recording, use of motion sensors have also been used. 
 
@@ -838,14 +841,30 @@ Note that only 3600 points were used calculating the embedding.
 \end{figure}
 
 
-\section{Tuning the bandwidth matrix}
-The kernel density estimation \eqref{eq:kde} plays a significant role in final the clustering.
-It smooths the two dimensional embedding creating local peaks which we interpret as individual behaviors.
-The degree of smoothing is determined by the bandwidth $2 \times 2$ matrix $H$ briefly discussed in section \ref{sec:kde}.
-Several ways of choosing this parameter have been discussed in literature, most of them based on minimizing the asymptotic mean integrated squared error \cite{simonoff}.
-As our goal is visualizing clusters, it is better to test several different values, choosing the one which provide the best visualization.
-To limit the possibilities, we let the scaling be identical in both dimensions, letting $H$ be a diagonal matrix with identical elements.
+\section{Pre embedding with PCA}
+We could just embed the points directly into two dimensions through t-SNE alone.
+However, due to memory complexity limitations in the t-SNE algorithm, we need to select a subset data points which we use to create the embedding.
+These points can be thought of as the training points in the clustering algorithm.
+How do we then classify the remaining data?
+We will discuss two solutions to this problem.
+Both solutions involves reducing the dimension of the data linearly through principal component analysis prior to the t-SNE embedding.
+By only including the principal components explaining at least 95\% of the variance, we reduce a significant amount of noise.
+At the same time we make it easier to compare data points through euclidean distances in the PCA space.
 
+One idea is to apply kernel density estimation followed by watershed segmentation only on the training points.
+I.e., we classify the training points first.
+The remaining points are given the same label as their closest neighbor in the PCA space, using euclidean distance as the metric.
+
+A second idea is to embed all points into the two dimensions provided by t-SNE on the training data. 
+In this way, all points are contributing in the kernel density estimation, and subsequently in creating the behavioral regions.
+This choice of direction has a significant impact on the resulting classification.
+As shown in figure \ref{fig:pre_embed}.
+\begin{figure}[tb]
+        \centering
+        \includegraphics[width=1\linewidth]{./code/figures/test_pre_embed.pdf}
+        \caption{}
+        \label{fig:test_pre_embed}
+\end{figure}
 
 \section{Scaling the spectrogram}
 It is the power spectrum provided by the wavelet transform which contains all the information we use to separate the behavioral clusters.
@@ -855,13 +874,61 @@ Firstly we want all frequencies to contribute equally.
 This creates the need for scaling across frequencies, as the wavelet transform creates larger spectral peaks for lower frequencies \cite{liu} \cite{berman}.
 A suggested remedy for this is simply to divide the (squared) spectrum by its corresponding scale \cite{liu}.
 Secondly all features should have equal contributions.
-This is solved by standardizing the features, which is commonly done before applying principal component analysis anyway.
+This is solved by standardizing the spectrum, which is commonly done before applying principal component analysis anyway.
+
+Finally there remains the question of whether to take the square root of the wavelet spectrum, i.e, should we use $|\tilde{f}_n(s, \tau)|^2$ or $|\tilde{f}_n(s, \tau)|$ as a starting point for the dimensionality reduction.
+Intuitively the squared spectrum discriminates more between frequencies with high and low power. 
+When standardizing the power spectrum before PCA, the original magnitudes are unimportant.
+However, without standardization taking the square root is essential in keeping the powers comparable, as shown in figure \ref{fig:test_scaling}.
+The figure shows that standardizing groups the clusters more together in the t-SNE embedding, making it harder to distinguish very dissimilar clusters.
+\begin{figure}[tb]
+        \centering
+        \includegraphics[width=1\linewidth]{./code/figures/test_scaling.pdf}
+        \caption{t-SNE embedding of the simulated data varying the scaling of the wavelet power spectrum.
+        Points are color coded by their underlying true behavior.}
+        \label{fig:test_scaling}
+\end{figure}
+
+When tested on actual data, figure \ref{fig:test_scaling_example} shows that omitting the standardization creates several outliers in the t-SNE embedding, without providing clearer separation of clusters.
+\begin{figure}[tb]
+        \centering
+        \includegraphics[width=1\linewidth]{./code/figures/test_scaling_example.pdf}
+        \caption{t-SNE embedding of motion recordings of two rats downsampled at 2Hz.
+        On the left the wavelet spectrum is standardized before applying PCA.
+On the right no standardization is performed.}
+        \label{fig:test_scaling_example}
+\end{figure}
+
+
+\section{Effects of downsampling}
+
+
+\section{Tuning the bandwidth matrix}
+The kernel density estimation \eqref{eq:kde} plays a significant role in final the clustering.
+It smooths the two dimensional embedding creating local peaks which we interpret as individual behaviors.
+The degree of smoothing is determined by the bandwidth $2 \times 2$ matrix $H$ briefly discussed in section \ref{sec:kde}.
+Several ways of choosing this parameter have been discussed in literature, most of them based on minimizing the asymptotic mean integrated squared error \cite{simonoff}.
+As our goal is visualizing clusters, it is better to test several different values, choosing the one which provide the best visualization.
+To limit the possibilities, we let the scaling be identical in both dimensions, letting $H$ be a diagonal matrix with identical elements.
+
+
+
 
 
 \chapter{Results}
+\textcolor{red}{
+\begin{itemize}
+        \item Present the actual data, and the resulting embedding and some notes on the results if time permits
+\end{itemize}}
 
 
 \chapter{Conclusions}
+\textcolor{red}{
+\begin{itemize}
+        \item Does it work?
+        \item How do we know the model is good?
+        \item What further testing is required?
+\end{itemize}}
 
 
 

@@ -122,7 +122,7 @@ class BehavioralClustering():
         self.var_pca = None
         self.n_pca = None
         self.fit_pca = None
-        self.ds_rate = 0.5
+        self.ds_rate = 2
         self.perp = 30
         self.embedded = None
         self.kde = None
@@ -277,7 +277,7 @@ class BehavioralClustering():
 
         # Downsample the principal component scores
         self.tsne_ind = np.arange(0, len(self.fit_pca),
-                        int(self.capture_framerate * self.ds_rate))
+                        int(self.capture_framerate / self.ds_rate))
         train = self.fit_pca[self.tsne_ind,:] 
 
         # Perform t-SNE

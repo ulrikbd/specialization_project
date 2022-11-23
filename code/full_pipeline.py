@@ -9,7 +9,7 @@ from helper_functions import (
         plot_scaleogram, assign_labels,
         get_contours, plot_watershed_heat,
         get_watershed_labels, estimate_pdf,
-)
+
 
 from scipy.spatial.distance import cdist
 
@@ -154,7 +154,7 @@ def test_embedding():
     
     # Apply kernel density estimation on all points
     kde, grid = estimate_pdf(emb_total, bc.bw, bc.border,
-                             300j)
+                             500j)
 
     ws_labels = get_watershed_labels(kde)
     contours = get_contours(kde, ws_labels)

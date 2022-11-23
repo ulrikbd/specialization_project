@@ -17,6 +17,10 @@ from skimage.feature import peak_local_max
 import cv2 as cv
 import imutils
 
+import pycwt as wavelet
+from pycwt.helpers import find
+
+from sklearn.manifold import TSNE
 
 
 def estimate_pdf(array, bw, border, pixels):
@@ -455,6 +459,76 @@ def pickle_simulated_data():
 
     with open("./extracted_data/simulated_data.pkl", "wb") as file:
         pickle.dump(df, file)
+
+
+def scale_power_spectrum(bc, sqrt = True, standardize = True):
+    """
+    Finds the power spectrum and scales it 
+    corresponding to the variable scale:
+
+    Arguments:
+        bc (pipeline): Pipeline containing the data
+        sqrt (bool): To take square root of the
+            spectrum or not
+        standardize (bool): To standardize the 
+            spectrum or not
+    Returns:
+        embedding: t-SNE embedding found
+    """
+    bc.power = []
+    bc.features = []
+
+    # Iterate over animals
+    for d in range(len(bc.data)):
+        # Create storage for new feature vector
+        x_d = np.zeros(shape = (len(bc.data[d]),
+                                bc.n_features*
+                                (bc.num_freq + 1)))
+        # Create storage for power spectrum
+        power_d = np.zeros(shape = (bc.n_features,
+                                    bc.num_freq,
+                                    len(bc.data[d])))
+
+        # Iterate over raw features
+        for i in range(bc.n_features):
+            # Apply cwt
+            wave, scales, freqs, coi, fft, fftfreqs = wavelet.cwt(
+                    bc.data[d][:,i], bc.dt, bc.dj, 1/bc.max_freq,
+                    bc.num_freq - 1, bc.mother)
+            # Store the frequencies and scales
+            if scales.all() != bc.scales.all():
+                bc.scales = scales
+                bc.freqs = freqs
+            # Compute wavelet power spectrum
+            power_i = np.abs(wave)**2
+            # Normalize over scales (Liu et. al. 07)
+            power_i /= scales[:, None]
+            # Store power
+            power_d[i] = power_i
+            if sqrt:
+                # Take the square root to ...
+                power_i = np.sqrt(power_i)
+            
+            # Center and rescale trend
+            trend = bc.trend[d][:,i]
+            trend_std = np.std(trend)
+            trend = (trend - np.mean(trend)) / trend_std
+
+
+            # Store new features
+            x_d[:,i] = trend
+            x_d[:,bc.n_features + i*bc.num_freq:bc.n_features +(i + 1)*
+                bc.num_freq] = power_i.T
+    
+        bc.features.append(x_d)
+        bc.power.append(power_d)
+
+    if standardize:
+        bc.standardize_features()
+    bc.pca()
+    bc.tsne()
+
+    return bc.embedded
 
 
 def main():

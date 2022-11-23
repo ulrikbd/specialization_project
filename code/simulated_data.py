@@ -8,7 +8,7 @@ from sklearn.manifold import MDS, Isomap, TSNE
 from behavioral_clustering import BehavioralClustering
 from helper_functions import (
         get_simulated_data, plot_watershed_heat,
-        get_contours,
+        get_contours, scale_power_spectrum,
 )
 
 import matplotlib.colors as mcolors
@@ -186,18 +186,64 @@ def perplexity_tuning():
     # plt.show()
 
 
+
+
 def test_scaling():
     """
     Try the clustering algorithm with various 
     scaling choices for the wavelet spectrum.
+    1. No square root + standardization
+    2. Square root + standardization
+    3. No square root + no standardization
+    4. Square root + no standardization
     """
 
+    ## 1 
     df = load_simulated()
     bc = df["bc"]
-    data = bc.data
-    print(data[0].shape)
+    labels = df["labels"]
+    ind = np.arange(0, len(bc.fit_pca),
+                    int(bc.capture_framerate * bc.ds_rate))
+    labels = labels[ind]
+    emb_1 = scale_power_spectrum(
+            bc, sqrt = False, standardize = True)
+    ## 2 
+    df = load_simulated()
+    bc = df["bc"]
+    emb_2 = scale_power_spectrum(
+            bc, sqrt = True, standardize = True)
+    ## 3 
+    df = load_simulated()
+    bc = df["bc"]
+    emb_3 = scale_power_spectrum(
+            bc, sqrt = False, standardize = False)
+    ## 4 
+    df = load_simulated()
+    bc = df["bc"]
+    emb_4 = scale_power_spectrum(
+            bc, sqrt = True, standardize = False)
 
-    
+    plt.figure(figsize = (12, 10))
+    plt.subplot(221)
+    plt.scatter(emb_1[:,0], emb_1[:,1], c = labels,
+                cmap = "Paired")
+    plt.title("No square root w/standarization")
+    plt.subplot(222)
+    plt.scatter(emb_2[:,0], emb_2[:,1], c = labels,
+                cmap = "Paired")
+    plt.title("Square root w/standarization")
+    plt.subplot(223)
+    plt.scatter(emb_3[:,0], emb_3[:,1], c = labels,
+                cmap = "Paired")
+    plt.title("No square root wo/standarization")
+    plt.subplot(224)
+    plt.scatter(emb_4[:,0], emb_4[:,1], c = labels,
+                cmap = "Paired")
+    plt.title("Square root wo/standarization")
+    plt.savefig("./figures/test_scaling.pdf", 
+                bbox_inches = "tight")
+    # plt.show()
+
     
 
 def main():
