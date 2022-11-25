@@ -126,7 +126,7 @@ def plot_kde():
 
     plt.figure(figsize = (12, 5))
     plt.imshow(bc.kde, cmap = "coolwarm")
-    plt.show()
+    # plt.show()
 
 
 def plot_watershed():
@@ -148,14 +148,14 @@ def plot_watershed():
     plt.figure(figsize = (12, 5))
     plot_watershed_heat(bc.embedded, bc.kde, contours,
                         bc.border)
-    plt.show()
+    # plt.show()
      
 
 
 def main():
     seaborn.set_theme()
-    # plot_detrending()
-    # plot_scaleograms()
+    plot_detrending()
+    plot_scaleograms()
     plot_tsne()
     plot_kde()
     plot_watershed()

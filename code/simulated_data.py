@@ -56,8 +56,12 @@ def get_simulated_pipeline():
     bc.time_frequency_analysis()
     bc.standardize_features()
     bc.pca()
-    bc.ds_rate = 1 / bc.capture_framerate * 20
+    bc.ds_rate = 6
     bc.tsne()
+    bc.pre_embedding()
+    bc.kernel_density_estimation(500j)
+    bc.watershed_segmentation()
+    bc.classify()
     df["bc"] = bc
 
     return df
@@ -172,6 +176,7 @@ def perplexity_tuning():
     for i in range(len(perp)):
         bc.perp = perp[i]
         bc.tsne()
+        bc.embedded = bc.embedded_train
         bc.kernel_density_estimation(500j)
         bc.watershed_segmentation()
 
@@ -250,11 +255,11 @@ def main():
     seaborn.set_theme()
     # pickle_simulated()
     df = load_simulated()
-
+    bc = df["bc"]
     # plot_simulated_features(df)
     # dimensionality_reduction()
     # perplexity_tuning()
-    test_scaling()
+    # test_scaling()
 
 
 if __name__ == "__main__":

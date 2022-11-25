@@ -15,7 +15,7 @@
 \contentsline {figure}{\numberline {4.1}{\ignorespaces Simulated feature vector showing changes in behavior during the first 50 seconds.}}{30}{figure.4.1}%
 \contentsline {figure}{\numberline {4.2}{\ignorespaces Two dimensional embedding of the standardized simulated data using different dimensionality reduction methods. \textit {Top left:} Principal component analysis. \textit {Top right:} Multidimensional scaling. \textit {Bottom left:} ISOMAP using $n = 20$ neighbors construction the graph. \textit {Bottom right:} t-SNE with perplexity $30$.}}{31}{figure.4.2}%
 \contentsline {figure}{\numberline {4.3}{\ignorespaces Clustering of the simulated data varying the perplexity parameter in t-SNE. The bandwidth for the kernel density estimation is 0.2 for all embeddings.}}{32}{figure.4.3}%
-\contentsline {figure}{\numberline {4.4}{\ignorespaces }}{33}{figure.4.4}%
+\contentsline {figure}{\numberline {4.4}{\ignorespaces Plots showing the t-SNE embedding and corresponding watershed segmentation on data from two rats, downsampled at 2Hz. \textit {Left:} Only the downsampled training data is used. \textit {Right:} All data is embedded into the two dimensional plane, using the embeddings corresponding to the nearest neighbor in the reduced PCA space.}}{33}{figure.4.4}%
 \contentsline {figure}{\numberline {4.5}{\ignorespaces t-SNE embedding of the simulated data varying the scaling of the wavelet power spectrum. Points are color coded by their underlying true behavior.}}{34}{figure.4.5}%
 \contentsline {figure}{\numberline {4.6}{\ignorespaces t-SNE embedding of motion recordings of two rats downsampled at 2Hz. On the left the wavelet spectrum is standardized before applying PCA. On the right no standardization is performed.}}{35}{figure.4.6}%
 \addvspace {10pt}

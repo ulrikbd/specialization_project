@@ -9,7 +9,7 @@ from helper_functions import (
         plot_scaleogram, assign_labels,
         get_contours, plot_watershed_heat,
         get_watershed_labels, estimate_pdf,
-
+)
 
 from scipy.spatial.distance import cdist
 
@@ -24,8 +24,7 @@ def get_pipeline():
     bc.set_extracted_file_path("./extracted_data/")
 
     bc.load_relevant_features(filenames)
-    # 10 first animals, else RAM overload
-    bc.raw_features = bc.raw_features[:10]
+    bc.raw_features = bc.raw_features
     bc.remove_nan()
     print("Detrend")
     bc.detrend()
@@ -36,11 +35,14 @@ def get_pipeline():
     bc.ds_rate = 1
     print("tsne")
     bc.tsne()
+    print("preembedding")
+    bc.pre_embedding()
     print("kde")
-    bc.kernel_density_estimation(100j)
+    bc.kernel_density_estimation(500j)
     print("watershed")
     bc.watershed_segmentation()
     bc.classify()
+
     return bc
 
 
@@ -77,7 +79,7 @@ def perplexity_tuning_full():
     perp = [1, 5, 30, 50, 200, 500]
 
     bc = load_pipeline()
-    bc.bw = 0.01
+    bc.bw = 0.2
 
     plt.figure(figsize = (12, 8))
     # Iterate over chosen perplexities
@@ -85,7 +87,8 @@ def perplexity_tuning_full():
         bc.perp = perp[i]
         print("Perplexity:", perp[i])
         bc.tsne()
-        bc.kernel_density_estimation(100j)
+        bc.pre_embedding()
+        bc.kernel_density_estimation(500j)
         bc.watershed_segmentation()
 
         contours = get_contours(bc.kde, bc.ws_labels)
@@ -113,7 +116,8 @@ def bandwidth_tuning():
         bc.bw = bandwidth
 
         bc.tsne()
-        bc.kernel_density_estimation(100j)
+        bc.pre_embedding()
+        bc.kernel_density_estimation(500j)
         bc.watershed_segmentation()
 
         contours = get_contours(bc.kde, bc.ws_labels)
@@ -173,12 +177,12 @@ def test_embedding():
 
 def main():
     sns.set_theme()
-    # pickle_pipeline()
+    pickle_pipeline()
     # bc = load_pipeline()
 
     # perplexity_tuning_full()
     # bandwidth_tuning()
-    test_embedding()
+    # test_embedding()
     
 
 if __name__ == "__main__":

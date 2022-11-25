@@ -528,7 +528,7 @@ def scale_power_spectrum(bc, sqrt = True, standardize = True):
     bc.pca()
     bc.tsne()
 
-    return bc.embedded
+    return bc.embedded_train
 
 
 def main():

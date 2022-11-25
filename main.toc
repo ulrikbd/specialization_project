@@ -28,6 +28,7 @@
 \contentsline {subsection}{\numberline {3.1.1}Detrending}{25}{subsection.3.1.1}%
 \contentsline {subsection}{\numberline {3.1.2}Time frequency analysis}{25}{subsection.3.1.2}%
 \contentsline {section}{\numberline {3.2}Manifold embedding}{27}{section.3.2}%
+\contentsline {section}{\numberline {3.3}Clustering}{28}{section.3.3}%
 \contentsline {chapter}{\chapternumberline {4}Discussion}{29}{chapter.4}%
 \contentsline {section}{\numberline {4.1}Simulated Data}{29}{section.4.1}%
 \contentsline {section}{\numberline {4.2}Benefits of t-SNE}{29}{section.4.2}%
@@ -37,5 +38,6 @@
 \contentsline {section}{\numberline {4.6}Effects of downsampling}{33}{section.4.6}%
 \contentsline {section}{\numberline {4.7}Tuning the bandwidth matrix}{33}{section.4.7}%
 \contentsline {chapter}{\chapternumberline {5}Results}{37}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Data}{37}{section.5.1}%
 \contentsline {chapter}{\chapternumberline {6}Conclusions}{39}{chapter.6}%
 \contentsline {chapter}{Bibliography}{41}{section*.4}%

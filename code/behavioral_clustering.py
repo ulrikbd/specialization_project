@@ -10,7 +10,7 @@ from helper_functions import (
 import pycwt as wavelet
 from pycwt.helpers import find
 
-from sklearn.decomposition import PCA
+from sklearn.decomposition import PCA, IncrementalPCA
 from sklearn.manifold import TSNE
 
 from scipy.spatial.distance import cdist
@@ -73,8 +73,10 @@ class BehavioralClustering():
         ds_rate (int): Downsampling frequency in [Hz],
             used as t-SNE memory complexity is O(n^2)
         perp (float): Perplexity parameter used in t-SNE
-        embdedded (np.ndarray): The low dimensional embedding
-            obtained from tsne
+        embedded_train (np.ndarray): Two dimensional embedding
+            obtained by t-SNE on the downsampled data
+        embedded (np.ndarray): The low dimensional embedding
+            of all points
         tsne_ind (np.ndarray): Indices of time points used
             when finding the t-SNE embedding
         kde (np.ndarray): Kernel density estimation of
@@ -124,6 +126,7 @@ class BehavioralClustering():
         self.fit_pca = None
         self.ds_rate = 2
         self.perp = 30
+        self.embedded_train = None
         self.embedded = None
         self.kde = None
         self.border = 30
@@ -183,17 +186,13 @@ class BehavioralClustering():
         features. We store the power matrix, scales and 
         frequencies to be used for plotting scaleograms.
         """ 
-        
+
         # Iterate over animals
         for d in range(len(self.data)):
             # Create storage for new feature vector
             x_d = np.zeros(shape = (len(self.data[d]),
                                     self.n_features*
                                     (self.num_freq + 1)))
-            # Create storage for power spectrum
-            power_d = np.zeros(shape = (self.n_features,
-                                        self.num_freq,
-                                        len(self.data[d])))
 
             # Iterate over raw features
             for i in range(self.n_features):
@@ -209,8 +208,6 @@ class BehavioralClustering():
                 power_i = np.abs(wave)**2
                 # Normalize over scales (Liu et. al. 07)
                 power_i /= scales[:, None]
-                # Store power
-                power_d[i] = power_i
                 # Take the square root to ...
                 power_i = np.sqrt(power_i)
                 
@@ -227,7 +224,6 @@ class BehavioralClustering():
                     self.num_freq] = power_i.T
         
             self.features.append(x_d)
-            self.power.append(power_d)
 
     
     def standardize_features(self):
@@ -262,7 +258,7 @@ class BehavioralClustering():
 
         # Apply the transformation using the sufficient
         # number of principal components
-        pca = PCA(n_components = self.n_pca)
+        pca = PCA(n_components = self.n_pca, batch_size = batch_size)
         self.fit_pca = pca.fit_transform(features)
           
 
@@ -281,10 +277,37 @@ class BehavioralClustering():
         train = self.fit_pca[self.tsne_ind,:] 
 
         # Perform t-SNE
-        self.embedded = TSNE(n_components = 2,
-                            perplexity = self.perp,
-                            init = "pca").fit_transform(train)
+        self.embedded_train = TSNE(n_components = 2,
+                                perplexity = self.perp,
+                                init = "pca").fit_transform(train)
          
+
+    def pre_embedding(self):
+        """
+        Embeds all data points into the t-SNE plane
+        by choosing the components of the nearest 
+        neighbor (in the training set) by euclidean
+        distance in the PCA space.
+        """ 
+
+        # Principal component scores for 
+        # points used to find t-SNE embedding.
+        pca_train = self.fit_pca[self.tsne_ind,:]
+
+        # Create storage for embeddings
+        self.embedded = np.zeros(
+                shape = (len(self.fit_pca), 2))
+
+        # Iterate over all time points
+        for i in range(len(self.fit_pca)):
+            # Find closest time point in PCA space
+            dist = cdist(self.fit_pca[i,:][np.newaxis,:],
+                         pca_train)
+
+            # Choose embedding corresponding to this
+            # time point
+            self.embedded[i] = self.embedded_train[dist.argmin()]
+
     
     def kernel_density_estimation(self, pixels):
         """
@@ -320,22 +343,6 @@ class BehavioralClustering():
         emb_labels = assign_labels(self.embedded, 
                                    self.ws_labels,
                                    self.grid)
-        
-        # Principal component scores for 
-        # points used to find t-SNE embedding.
-        pca_train = self.fit_pca[self.tsne_ind,:]
-
-        # Create storage for classifications
-        self.beh_labels = np.zeros(len(self.fit_pca))
-         
-        # Iterate over all time points
-        for i in range(len(self.fit_pca)):
-            # Find closest time point in PCA space
-            dist = cdist(self.fit_pca[i,:][np.newaxis,:],
-                         pca_train)
-            # Find the label assigned to the corresponding
-            # time point
-            self.beh_labels[i] = emb_labels[dist.argmin()]
          
 
     def set_original_file_path(self, original_file_path):

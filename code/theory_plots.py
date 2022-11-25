@@ -149,7 +149,7 @@ def plot_periodogram():
     plt.xlabel("Frequency [Hz]")
     plt.ylabel("Power spectrum")
     # plt.savefig("./figures/periodogram_basic.pdf", bbox_inches="tight")
-    plt.show()
+    # plt.show()
 
 
 def plot_smoothed_periodogram():
@@ -174,7 +174,7 @@ def plot_smoothed_periodogram():
     plt.xlabel("Frequency [Hz]")
     plt.ylabel("Power spectrum")
     plt.savefig("./figures/periodogram_smoothed.pdf", bbox_inches="tight")
-    plt.show()
+    # plt.show()
 
 
 def plot_windows():
@@ -226,14 +226,14 @@ def spectrogram_example():
     plt.semilogy(f, Pxx_den)
     plt.xlabel("Frequency [Hz]")
     plt.ylabel("Power spectrum")
-    plt.show()
+    # plt.show()
 
     # Compute short-time Fourier transform and plot spectrogram
     fo, time, Sxx = spectrogram(y, fs, window = "hann")
     plt.pcolormesh(time, fo, Sxx)
     plt.ylabel("Frequency [Hz]")
     plt.xlabel("Time")
-    plt.show()
+    # plt.show()
    
 
 def wavelet_example():
@@ -299,10 +299,10 @@ def watershed_example():
 
     df = load_simulated()
     bc = df["bc"]
-    data = bc.embedded
+    data = bc.embedded_train
     border = 30
     bw = 0.2
-    pixels = 200j 
+    pixels = 500j 
     kde, grid = estimate_pdf(data, bw, border, pixels)
     labels = get_watershed_labels(kde)
     contours = get_contours(kde, labels)
@@ -314,7 +314,7 @@ def watershed_example():
     xmax, ymax = np.max(data, axis = 0) + border
     xmin, ymin = np.min(data, axis = 0) - border
 
-    lab = df["labels"][::int(bc.capture_framerate * bc.ds_rate)]
+    lab = df["labels"][::int(bc.capture_framerate / bc.ds_rate)]
 
     plt.figure(figsize = (12, 12))
     ax1 = plt.subplot(221)
@@ -348,6 +348,7 @@ def watershed_example():
     plt.yticks([])
     plt.subplots_adjust(wspace = 0.1, hspace = 0)
     plt.savefig("./figures/clustering_example.pdf",
+                bbox_inches = "tight")
     # plt.show()
 
        

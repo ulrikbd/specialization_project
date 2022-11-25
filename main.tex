@@ -87,10 +87,10 @@ style=ieee]
 \lhead{}
 \rhead{}
 \begin{abstract}
-        This specialization project serves as a preparation for the master thesis in Industrial Mathematics at NTNU. 
+        This specialization project serves as a preparation for my master thesis in Industrial Mathematics at NTNU. 
         My aim is to extend and justify a clustering methodology grouping motion recordings of free roaming rats into distinct behaviours.
         Using time frequency analysis to extract information about repeating movement patterns, and dimensionality reduction techniques such as principal component analysis and t-distributed stochastic neighbor embedding, we can separate behaviors in a two dimensional space.
-        These detected behaviors can then be used further research, e.g., investigating connections between neural recordings and behavior, or behavioral effects by various stimulation.
+        These detected behaviors can then be used in further research, e.g., investigating connections between neural recordings and behavior, or behavioral effects by various stimulation.
 \end{abstract}
 
 
@@ -103,7 +103,7 @@ The human brain is an incredibly complex structures that researchers have been t
 One way to gain information about how the brain operates is to study its neurons.
 Neurons are cells which can communicate with each other through synapses.
 This communication are electric signals and can be recorded.
-At Kavli Institute for Systems Neuroscience at NTNU they are interested in relating these neural spike recordings to the behavior in rats.
+At Kavli Institute for Systems Neuroscience at NTNU researchers are interested in relating these neural spike recordings to the behavior in rats.
 This in turn begs the question of how rats behave.
 Manually labelling video recordings of rats running around seems a tedious and unfruitful endeavor.
 Additionally it introduces bias in our prior assumptions of how the rats behave, and which activities they engage in.
@@ -111,13 +111,13 @@ Thus, a methodology for automatically detecting distinct behaviours is needed.
 
 \section{Previous work}
 Through recent advances in machine learning and computer vision, many attempts at decomposing animal behavior into small modules has been made.
-Manually labelling recordings of \textit{Drosophila melanogaster}, the fruit fly, before applying machine learning predation techniques shows performance on par with human labelling \cite{kain}
+Manually labelling recordings of \textit{Drosophila melanogaster}, the fruit fly, before applying machine learning prediction techniques shows performance on par with human labelling \cite{kain}.
 Unsupervised clustering techniques have also been developed for the fruit fly, using dimensionality reduction techniques to separate distinct behaviors in a two dimensional space \cite{berman}.
 Research has not only been done on the fruit fly.
 The MoSeq group at Harvard university uses 3D video capturing on free ranging mice.
 Modelling the behavior modules as vector autoregressive processes, and changes between modules as a hidden Markov model, allows researches to extract information about rat body language and behavior \cite{wiltschko}.
 Recording the behavior in 3D as opposed to 2D plays a big part of these methods success \cite{marshall}
-As opposed to using depth cameras to provide the 3D kinematic recording, use of motion sensors have also been used. 
+As opposed to using depth cameras to provide the 3D kinematic recording, use of motion sensors tracking separate body movements have also been used \cite{mimica}. 
 
 
 
@@ -147,6 +147,8 @@ and
 \begin{equation}\label{eq:acf}
         \rho(t_1, t_2) = \frac{\gamma ( t_1, t_2)}{\sqrt{\sigma_{t_1}^2}\sqrt{\sigma_{t_2}^{2}}}.
 \end{equation}
+
+
 
 
 
@@ -688,8 +690,8 @@ The starting point of the analysis is a set $\textbf{Y} =  \{ Y_d : d = 1, 2, \h
 Each $Y_d$ represents an animal for which $n$ time series are collected tracking parts of its movements.
 Recording frequency is the same across animals.
 The goal of the analysis is to cluster these time points into distinct distinguishable actions.
-
-\textcolor{red}{Some summarization: "This is achieved by..."}
+Looking at detrended motion recordings as periodic signals, we extract information about the periodicity in the movements at a range of frequencies through time frequency analysis.
+These extracted features are embedded into two dimensions, where we can use image segmentation techniques on an estimated two dimensional probability distribution.
 
 \section{Feature extraction}
 \subsection{Detrending}
@@ -738,9 +740,7 @@ Using equation \eqref{eq:cwt_d} we compute the discrete continuous wavelet trans
 \end{equation}
 The scaling is done to keep the power comparable across the varying scales \cite{liu}.
 An example plot of such a scaleogram is shown in figure \ref{fig:scaleogram_bc}.
-
-\textcolor{red}{There is more done here, square root etc..}
-
+To make the estimated power comparable we take the square root before proceeding 
 \begin{figure}[tb]
         \centering
         \includegraphics[width=\linewidth]{./code/figures/scaleograms/scaleogram_animal_1_BackPitch.pdf}
@@ -752,15 +752,29 @@ An example plot of such a scaleogram is shown in figure \ref{fig:scaleogram_bc}.
 
 
 
+
 \section{Manifold embedding}
 After performing the time-frequency analysis on all time series for all animals, we concatenate the results into a new feature vector.
 For animal $d$, we have $m_d$ time points, each containing information about the $n$ trend values, together with the $n \cdot J$ frequency powers.
 The concatenated feature vector thus have dimension $(m_1 + m_2 + \hdots + m_D) \times (n \cdot (J + 1))$.
 To cluster these time points into behaviours, we first reduce the feature dimension.
 It is logical that there should exist strong correlations between the various frequencies.
-\textcolor{red}{Insert discussion about why we do PCA first. Computation time for the t-SNE?}
+
+As a first step in the dimensionality reduction we use principal component analysis, keeping features explaining at least 95\% of the variance.
+This both reduces further computational complexity, and removes noise.
+To embed the data into two dimension, we apply t-distributed stochastic neighbor embedding.
+It has one hyper parameter, the perplexity \eqref{eq:perp}, which is chosen by inspecting some embeddings with values between 10 and 200.
+As t-SNE has quadratic memory complexity, we only embed as subset of the data.
+The subset is chosen through downsampling at a predefined frequency such that the number of training points is below 50000.
 
 
+\section{Clustering}
+We cluster the time points by dividing up the two dimensional embedding into regions.
+First we embed all points by giving each point the two dimensional coordinates to the training point (used for t-SNE) with the smallest euclidean distance in the principal component space.
+Aiming to find regions with large clusters of points, we compute an estimated probability density through Gaussian kernel density estimation \eqref{eq:kde}.
+\textcolor{red}{How do we choose the bandwidth?}
+Finally we apply watershed segmentation on the kernel density estimation, dividing the t-SNE plane into regions.
+\textcolor{red}{Should have a plot showing the entire methodology process}
 
 
 
@@ -858,13 +872,25 @@ The remaining points are given the same label as their closest neighbor in the P
 A second idea is to embed all points into the two dimensions provided by t-SNE on the training data. 
 In this way, all points are contributing in the kernel density estimation, and subsequently in creating the behavioral regions.
 This choice of direction has a significant impact on the resulting classification.
-As shown in figure \ref{fig:pre_embed}.
+As shown in figure \ref{fig:test_pre_embed}, using all points creates more peaks in the kernel density estimation, leading to a larger number of discovered behaviors.
 \begin{figure}[tb]
         \centering
         \includegraphics[width=1\linewidth]{./code/figures/test_pre_embed.pdf}
-        \caption{}
+        \caption{Plots showing the t-SNE embedding and corresponding watershed segmentation on data from two rats, downsampled at 2Hz.
+        \textit{Left:} Only the downsampled training data is used.
+\textit{Right:} All data is embedded into the two dimensional plane, using the embeddings corresponding to the nearest neighbor in the reduced PCA space.}
         \label{fig:test_pre_embed}
 \end{figure}
+
+As already mentioned, the size of the training data is very limited in the t-SNE algorithm.
+One argument for embedding before the kernel density estimation is that all the data is used for detecting behaviors.
+When the data samples grow in size, an increasing proportion is left out of the training data.
+
+
+
+
+
+
 
 \section{Scaling the spectrogram}
 It is the power spectrum provided by the wavelet transform which contains all the information we use to separate the behavioral clusters.
@@ -876,7 +902,7 @@ A suggested remedy for this is simply to divide the (squared) spectrum by its co
 Secondly all features should have equal contributions.
 This is solved by standardizing the spectrum, which is commonly done before applying principal component analysis anyway.
 
-Finally there remains the question of whether to take the square root of the wavelet spectrum, i.e, should we use $|\tilde{f}_n(s, \tau)|^2$ or $|\tilde{f}_n(s, \tau)|$ as a starting point for the dimensionality reduction.
+Finally there remains the question of whether to take the square root of the wavelet spectrum, i.e, should we use $|\tilde{f}_n(s, \tau)|^2$ or $|\tilde{f}_n(s, \tau|$ as a starting point for the dimensionality reduction.
 Intuitively the squared spectrum discriminates more between frequencies with high and low power. 
 When standardizing the power spectrum before PCA, the original magnitudes are unimportant.
 However, without standardization taking the square root is essential in keeping the powers comparable, as shown in figure \ref{fig:test_scaling}.
@@ -916,9 +942,22 @@ To limit the possibilities, we let the scaling be identical in both dimensions, 
 
 
 \chapter{Results}
+\section{Data}
+We test the methodology on actual data collected by Kavli Institute for Systems Neuroscience at the Norwegian University of Science and Technology, specifically the Whitlock group.
+The data can be downloaded at \href{https://figshare.com/articles/dataset/Rat_3D_Tracking_E-Phys_KISN_2020_Dataset/17903834}{figshare}.
+A detailed description of the data can be found in Mimica et al. 2022 \cite{mimica}.
+They also perform a behavioral clustering on the data, providing an opportunity to compare results.
+
+
+
+
+
 \textcolor{red}{
 \begin{itemize}
+        \item Describe the data, number of rats, link to the both the link (as in the paper), and to the paper which performs the same analysis
+        \item For information about the rats, we just refer to the paper \cite{mimica}.
         \item Present the actual data, and the resulting embedding and some notes on the results if time permits
+        \item Compare the results with the paper, number of behaviors found, number of principal components
 \end{itemize}}
 
 
