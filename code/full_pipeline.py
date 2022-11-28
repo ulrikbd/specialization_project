@@ -24,12 +24,12 @@ def get_pipeline():
     bc.set_extracted_file_path("./extracted_data/")
 
     bc.load_relevant_features(filenames)
-    bc.raw_features = bc.raw_features
     bc.remove_nan()
     print("Detrend")
     bc.detrend()
     print("Time frequency analysis")
     bc.time_frequency_analysis()
+    bc.standardize_features()
     print("Pca")
     bc.pca()
     bc.ds_rate = 1
