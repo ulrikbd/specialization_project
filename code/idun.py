@@ -91,7 +91,7 @@ def main():
 
     fig = plt.figure()
     contours = get_contours(bc.kde, bc.ws_labels)
-    plot_watershed_heat(bc.embedded, bc.kde, contours, bc.border)
+    plot_watershed_heat(bc.embedded, bc.kde, contours, bc.border/5)
     plt.setp(plt.gcf().get_axes(), xticks=[], yticks=[])
     plt.savefig("/cluster/work/ulrikbd/specialization_project/code/final_heatmap.pdf", bbox_inches = "tight")
 
