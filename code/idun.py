@@ -63,14 +63,15 @@ def train_model(bc):
     Trains the full model
     """
 
-    bc.remove_nan()
-    bc.detrend()
-    bc.time_frequency_analysis()
-    bc.standardize_features()
-    bc.pca()
-    bc.ds_rate = 0.5
-    bc.tsne()
-    bc.pre_embedding()
+    # bc.remove_nan()
+    # bc.detrend()
+    # bc.time_frequency_analysis()
+    # bc.standardize_features()
+    # bc.pca()
+    # bc.ds_rate = 0.5
+    # bc.tsne()
+    # bc.pre_embedding()
+    bc.border = np.max(np.abs(bc.embedded))/5
     bc.kernel_density_estimation(500j)
     bc.watershed_segmentation()
     bc.classify()
