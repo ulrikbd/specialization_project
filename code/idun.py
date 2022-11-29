@@ -79,7 +79,7 @@ def train_model(bc):
 
 
 def main():
-    seaborn.set_theme()
+    sns.set_theme()
     # bc = load_data_to_pipeline()
     # pickle_idun_pipeline(bc)
     # bc = load_pipeline()
@@ -87,12 +87,12 @@ def main():
     # pickle_idun_pipeline(bc)
     bc = load_pipeline()
 
+    describe_pipeline(bc)
 
     fig = plt.figure()
     contours = get_contours(bc.kde, bc.ws_labels)
     plot_watershed_heat(bc.embedded, bc.kde, contours, bc.border)
     plt.setp(plt.gcf().get_axes(), xticks=[], yticks=[])
-    plt.savefig("/cluster")
     plt.savefig("/cluster/work/ulrikbd/specialization_project/code/final_heatmap.pdf", bbox_inches = "tight")
 
 
