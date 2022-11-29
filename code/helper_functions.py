@@ -183,6 +183,7 @@ def plot_watershed_heat(data, image, contours, border):
         data (ndarray):
     """
 
+
     xmax, ymax = np.max(data, axis = 0) + border
     xmin, ymin = np.min(data, axis = 0) - border
 
@@ -596,7 +597,32 @@ def describe_pipeline(bc):
     print(f"Training points for t-SNE: {len(bc.embedded_train)}")
     print(f"Downsampling rate: {bc.ds_rate} Hz")
     print(f"Number of found behaviors: {len(np.unique(bc.ws_labels))}")
+
+
+def perplexity_tuning(bc):
+    """
+    Tries a series of perplexity values on 
+    an already trained pipeline.
+    Plots the result.
+    """
     
+    # Perplexity values to be tested
+    perp = [5, 30, 50, 100, 200, 500]
+
+    # Iterate over chosen perplexities
+    for i in range(len(perp)):
+        bc.perp = perp[i]
+        bc.tsne()
+        bc.pre_embedding()
+        bc.kernel_density_estimation(500j)
+        bc.watershed_segmentation()
+
+        contours = get_contours(bc.kde, bc.ws_labels)
+        
+        plt.subplot(2, 3, i + 1)
+        plt.title("Perplexity = " + str(perp[i]))
+        plot_watershed_heat(bc.embedded, bc.kde,
+                            contours, bc.border)
 
 def main():
     pickle_simulated_data()

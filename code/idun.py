@@ -9,7 +9,7 @@ from helper_functions import (
         plot_scaleogram, assign_labels,
         get_contours, plot_watershed_heat,
         get_watershed_labels, estimate_pdf,
-        describe_pipeline,
+        describe_pipeline, perplexity_tuning,
 )
 
 from scipy.spatial.distance import cdist
@@ -82,9 +82,9 @@ def main():
     sns.set_theme()
     # bc = load_data_to_pipeline()
     # pickle_idun_pipeline(bc)
-    # bc = load_pipeline()
-    # bc = train_model(bc)
-    # pickle_idun_pipeline(bc)
+    bc = load_pipeline()
+    bc = train_model(bc)
+    pickle_idun_pipeline(bc)
     bc = load_pipeline()
 
     describe_pipeline(bc)
@@ -95,6 +95,10 @@ def main():
     plt.setp(plt.gcf().get_axes(), xticks=[], yticks=[])
     plt.savefig("/cluster/work/ulrikbd/specialization_project/code/final_heatmap.pdf", bbox_inches = "tight")
 
+    plt.figure(figsize = (12, 8))
+    perplexity_tuning(bc)
+    plt.savefig("/cluster/work/ulrikbd/specialization_project/code/perplexity_tuning.pdf", bbox_inches = "tight")
+    
 
 
 if __name__ == "__main__":

@@ -319,6 +319,8 @@ class BehavioralClustering():
                 the pdf is computed on
         """
 
+        self.border = np.max(np.abs(self.embedded))/5
+
         # Outer border set for better visualizations
         self.kde, self.grid = estimate_pdf(
                 self.embedded, self.bw, self.border, pixels)
