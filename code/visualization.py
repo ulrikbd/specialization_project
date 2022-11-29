@@ -38,13 +38,12 @@ def get_extracted_filename(original_name):
     return original_name.split(".")[0] + "_extracted.pkl"
 
 
-def plot_detrending():
+def plot_detrending(bc):
     """
     Visualizes the detrending performed on the 
     actual data.
     """
     
-    bc = load_example()
 
     for animal_ind in range(len(bc.data)):
         for feat_ind in range(bc.n_features):
@@ -76,12 +75,11 @@ def plot_detrending():
             # plt.show()
 
 
-def plot_scaleograms():
+def plot_scaleograms(bc):
     """
     Plot scaleograms for all the computed wavelet 
     transforms, i.e., for all animals and features.
     """ 
-    bc = load_example()
 
     for animal_ind in range(len(bc.data)):
         for feat_ind in range(bc.n_features):
@@ -102,13 +100,12 @@ def plot_scaleograms():
             plt.savefig(path, bbox_inches = "tight")
             
 
-def plot_tsne():
+def plot_tsne(bc):
     """
     Show a scatter plot of the t-SNE embedding on the 
     downsampled points
     """
 
-    bc = load_example()
 
     plt.figure(figsize = (12, 5))
     plt.scatter(bc.embedded[:,0], bc.embedded[:, 1],
@@ -117,25 +114,23 @@ def plot_tsne():
 
 
             
-def plot_kde():
+def plot_kde(bc):
     """
     Plot the kernel density estimation of the tsne embedding
     """
 
-    bc = load_example()
 
     plt.figure(figsize = (12, 5))
     plt.imshow(bc.kde, cmap = "coolwarm")
     # plt.show()
 
 
-def plot_watershed():
+def plot_watershed(bc):
     """
     Plots the watershed segmentation of the kernel
     kernel density estimation.
     """
 
-    bc = load_example()
     
     contours = get_contours(bc.kde, bc.ws_labels)
 
@@ -154,11 +149,12 @@ def plot_watershed():
 
 def main():
     seaborn.set_theme()
-    plot_detrending()
-    plot_scaleograms()
-    plot_tsne()
-    plot_kde()
-    plot_watershed()
+    bc = load_example()
+    plot_detrending(bc)
+    plot_scaleograms(bc)
+    plot_tsne(bc)
+    plot_kde(bc)
+    plot_watershed(bc)
 
 
 if __name__ == "__main__":

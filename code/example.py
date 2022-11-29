@@ -8,7 +8,7 @@ from helper_functions import (
         plot_scaleogram, assign_labels,
         scale_power_spectrum, estimate_pdf,
         get_contours, get_watershed_labels,
-        plot_watershed_heat,
+        plot_watershed_heat, describe_pipeline,
 )
 
 from scipy.spatial.distance import cdist
@@ -68,8 +68,8 @@ def test_scaling_example():
     2. Square root + no standardization
     """
 
-    ## 1 
-    bc = load_example()
+    ## 1     
+    bc = load_example() 
     emb_1 = scale_power_spectrum(
             bc, sqrt = True, standardize = True)
     ## 2 
@@ -133,6 +133,13 @@ def main():
     bc = load_example()
     # test_scaling_example()
     # test_pre_embedding()
+    describe_pipeline(bc)
+    fig = plt.figure()
+    contours = get_contours(bc.kde, bc.ws_labels)
+    plot_watershed_heat(bc.embedded, bc.kde, contours, bc.border)
+    plt.setp(plt.gcf().get_axes(), xticks=[], yticks=[])
+    plt.show()
+
 
     
 

@@ -9,6 +9,7 @@ from helper_functions import (
         plot_scaleogram, assign_labels,
         get_contours, plot_watershed_heat,
         get_watershed_labels, estimate_pdf,
+        describe_pipeline,
 )
 
 from scipy.spatial.distance import cdist
@@ -39,7 +40,7 @@ def pickle_idun_pipeline(bc):
     and finished by the IDUN hpc cluster
     """
 
-    path = "./models/full_pipeline.pkl"
+    path = "/cluster/work/ulrikbd/specialization_project/code/models/full_pipeline.pkl"
 
     with open(path, "wb") as file:
         pkl.dump(bc, file)
@@ -49,7 +50,7 @@ def load_pipeline():
     """
     Loads the pickled full model
     """
-    path = "./models/full_pipeline.pkl"
+    path = "/cluster/work/ulrikbd/specialization_project/code/models/full_pipeline.pkl"
     
     with open(path, "rb") as file:
         bc = pkl.load(file)
@@ -78,11 +79,22 @@ def train_model(bc):
 
 
 def main():
+    seaborn.set_theme()
     # bc = load_data_to_pipeline()
     # pickle_idun_pipeline(bc)
+    # bc = load_pipeline()
+    # bc = train_model(bc)
+    # pickle_idun_pipeline(bc)
     bc = load_pipeline()
-    train_model(bc)
-    pickle_idun_pipeline(bc)
+
+
+    fig = plt.figure()
+    contours = get_contours(bc.kde, bc.ws_labels)
+    plot_watershed_heat(bc.embedded, bc.kde, contours, bc.border)
+    plt.setp(plt.gcf().get_axes(), xticks=[], yticks=[])
+    plt.savefig("/cluster")
+    plt.savefig("/cluster/work/ulrikbd/specialization_project/code/final_heatmap.pdf", bbox_inches = "tight")
+
 
 
 if __name__ == "__main__":

@@ -258,7 +258,7 @@ class BehavioralClustering():
 
         # Apply the transformation using the sufficient
         # number of principal components
-        pca = PCA(n_components = self.n_pca, batch_size = batch_size)
+        pca = PCA(n_components = self.n_pca)
         self.fit_pca = pca.fit_transform(features)
           
 
@@ -340,7 +340,7 @@ class BehavioralClustering():
         """
 
         # Classify the embedded points
-        emb_labels = assign_labels(self.embedded, 
+        self.beh_labels = assign_labels(self.embedded, 
                                    self.ws_labels,
                                    self.grid)
          

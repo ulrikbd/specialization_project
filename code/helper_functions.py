@@ -324,7 +324,7 @@ def rot2expmap(rot_mat):
 
 
 
-def plot_scaleogram(power, t, freqs, scales):
+def plot_scaleogram(power, t, freqs, scales, ax):
     """
     Plots the spectrogram of the power density
     achived using a continuous wavelet transform
@@ -335,7 +335,6 @@ def plot_scaleogram(power, t, freqs, scales):
     """
      
     # Find appropriate contour levels
-    ax = plt.subplot()
     min_level = np.log2(power).min() / 2
     max_level = np.max([np.log2(power).max(), 1])
     level_step = (max_level - min_level) / 9
@@ -344,15 +343,15 @@ def plot_scaleogram(power, t, freqs, scales):
     cnf = plt.contourf(t, np.log2(freqs), np.log2(power),
                  levels = levels, extend="both",
                  cmap=plt.cm.viridis)
-    cbar = plt.colorbar(cnf)
-    cbar.set_ticks(levels)
-    cbar.set_ticklabels(np.char.mod("%.1e", 2.**levels))
-    y_ticks = 2**np.arange(np.ceil(np.log2(freqs.min())),
-                           np.ceil(np.log2(freqs).max()))
-    ax.set_yticks(np.log2(y_ticks))
-    ax.set_yticklabels(y_ticks)
-    ax.set_xlabel("Time [" + r'$s$' + "]")
-    ax.set_ylabel("Frequency [Hz]")
+    # cbar = plt.colorbar(cnf)
+    # cbar.set_ticks(levels)
+    # cbar.set_ticklabels(np.char.mod("%.1e", 2.**levels))
+    # y_ticks = 2**np.arange(np.ceil(np.log2(freqs.min())),
+                           # np.ceil(np.log2(freqs).max()))
+    # ax.set_yticks(np.log2(y_ticks))
+    # ax.set_yticklabels(y_ticks)
+    # ax.set_xlabel("Time [" + r'$s$' + "]")
+    # ax.set_ylabel("Frequency [Hz]")
 
 
 def generate_simulated_data():
@@ -530,6 +529,74 @@ def scale_power_spectrum(bc, sqrt = True, standardize = True):
 
     return bc.embedded_train
 
+
+def plot_methodology(bc):
+    """
+    Create plot showing the full methodology of
+    a trained pipeline.
+    """ 
+    
+    # Feature to plot
+    feat = 1
+    # Animal
+    animal = 0
+    # Time interval 
+    time = [60*bc.capture_framerate, 120*bc.capture_framerate]
+    # Data, 
+    ts = bc.data[animal][time[0]:time[1],feat]
+    detrend = bc.data_detrended[animal][time[0]:time[1],feat]
+    trend = bc.trend[animal][time[0]:time[1],feat]
+    # Scalogram
+    wave, scales, freqs, coi, fft, fftfreqs = wavelet.cwt(
+            bc.data[animal][:,feat], bc.dt, bc.dj, 1/bc.max_freq,
+            bc.num_freq - 1, bc.mother)
+    power = np.abs(wave)**2
+
+    # Raw time series
+    ax1 = plt.subplot(421)
+    plt.plot(ts, c = "k", lw = 1)
+    plt.plot(trend, c = "r", lw = 1)
+    # Detrending
+    ax2 = plt.subplot(423)
+    plt.plot(detrend, c = "b", lw = 1)
+    # Scaleogram
+    ax3 = plt.subplot(222)
+    t1 = 60*bc.capture_framerate
+    t2 = 70*bc.capture_framerate
+    t = np.arange(len(bc.data[animal]))/bc.capture_framerate
+    plot_scaleogram(power[:,t1:t2], t[t1:t2], freqs, scales, ax3)
+    # t-SNE embedding
+    ax4 = plt.subplot(223)
+    plt.scatter(bc.embedded[:,0], bc.embedded[:,1], s = 1)
+    # Heatmap + segmentation
+    ax5 = plt.subplot(224)
+    contours = get_contours(bc.kde, bc.ws_labels)
+    plot_watershed_heat(bc.embedded, bc.kde, contours,
+                        bc.border - 15)
+    plt.setp(plt.gcf().get_axes(), xticks=[], yticks=[])
+    plt.subplots_adjust(hspace = 0.1, wspace = 0.1)
+
+
+def describe_pipeline(bc):
+    """
+    Description of a trained clustering
+    pipeline. Print descriptive statistics
+    and plot relevant results.
+    """
+
+    print(f"Number of animals: {len(bc.data)}")
+    print(f"Number of features: {bc.n_features}")
+    total_timepoints = np.sum([len(d) for d in bc.raw_features])
+    nonan_timepoints = np.sum([len(d) for d in bc.data])
+    print(f"Number of input time points: {total_timepoints}")
+    print(f"Non-NaN time points: {nonan_timepoints}")
+    print(f"Number of NaN-timepoints: {total_timepoints - nonan_timepoints}")
+    print(f"Average length of series: {nonan_timepoints/len(bc.data)/bc.capture_framerate} seconds")
+    print(f"Capture framerate: {bc.capture_framerate} Hz")
+    print(f"Training points for t-SNE: {len(bc.embedded_train)}")
+    print(f"Downsampling rate: {bc.ds_rate} Hz")
+    print(f"Number of found behaviors: {len(np.unique(bc.ws_labels))}")
+    
 
 def main():
     pickle_simulated_data()

@@ -11,6 +11,7 @@
 \addvspace {10pt}
 \contentsline {figure}{\numberline {3.1}{\ignorespaces Detrended time series using cubic spline regression. The top figure shows the original time series in black with the fitted trend in red. The bottom figure shows the detrended time series.}}{26}{figure.3.1}%
 \contentsline {figure}{\numberline {3.2}{\ignorespaces Scaleogram of the continuous wavelet transform performed on the detrended time series shown in figure \ref {fig:detrending_bc}. The figure shows how the power at different frequency scales changes over time.}}{27}{figure.3.2}%
+\contentsline {figure}{\numberline {3.3}{\ignorespaces }}{28}{figure.3.3}%
 \addvspace {10pt}
 \contentsline {figure}{\numberline {4.1}{\ignorespaces Simulated feature vector showing changes in behavior during the first 50 seconds.}}{30}{figure.4.1}%
 \contentsline {figure}{\numberline {4.2}{\ignorespaces Two dimensional embedding of the standardized simulated data using different dimensionality reduction methods. \textit {Top left:} Principal component analysis. \textit {Top right:} Multidimensional scaling. \textit {Bottom left:} ISOMAP using $n = 20$ neighbors construction the graph. \textit {Bottom right:} t-SNE with perplexity $30$.}}{31}{figure.4.2}%

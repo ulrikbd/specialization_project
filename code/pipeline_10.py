@@ -9,6 +9,7 @@ from helper_functions import (
         plot_scaleogram, assign_labels,
         get_contours, plot_watershed_heat,
         get_watershed_labels, estimate_pdf,
+        plot_methodology,
 )
 
 from scipy.spatial.distance import cdist
@@ -184,6 +185,12 @@ def main():
     # perplexity_tuning_full()
     # bandwidth_tuning()
     # test_embedding()
+    
+    plt.figure(figsize = (12, 10))
+    plot_methodology(bc)
+    plt.savefig("./figures/methodology_10.pdf",
+                bbox_inches = "tight")
+    # plt.show()
     
 
 if __name__ == "__main__":
