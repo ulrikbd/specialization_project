@@ -729,10 +729,10 @@ In turn this can contribute to detecting the behavioural clusters.
 As we are unaware of at which scales these movements occur beforehand, we opt for a continuous wavelet transform as opposed to the short-time Fourier transform.
 Let $J$ be the number of predefined frequency scales, ranging from $\omega_{\text{min}}$ to $\omega_{\text{max}}$.
 The scales $s_1, s_2, \hdots, s_J$ in equation \eqref{eq:cwt_d} are chosen as fractional powers of two—as suggested in \cite{torrence}—e.g.,
-\begin{align*}
+\begin{align}\label{eq:scaling}
         &s_j = \frac{2^{(j - 1)\delta j}}{\omega_{\text{max}}}, \quad j = 1, 2, \hdots, J, \\
         & \delta j = \frac{1}{J - 1} \log_2 \left( \frac{\omega_{\text{max}}}{\omega_{\text{min}}} \right).
-\end{align*}
+\end{align}
 Choice of mother wavelet can for instance be based on expected features in the time series \cite{torrence}.
 Using equation \eqref{eq:cwt_d} we compute the discrete continuous wavelet transform $\tilde{f}_m(s, \tau)$, and in turn the scaled scaleogram
 \begin{equation}\label{eq:s_spec}
@@ -955,7 +955,27 @@ The data can be downloaded through the following \href{https://figshare.com/arti
 A detailed description of the data collection can be found in Mimica et al. 2022 \cite{mimica}.
 They also perform a behavioral clustering on the data, providing an opportunity to compare results.
 
-Seven rats are recorded at different times and in different conditions, providing 57 time series with a total of \textcolor{red}{8300000} distinct time points which are eligible to be used as input in the analysis.
+Seven rats are recorded at different times and in different conditions, providing 57 recordings with a total of 8745586 distinct time points.
+Of these 410560 time points include NaN-values in one or more of the features, leaving 8335026 time points remaining eligible for analysis.
+A capture frame rate of 120Hz gives an average time series length of approximately 20 minutes.
+Each recording contains motion data seven postural parameters, running speed, neck elevation, back angles and head direction.
+
+\section{Parameters}
+The detrending is done with cubic spline regression with knots spaced at 0.5Hz.
+We then apply the continuous wavelet transform with a Morlet mother wavelet at 18 frequencies between 0.5Hz and 20Hz, chosen as in equation \eqref{eq:scaling}.
+The data is downsampled at 0.5Hz, creating a subset of 34730 time points which is used in the t-SNE embedding.
+The perplexity parameter is set as 30, based on visual inspection of the final segmentation.
+Finally, the bandwidth parameter in the kernel density estimation is chosen using Scott's rule \textcolor{red}{equation reference}.
+
+\section{Clustering}
+The final heat map showing the watershed segmentation is shown in figure \ref{fig:final_heatmap}.
+
+\begin{figure}[tb]
+        \centering
+        \includegraphics[width=1\linewidth]{./code/figures/final_heatmap.pdf}
+        \caption{}
+        \label{fig:final_heatmap}
+\end{figure}
 
 
 
