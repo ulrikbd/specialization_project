@@ -1,7 +1,7 @@
 We are running from this directory: /cluster/work/ulrikbd/specialization_project/code
  the name of the job is: behavioral_clustering
-The job ID is 15613565
-The job was run on these nodes: idun-03-33
+The job ID is 15925044
+The job was run on these nodes: idun-07-21
 Number of nodes: 1
 We are using 1
 Total of 1 cores
@@ -15,3 +15,4 @@ Capture framerate: 120 Hz
 Training points for t-SNE: 34730
 Downsampling rate: 0.5 Hz
 Number of found behaviors: 96
+Number of principal components used: 83

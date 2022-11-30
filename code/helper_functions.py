@@ -597,6 +597,7 @@ def describe_pipeline(bc):
     print(f"Training points for t-SNE: {len(bc.embedded_train)}")
     print(f"Downsampling rate: {bc.ds_rate} Hz")
     print(f"Number of found behaviors: {len(np.unique(bc.ws_labels))}")
+    print(f"Number of principal components used: {bc.n_pca}")
 
 
 def perplexity_tuning(bc):
@@ -614,7 +615,7 @@ def perplexity_tuning(bc):
         bc.perp = perp[i]
         bc.tsne()
         bc.pre_embedding()
-        bc.kernel_density_estimation(500j)
+        bc.kernel_density_estimation(200j)
         bc.watershed_segmentation()
 
         contours = get_contours(bc.kde, bc.ws_labels)

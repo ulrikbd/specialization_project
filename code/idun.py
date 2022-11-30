@@ -83,22 +83,22 @@ def main():
     sns.set_theme()
     # bc = load_data_to_pipeline()
     # pickle_idun_pipeline(bc)
-    bc = load_pipeline()
-    bc = train_model(bc)
-    pickle_idun_pipeline(bc)
+    #bc = load_pipeline()
+    #bc = train_model(bc)
+    #pickle_idun_pipeline(bc)
     bc = load_pipeline()
 
     describe_pipeline(bc)
 
     fig = plt.figure()
     contours = get_contours(bc.kde, bc.ws_labels)
-    plot_watershed_heat(bc.embedded, bc.kde, contours, bc.border/5)
+    plot_watershed_heat(bc.embedded, bc.kde, contours, bc.border)
     plt.setp(plt.gcf().get_axes(), xticks=[], yticks=[])
     plt.savefig("/cluster/work/ulrikbd/specialization_project/code/final_heatmap.pdf", bbox_inches = "tight")
 
-    plt.figure(figsize = (12, 8))
-    perplexity_tuning(bc)
-    plt.savefig("/cluster/work/ulrikbd/specialization_project/code/perplexity_tuning.pdf", bbox_inches = "tight")
+    #plt.figure(figsize = (12, 8))
+    #perplexity_tuning(bc)
+    #plt.savefig("/cluster/work/ulrikbd/specialization_project/code/perplexity_tuning.pdf", bbox_inches = "tight")
     
 
 
