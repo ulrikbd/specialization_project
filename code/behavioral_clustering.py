@@ -129,7 +129,7 @@ class BehavioralClustering():
         self.embedded_train = None
         self.embedded = None
         self.kde = None
-        self.border = 30
+        self.border = None
         self.grid = None
         self.bw = "scott" 
         self.ws_labels = None

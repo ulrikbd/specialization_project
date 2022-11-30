@@ -658,6 +658,23 @@ The bandwidth matrix $H$ needs to be selected by the user.
 Changing the bandwidth matrix has a large impact on the resulting estimated density, and is often chosen to suit the problem at hand.
 An example of kernel density estimation is shown in figure \ref{fig:clustering_example}.
 
+One common way to select the bandwidth matrix is to minimize the asymptotic mean integrated squared error
+\begin{equation}\label{eq:ami}
+        \text{AMISE} = \frac{1}{nh^p}\int_{}^{}K(u)^2du + \frac{h^4}{4}\int_{}^{}\{ \text{tr}[AA^T \nabla^2]f(u) \} du,
+\end{equation}
+where $H= hA$ with $A$ having a unit determinant \cite{simonoff}.
+There is no closed form solution, but \eqref{eq:ami} shows that the bandwidth $h$ should be $\mathcal{O}(n^{-4/(p + 4)})$.
+When using a Gaussian kernel on an multivariate normal distribution, the optimal bandwidth matrix is diagonal with elements
+\begin{equation*}
+        H = \left( \frac{4}{p + 2} \right)^{1/(p + 4)} \Sigma^{\frac{1}{2}}n^{-1/(p + 4)}.
+\end{equation*}
+For $p = 2$, the estimated bandwidth matrix
+\begin{equation}\label{eq:scott}
+        \hat{H} = \hat{\Sigma}^{\frac{1}{2}}n^{-1/(p+4)}
+\end{equation}
+is known as Scott's rule of thumb \cite{scott}.
+
+
 
 
 
@@ -772,15 +789,17 @@ The subset is chosen through downsampling at a predefined frequency such that th
 We cluster the time points by dividing up the two dimensional embedding into regions.
 First we embed all points by giving each point the two dimensional coordinates to the training point (used for t-SNE) with the smallest euclidean distance in the principal component space.
 Aiming to find regions with large clusters of points, we compute an estimated probability density through Gaussian kernel density estimation \eqref{eq:kde}.
-\textcolor{red}{How do we choose the bandwidth?}
 Finally we apply watershed segmentation on the kernel density estimation, dividing the t-SNE plane into regions.
-\textcolor{red}{Should have a plot showing the entire methodology process}
+The methodology structure is shown in figure \ref{fig:methodology_10}.
 
 
 \begin{figure}[tb]
         \centering
         \includegraphics[width=1\linewidth]{./code/figures/methodology_10.pdf}
-        \caption{}
+        \caption{Methodology structure. \textit{Top left:} Raw time series input data, detrended using spline regression. 
+        \textit{Top right:} Scaleogram showing the power at various frequencies found via wavelet transformation.
+\textit{Bottom left:} t-Stochastic neighbor embedding of the principal components explaining 95\% of the variance in the extracted features.
+\textit{Bottom right:} Watershed segmentation of the kernel density estimation of the t-SNE embedding.}
         \label{fig:methodology_10}
 \end{figure}
 
@@ -963,40 +982,48 @@ Each recording contains motion data seven postural parameters, running speed, ne
 \section{Parameters}
 The detrending is done with cubic spline regression with knots spaced at 0.5Hz.
 We then apply the continuous wavelet transform with a Morlet mother wavelet at 18 frequencies between 0.5Hz and 20Hz, chosen as in equation \eqref{eq:scaling}.
+This created 133 features, which was reduced to 83, using principal component analysis keeping the components explaining at least 95\% of the total variance.
 The data is downsampled at 0.5Hz, creating a subset of 34730 time points which is used in the t-SNE embedding.
 The perplexity parameter is set as 30, based on visual inspection of the final segmentation.
-Finally, the bandwidth parameter in the kernel density estimation is chosen using Scott's rule \textcolor{red}{equation reference}.
+Finally, the bandwidth matrix in the Gaussian kernel density estimation is chosen using Scott's rule \eqref{eq:scott}.
 
 \section{Clustering}
 The final heat map showing the watershed segmentation is shown in figure \ref{fig:final_heatmap}.
+It shows the estimated kernel density of the t-SNE embedding, divided into 96 regions corresponding to a distinct behavior.
+This is over twice as many detected in Mimica et. al \cite{mimica}.
+One reason for this could be the use of pre-embedding before the density estimation, which they do not do.
+There is also a large difference in the number of principal components needed to explain over 95\% of the variance after the time frequency analysis.
+They alter the wavelet transform output to a larger degree before applying PCA, which I assume lead to this discrepancy.
+
 
 \begin{figure}[tb]
         \centering
-        \includegraphics[width=1\linewidth]{./code/figures/final_heatmap.pdf}
-        \caption{}
+        \includegraphics[width=0.6\linewidth]{./code/figures/final_heatmap.pdf}
+        \caption{Final behavioral segmentation on the complete data set.
+        The t-SNE plane is divided into 96 regions each corresponding to a behavior.
+The underlying heat map shows the estimated probability density of the embeddings.}
         \label{fig:final_heatmap}
 \end{figure}
 
 
 
 
-
-\textcolor{red}{
-\begin{itemize}
-        \item Describe the data, number of rats, link to the both the link (as in the paper), and to the paper which performs the same analysis
-        \item For information about the rats, we just refer to the paper \cite{mimica}.
-        \item Present the actual data, and the resulting embedding and some notes on the results if time permits
-        \item Compare the results with the paper, number of behaviors found, number of principal components
-\end{itemize}}
-
-
 \chapter{Conclusions}
-\textcolor{red}{
-\begin{itemize}
-        \item Does it work?
-        \item How do we know the model is good?
-        \item What further testing is required?
-\end{itemize}}
+Using time frequency analysis and dimensionality reduction techniques, we are able to group animal motion recording segments into distinct behaviors.
+On real motion recordings of seven rats, the algorithm finds 96 such behaviors.
+As we do not have access to the video recordings themselves, it is impossible to say what these behaviors represents.
+There are many choices throughout the methodology which could be further investigated, especially how the data is reduced to two dimensions.
+An analysis of the found behaviors should also be performed: How long do the animals stay in the different behaviors? 
+Does there exists patterns in the changes in behavior?
+How is the distribution of time spend in each behavior?
+How does the sample size affect the number of detected behaviors?
+What is the effect of adding new motion features?
+Luckily I have a master thesis to write in which I can explore these questions.
+
+
+
+
+
 
 
 
