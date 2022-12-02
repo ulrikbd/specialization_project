@@ -3,7 +3,7 @@
 #SBATCH --account="ie-imf"
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=1
-#SBATCH --time=00-00:10:00
+#SBATCH --time=03-00:00:00
 #SBATCH --partition=CPUQ
 #SBATCH --mem=80000
 #SBATCH --mail-user="ulrik_danielsen@hotmail.com"

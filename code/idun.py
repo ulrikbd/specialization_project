@@ -96,9 +96,9 @@ def main():
     plt.setp(plt.gcf().get_axes(), xticks=[], yticks=[])
     plt.savefig("/cluster/work/ulrikbd/specialization_project/code/final_heatmap.pdf", bbox_inches = "tight")
 
-    #plt.figure(figsize = (12, 8))
-    #perplexity_tuning(bc)
-    #plt.savefig("/cluster/work/ulrikbd/specialization_project/code/perplexity_tuning.pdf", bbox_inches = "tight")
+    plt.figure(figsize = (12, 8))
+    perplexity_tuning(bc)
+    plt.savefig("/cluster/work/ulrikbd/specialization_project/code/perplexity_tuning.pdf", bbox_inches = "tight")
     
 
 

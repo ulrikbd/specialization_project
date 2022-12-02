@@ -615,7 +615,7 @@ def perplexity_tuning(bc):
         bc.perp = perp[i]
         bc.tsne()
         bc.pre_embedding()
-        bc.kernel_density_estimation(200j)
+        bc.kernel_density_estimation(300j)
         bc.watershed_segmentation()
 
         contours = get_contours(bc.kde, bc.ws_labels)
