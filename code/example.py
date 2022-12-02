@@ -130,20 +130,21 @@ def test_pre_embedding():
 
 def main():
     seaborn.set_theme()
-    # pickle_example()
+    pickle_example()
     bc = load_example()
+    print(bc.border)
     # test_scaling_example()
     # test_pre_embedding()
     describe_pipeline(bc)
-    # fig = plt.figure()
-    # contours = get_contours(bc.kde, bc.ws_labels)
-    # plot_watershed_heat(bc.embedded, bc.kde, contours, bc.border)
-    # plt.setp(plt.gcf().get_axes(), xticks=[], yticks=[])
-    # plt.show()
-
-    plt.figure(figsize = (12, 8))
-    perplexity_tuning(bc)
+    fig = plt.figure()
+    contours = get_contours(bc.kde, bc.ws_labels)
+    plot_watershed_heat(bc.embedded, bc.kde, contours, bc.border)
+    plt.setp(plt.gcf().get_axes(), xticks=[], yticks=[])
     plt.show()
+
+    # plt.figure(figsize = (12, 8))
+    # perplexity_tuning(bc)
+    # plt.show()
 
 
     

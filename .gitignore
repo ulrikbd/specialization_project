@@ -7,8 +7,10 @@
 *.fls
 *.log
 *.out
+*.lof
 *.xml
 *.gz
+*.toc
 
 
 # Hide the data and litterature
