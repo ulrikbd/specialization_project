@@ -147,7 +147,8 @@ class BehavioralClustering():
         # Iterate over animals
         for i in range(len(self.raw_features)):
             # Find the indices of usable rows
-            self.used_indices.append(~np.isnan(self.raw_features[i]).any(axis =1))
+            self.used_indices.append(~np.isnan(
+                self.raw_features[i]).any(axis =1))
             # Filter the data and add to an attribute
             self.data.append(self.raw_features[i][self.used_indices[i]])
 
@@ -234,7 +235,8 @@ class BehavioralClustering():
         
         # Iterate over animals
         for i in range(len(self.data)):
-            self.features[i] = ((self.features[i] - np.mean(self.features[i], axis = 0)) /
+            self.features[i] = ((self.features[i] - np.mean(self.features[i],
+                                                            axis = 0)) /
                                 np.std(self.features[i], axis = 0))
 
         

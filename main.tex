@@ -11,6 +11,7 @@
 \usepackage{optidef}
 \usepackage{hyperref}
 \usepackage{tikz}
+\usepackage{listings}
 
 \usepackage[
 style=ieee]
@@ -715,8 +716,6 @@ These extracted features are embedded into two dimensions, where we can use imag
 The first step is to analyse each time series separately, modifying them and thus creating $D \times n$ features which we will extract the behavioral information from.
 Let $y_t = \{ y_1, y_2, \hdots, y_m \} = y_i^d(t)$ for some $d \in \{ 1, 2, \hdots, D \}$ and $i \in \{ 1, 2, \hdots, n \}$ be one such series.
 
-\textcolor{red}{I don't see the point in centering the data around the mean before the detrending.}
-
 We detrend the data as $y_t = s_3(t) + x_t$, $s_3(t)$ being the non-linear trend and $x_t$ the detrended time series.
 The cubic spline $s_3(t)$ is found using least square regression as in equation \eqref{eq:lsq_spline} with equally spaced internal knots $\xi_1, \xi_2, \hdots, \xi_M$.
 We choose the knots to have a fixed frequency, i.e., we choose $\Delta \xi= \xi_{i+1} - \xi_i, i = 2, \hdots, M$.
@@ -984,8 +983,15 @@ The detrending is done with cubic spline regression with knots spaced at 0.5Hz.
 We then apply the continuous wavelet transform with a Morlet mother wavelet at 18 frequencies between 0.5Hz and 20Hz, chosen as in equation \eqref{eq:scaling}.
 This created 133 features, which was reduced to 83, using principal component analysis keeping the components explaining at least 95\% of the total variance.
 The data is downsampled at 0.5Hz, creating a subset of 34730 time points which is used in the t-SNE embedding.
-The perplexity parameter is set as 30, based on visual inspection of the final segmentation.
+The perplexity parameter is set as 30, based on visual inspection of the final segmentation, shown in figure \ref{fig:perplexity_tuning}.
 Finally, the bandwidth matrix in the Gaussian kernel density estimation is chosen using Scott's rule \eqref{eq:scott}.
+
+\begin{figure}[tb]
+        \centering
+        \includegraphics[width=1\linewidth]{./code/figures/perplexity_tuning.pdf}
+        \caption{Tuning the perplexity parameter in t-Stochastic neighbor embedding on the complete data set.}
+        \label{fig:perplexity_tuning}
+\end{figure}
 
 \section{Clustering}
 The final heat map showing the watershed segmentation is shown in figure \ref{fig:final_heatmap}.
@@ -1020,6 +1026,12 @@ How does the sample size affect the number of detected behaviors?
 What is the effect of adding new motion features?
 Luckily I have a master thesis to write in which I can explore these questions.
 
+
+\appendix
+\chapter{Code}
+The main clustering pipeline is included as below.
+All code for producing figures and simulations in this project can be found at this  \href{https://github.com/ulrikbd/specialization_project_code}{github repository}.
+\lstinputlisting{./code/behavioral_clustering.py}
 
 
 
